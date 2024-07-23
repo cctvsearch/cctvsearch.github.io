@@ -253,10 +253,6 @@ latLngButton.style.top = '45px';
 latLngButton.style.left = '10px';
 latLngButton.style.zIndex = '2';
 latLngButton.style.padding = '10px';
-latLngButton.style.backgroundColor = '#007BFF';
-latLngButton.style.color = '#fff';
-latLngButton.style.border = 'none';
-latLngButton.style.cursor = 'pointer';
 document.body.appendChild(latLngButton);
 
 // 위도/경도 모드 버튼 클릭 이벤트 추가
