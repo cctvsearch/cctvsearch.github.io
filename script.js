@@ -246,28 +246,17 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         // 기존 임시 오버레이가 있으면 제거
         closeTempOverlay();
 
-        // 검색된 위치의 마커가 클릭된 것처럼 커스텀 오버레이 표시
-        if (markerIndex !== -1) {
-            kakao.maps.event.trigger(markers[markerIndex], 'click');
-        } else {
-            // 해당 위치에 마커가 없는 경우, 임시 마커 생성 및 오버레이 표시
-            var tempMarker = new kakao.maps.Marker({
-                position: position,
-                map: map
-            });
-
-            var tempOverlayContent =
+        // 클릭한 위치에 임시 오버레이 생성
+        var tempOverlayContent =
             '<div class="customOverlay">' +
             '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
             '    클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, 경도는 ' + latlng.getLng() + ' 입니다' +
             '</div>';
-
-            var tempOverlay = new kakao.maps.CustomOverlay({
-                content: tempOverlayContent,
-                map: map,
-                position: position,
-                yAnchor: 1.1 // 중앙 정렬(0.5)에서 위쪽으로 조정하여 닫기 버튼이 가려지지 않게 함
-            });
-
+        tempOverlay = new kakao.maps.CustomOverlay({
+            content: tempOverlayContent,
+            map: map,
+            position: latlng,
+            yAnchor: 2.0 // 중앙 정렬(0.5)에서 위쪽으로 조정하여 닫기 버튼이 가려지지 않게 함
+        });
     }
 });
