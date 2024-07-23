@@ -224,7 +224,7 @@ latLngButton.textContent = '위도/경도 찾기';
 latLngButton.style.position = 'absolute';
 latLngButton.style.top = '45px';
 latLngButton.style.right = '10px';
-latLngButton.style.zIndex = 1000; // 다른 요소들보다 위에 위치하도록 설정
+latLngButton.style.zIndex = '2'; // 다른 요소들보다 위에 위치하도록 설정
 document.body.appendChild(latLngButton);
 
 // 버튼 클릭 시 위도/경도 표시 모드 전환
