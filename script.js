@@ -12,17 +12,6 @@ var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
-var miniMapContainer = document.getElementById('miniMapContainer');
-var miniMapOption = {
-    center: mapOption.center,
-    level: 4
-};
-var miniMap = new kakao.maps.Map(miniMapContainer, miniMapOption);
-var miniMarker = new kakao.maps.Marker({
-    position: miniMapOption.center,
-    map: miniMap
-});
-
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
@@ -179,57 +168,7 @@ newSearchForm.addEventListener('submit', function(event) {
                 '    해당 위치에 정보가 없습니다.' +
                 '</div>';
 
-            var tempOverlay = new kakao.maps.CustomOverlay({
-                content: tempOverlayContent,
-                map: map,
-                position: position,
-                yAnchor: 1.1
-            });
-
-            setTimeout(function() {
-                tempMarker.setMap(null);
-                tempOverlay.setMap(null);
-            }, 3000);
-        }
-    } else {
-        alert('유효한 위도/경도 또는 관리번호를 입력하세요.');
-    }
-});
-
-newSearchBtn.addEventListener('click', function() {
-    newSearchForm.dispatchEvent(new Event('submit'));
-});
-
-function closeTempOverlay() {
-    if (tempOverlay) {
-        tempOverlay.setMap(null);
-        tempOverlay = null;
-    }
-}
-
-var latLngButton = document.getElementById('latLngButton');
-
-latLngButton.addEventListener('click', function() {
-    isLatLngClickMode = !isLatLngClickMode;
-    if (isLatLngClickMode) {
-        latLngButton.textContent = '위도/경도 끄기';
-    } else {
-        latLngButton.textContent = '위도/경도 찾기';
-    }
-});
-
-kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-    if (isLatLngClickMode) {
-        var latlng = mouseEvent.latLng;
-
-        closeTempOverlay();
-
-        var tempOverlayContent =
-            '<div class="customOverlay">' +
-            '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
-            '    클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, 경도는 ' + latlng.getLng() + ' 입니다' +
-            '</div>';
-        tempOverlay = new kakao.maps.CustomOverlay({
+    var tempOverlay = new kakao.maps.CustomOverlay({
             content: tempOverlayContent,
             map: map,
             position: latlng,
