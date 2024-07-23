@@ -195,6 +195,7 @@ html, body {
     #newSearchForm {
         width: 90%; /* 검색창 너비 조정 */
         max-width: 300px; /* 최대 너비 설정 */
+        top: auto;
         bottom: 20px; /* 화면 중앙 아래로 위치 조정 */
         left: 50%; /* 수평 중앙 정렬 */
         transform: translateX(-50%); /* 수평 중앙 정렬 */
@@ -204,6 +205,7 @@ html, body {
     #newSearchForm input[type="text"] {
         width: 100%; /* 입력창 너비 설정 */
         font-size: 12px; /* 입력창 폰트 크기 조정 */
+        margin-bottom: 5px;
     }
 
     #newSearchForm button {
