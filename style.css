@@ -191,28 +191,44 @@ html, body {
         margin-right: 0; /* 모바일 환경에서 여백 제거 */
     }
 
-    #newSearchForm {
-        width: 100%; /* 모바일 환경에서 검색창 너비 설정 */
-        max-width: none; /* 모바일 환경에서 최대 너비 제거 */
-        top: auto; /* 모바일 환경에서 기존의 top 속성 제거 */
-        bottom: 10px; /* 모바일 환경에서 하단 여백 설정 */
-        right: 0; /* 모바일 환경에서 오른쪽 정렬 */
+ #newSearchForm {
+        width: 90%; /* 검색창 너비 조정 */
+        max-width: 300px; /* 최대 너비 설정 */
+        top: 10px; /* 상단 여백 조정 */
+        right: 10px; /* 오른쪽 여백 조정 */
+        position: absolute; /* 위치 조정 */
     }
 
     #newSearchForm input[type="text"] {
-        width: 100%; /* 모바일 환경에서 입력창 너비 설정 */
-        max-width: none; /* 모바일 환경에서 최대 너비 제거 */
-        margin-bottom: 5px; /* 모바일 환경에서 여백 설정 */
+        width: 100%; /* 입력창 너비 설정 */
     }
 
-    #roadviewToggle, #latLngButton {
-        top: auto; /* 모바일 환경에서 기존의 top 속성 제거 */
-        bottom: 70px; /* 모바일 환경에서 하단 여백 설정 */
-        right: 10px; /* 모바일 환경에서 오른쪽 정렬 */
-        width: calc(100% - 20px); /* 모바일 환경에서 너비 조정 */
+    #newSearchForm button {
+        width: 100%; /* 버튼 너비 설정 */
+        padding: 6px; /* 버튼 패딩 조정 */
+    }
+
+    #latLngButton, #roadviewToggle {
+        padding: 7px 10px; /* 버튼 패딩 조정 */
+        font-size: 12px; /* 버튼 폰트 크기 조정 */
+        width: 90%; /* 버튼 너비 조정 */
+        bottom: 10px; /* 하단 여백 조정 */
+    }
+
+    #latLngButton {
+        bottom: 60px; /* 위도/경도 버튼 위치 조정 */
     }
 
     #roadviewToggle {
-        bottom: 10px; /* 모바일 환경에서 하단 여백 설정 */
+        bottom: 10px; /* 로드뷰 토글 버튼 위치 조정 */
+    }
+    #roadviewContainer {
+        width: 100%;
+        height: 100vh; /* 모바일 환경에서 높이를 화면 전체로 설정 */
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: none; /* 기본적으로 숨김 */
     }
 }
