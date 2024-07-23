@@ -1,4 +1,3 @@
-// 카테고리별 데이터를 모두 불러옵니다.
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
@@ -9,21 +8,32 @@ var mapOption = {
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
+var roadviewContainer = document.getElementById('roadview');
+var roadview = new kakao.maps.Roadview(roadviewContainer);
+var roadviewClient = new kakao.maps.RoadviewClient();
+
+var miniMapContainer = document.getElementById('miniMapContainer');
+var miniMapOption = {
+    center: mapOption.center,
+    level: 4
+};
+var miniMap = new kakao.maps.Map(miniMapContainer, miniMapOption);
+var miniMarker = new kakao.maps.Marker({
+    position: miniMapOption.center,
+    map: miniMap
+});
+
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
 var currentOverlay = null;
-var isLatLngClickMode = false; // 위도와 경도를 표시하는 모드인지 확인하는 플래그
-var tempOverlay = null; // 임시 오버레이를 저장할 변수
+var isLatLngClickMode = false;
+var tempOverlay = null;
 
-// 전체 코드는 다음과 같이 수정됩니다.
-// 기존 코드의 일부만 표시합니다. 전체 코드를 한 번에 통합하고 실행해야 합니다.
-
-// 모든 마커와 오버레이를 표시합니다.
 createMarkersAndOverlays('전부');
 
 function createMarkersAndOverlays(category) {
-    closeCustomOverlay(); // 현재 열려 있는 커스텀 오버레이 닫기
+    closeCustomOverlay();
     markers.forEach(function(marker) {
         marker.setMap(null);
     });
@@ -32,28 +42,20 @@ function createMarkersAndOverlays(category) {
     allPositions.forEach(function(position, index) {
         var showMarker = true;
 
-        // 회전형 카테고리 조건 설정
-        if (category === '회전형') {
-            if (allInfo[index].rotation < 1) {
-                showMarker = false;
-            }
-        }
-        // 고정형 카테고리 조건 설정
-        else if (category === '고정형') {
-            if (allInfo[index].fixed < 1) {
-                showMarker = false;
-            }
+        if (category === '회전형' && allInfo[index].rotation < 1) {
+            showMarker = false;
+        } else if (category === '고정형' && allInfo[index].fixed < 1) {
+            showMarker = false;
         }
 
-        // 선택된 카테고리 또는 전체 카테고리인 경우 마커 생성
         if (category === '전부' || position.category === category) {
             if (showMarker) {
                 var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-                var markerImage = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 마커 이미지
+                var markerImage = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
 
                 var marker = new kakao.maps.Marker({
                     position: markerPosition,
-                    image: new kakao.maps.MarkerImage(markerImage, new kakao.maps.Size(30, 40)) // 기본 마커 이미지 크기 설정
+                    image: new kakao.maps.MarkerImage(markerImage, new kakao.maps.Size(30, 40))
                 });
                 markers.push(marker);
 
@@ -61,7 +63,6 @@ function createMarkersAndOverlays(category) {
                     showCustomOverlay(position, index);
                 });
 
-                // 모바일 터치 이벤트 처리 추가
                 kakao.maps.event.addListener(marker, 'touchstart', function() {
                     showCustomOverlay(position, index);
                 });
@@ -104,13 +105,12 @@ function showCustomOverlay(position, index) {
         content: overlayContent,
         map: map,
         position: new kakao.maps.LatLng(position.lat, position.lng),
-        yAnchor: 1.1 // 중앙 정렬(0.5)에서 위쪽으로 조정하여 닫기 버튼이 가려지지 않게 함
+        yAnchor: 1.1
     });
 }
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
-// 드롭다운 형식의 카테고리 목록 생성 및 클릭 이벤트 추가
 categories.forEach(function(category) {
     var option = document.createElement('option');
     option.value = category;
@@ -123,12 +123,10 @@ categoryDropdown.addEventListener('change', function() {
     createMarkersAndOverlays(selectedCategory);
 });
 
-// 새로운 검색창 요소들 가져오기
 var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
 var newSearchBtn = document.getElementById('newSearchBtn');
 
-// 검색 이벤트 리스너 추가
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = newSearchInput.value.trim();
@@ -136,7 +134,6 @@ newSearchForm.addEventListener('submit', function(event) {
     var position = null;
     var markerIndex = -1;
 
-    // 위도/경도 형식 확인
     var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
     if (latLngPattern.test(userInput)) {
         var match = userInput.match(latLngPattern);
@@ -144,15 +141,13 @@ newSearchForm.addEventListener('submit', function(event) {
         var lng = parseFloat(match[3]);
         position = new kakao.maps.LatLng(lat, lng);
 
-        // 위도와 경도로 마커 찾기
         allPositions.forEach(function(pos, index) {
             if (pos.lat === lat && pos.lng === lng) {
                 markerIndex = index;
-                return false; // 루프 종료
+                return false;
             }
         });
     } else {
-        // 관리번호 검색
         var filtered = allInfo.filter(function(item) {
             return item.number.toLowerCase() === userInput.toLowerCase();
         });
@@ -166,16 +161,13 @@ newSearchForm.addEventListener('submit', function(event) {
 
     if (position) {
         map.setCenter(position);
-        map.setLevel(4); // 필요에 따라 줌 레벨을 조정
+        map.setLevel(4);
 
-        // 모든 마커를 다시 그리기
         createMarkersAndOverlays('전부');
 
-        // 검색된 위치의 마커가 클릭된 것처럼 커스텀 오버레이 표시
         if (markerIndex !== -1) {
             kakao.maps.event.trigger(markers[markerIndex], 'click');
         } else {
-            // 해당 위치에 마커가 없는 경우, 임시 마커 생성 및 오버레이 표시
             var tempMarker = new kakao.maps.Marker({
                 position: position,
                 map: map
@@ -191,10 +183,9 @@ newSearchForm.addEventListener('submit', function(event) {
                 content: tempOverlayContent,
                 map: map,
                 position: position,
-                yAnchor: 1.1 // 중앙 정렬(0.5)에서 위쪽으로 조정하여 닫기 버튼이 가려지지 않게 함
+                yAnchor: 1.1
             });
 
-            // 3초 후에 임시 마커와 오버레이 제거
             setTimeout(function() {
                 tempMarker.setMap(null);
                 tempOverlay.setMap(null);
@@ -205,12 +196,10 @@ newSearchForm.addEventListener('submit', function(event) {
     }
 });
 
-// 검색 버튼 클릭 시 검색 이벤트 실행
 newSearchBtn.addEventListener('click', function() {
     newSearchForm.dispatchEvent(new Event('submit'));
 });
 
-// 임시 오버레이 닫기 함수
 function closeTempOverlay() {
     if (tempOverlay) {
         tempOverlay.setMap(null);
@@ -218,16 +207,8 @@ function closeTempOverlay() {
     }
 }
 
-// 버튼 요소 가져오기
-var latLngButton = document.createElement('button');
-latLngButton.textContent = '위도/경도 찾기';
-latLngButton.style.position = 'absolute';
-latLngButton.style.top = '45px';
-latLngButton.style.right = '10px';
-latLngButton.style.zIndex = '2'; // 다른 요소들보다 위에 위치하도록 설정
-document.body.appendChild(latLngButton);
+var latLngButton = document.getElementById('latLngButton');
 
-// 버튼 클릭 시 위도/경도 표시 모드 전환
 latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
@@ -237,16 +218,12 @@ latLngButton.addEventListener('click', function() {
     }
 });
 
-// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isLatLngClickMode) {
-        // 클릭한 위도, 경도 정보를 가져옵니다 
-        var latlng = mouseEvent.latLng; 
+        var latlng = mouseEvent.latLng;
 
-        // 기존 임시 오버레이가 있으면 제거
         closeTempOverlay();
 
-        // 클릭한 위치에 임시 오버레이 생성
         var tempOverlayContent =
             '<div class="customOverlay">' +
             '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
@@ -256,7 +233,45 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
             content: tempOverlayContent,
             map: map,
             position: latlng,
-            yAnchor: 2.0 // 중앙 정렬(0.5)에서 위쪽으로 조정하여 닫기 버튼이 가려지지 않게 함
+            yAnchor: 2.0
+        });
+
+        var tempMarker = new kakao.maps.Marker({
+            position: latlng,
+            map: map
+        });
+
+        setTimeout(function() {
+            tempMarker.setMap(null);
+        }, 3000);
+    }
+});
+
+function toggleRoadview() {
+    if (roadviewContainer.style.display === 'none') {
+        roadviewContainer.style.display = 'block';
+        mapContainer.style.display = 'none';
+    } else {
+        roadviewContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
+    }
+}
+
+kakao.maps.event.addListener(map, 'idle', function() {
+    if (roadviewContainer.style.display === 'block') {
+        var position = map.getCenter();
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+                miniMap.setCenter(position);
+                miniMarker.setPosition(position);
+            }
         });
     }
+});
+
+kakao.maps.event.addListener(roadview, 'position_changed', function() {
+    var rvPosition = roadview.getPosition();
+    miniMap.setCenter(rvPosition);
+    miniMarker.setPosition(rvPosition);
 });
