@@ -219,6 +219,7 @@ html, body {
         font-size: 12px; /* 버튼 폰트 크기 조정 */
         line-height: 30px; /* 버튼 텍스트 줄 높이 조정 */
         display: flex; /* 버튼 텍스트 중앙 정렬 */
+        z-index: 3;
         align-items: center; /* 버튼 텍스트 수직 중앙 정렬 */
         justify-content: center; /* 버튼 텍스트 수평 중앙 정렬 */
     }
