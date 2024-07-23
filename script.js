@@ -168,7 +168,57 @@ newSearchForm.addEventListener('submit', function(event) {
                 '    해당 위치에 정보가 없습니다.' +
                 '</div>';
 
-    var tempOverlay = new kakao.maps.CustomOverlay({
+            tempOverlay = new kakao.maps.CustomOverlay({
+                content: tempOverlayContent,
+                map: map,
+                position: position,
+                yAnchor: 2.0
+            });
+
+            setTimeout(function() {
+                tempMarker.setMap(null);
+                tempOverlay.setMap(null);
+            }, 3000);
+        }
+    } else {
+        alert('유효한 위도/경도 또는 관리번호를 입력하세요.');
+    }
+});
+
+newSearchBtn.addEventListener('click', function() {
+    newSearchForm.dispatchEvent(new Event('submit'));
+});
+
+function closeTempOverlay() {
+    if (tempOverlay) {
+        tempOverlay.setMap(null);
+        tempOverlay = null;
+    }
+}
+
+var latLngButton = document.getElementById('latLngButton');
+
+latLngButton.addEventListener('click', function() {
+    isLatLngClickMode = !isLatLngClickMode;
+    if (isLatLngClickMode) {
+        latLngButton.textContent = '위도/경도 끄기';
+    } else {
+        latLngButton.textContent = '위도/경도 찾기';
+    }
+});
+
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+    if (isLatLngClickMode) {
+        var latlng = mouseEvent.latLng;
+
+        closeTempOverlay();
+
+        var tempOverlayContent =
+            '<div class="customOverlay">' +
+            '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
+            '    클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, 경도는 ' + latlng.getLng() + ' 입니다' +
+            '</div>';
+        tempOverlay = new kakao.maps.CustomOverlay({
             content: tempOverlayContent,
             map: map,
             position: latlng,
@@ -196,21 +246,28 @@ function toggleRoadview() {
     }
 }
 
+var roadviewToggleBtn = document.getElementById('roadviewToggle');
+roadviewToggleBtn.addEventListener('click', function() {
+    toggleRoadview();
+});
+
 kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
-                miniMap.setCenter(position);
-                miniMarker.setPosition(position);
+                // miniMap과 miniMarker는 코드에 없으므로 이 부분은 삭제했습니다.
+                // miniMap.setCenter(position);
+                // miniMarker.setPosition(position);
             }
         });
     }
 });
 
-kakao.maps.event.addListener(roadview, 'position_changed', function() {
-    var rvPosition = roadview.getPosition();
-    miniMap.setCenter(rvPosition);
-    miniMarker.setPosition(rvPosition);
-});
+// roadview에서 위치가 변경될 때의 이벤트 처리 (miniMap, miniMarker 관련 부분은 삭제)
+// kakao.maps.event.addListener(roadview, 'position_changed', function() {
+//     var rvPosition = roadview.getPosition();
+//     miniMap.setCenter(rvPosition);
+//     miniMarker.setPosition(rvPosition);
+// });
