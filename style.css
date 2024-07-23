@@ -125,8 +125,8 @@ html, body {
 #latLngButton, #roadviewToggle {
     position: absolute;
     right: 10px;
-    width: 60px; /* 버튼 너비 조정 (300% 증가) */
-    height: 30px; /* 버튼 높이 조정 (300% 증가) */
+    width: 60px; /* 버튼 너비 조정 */
+    height: 30px; /* 버튼 높이 조정 */
     padding: 10px; /* 버튼 패딩 조정 */
     font-size: 12px; /* 버튼 폰트 크기 조정 */
     line-height: 30px; /* 버튼 텍스트 줄 높이 조정 */
@@ -213,8 +213,8 @@ html, body {
     }
 
     #latLngButton, #roadviewToggle {
-        width: 60px; /* 버튼 너비 조정 (300% 증가) */
-        height: 30px; /* 버튼 높이 조정 (300% 증가) */
+        width: 60px; /* 버튼 너비 조정 */
+        height: 30px; /* 버튼 높이 조정 */
         padding: 10px; /* 버튼 패딩 조정 */
         font-size: 12px; /* 버튼 폰트 크기 조정 */
         line-height: 30px; /* 버튼 텍스트 줄 높이 조정 */
