@@ -278,6 +278,24 @@ kakao.maps.event.addListener(map, 'idle', function() {
     }
 });
 
+    function updateButtonText() {
+        const latLngButton = document.getElementById('latLngButton');
+        const roadviewToggle = document.getElementById('roadviewToggle');
+
+        if (window.innerWidth <= 728) {
+            latLngButton.textContent = '좌표';
+            roadviewToggle.textContent = '로드뷰';
+        } else {
+            latLngButton.textContent = '위도/경도'; // 원래 텍스트로 복원
+            roadviewToggle.textContent = '로드뷰'; // 원래 텍스트로 복원
+        }
+    }
+
+    // 페이지 로드 시 버튼 텍스트 업데이트
+    window.addEventListener('load', updateButtonText);
+    // 화면 크기 조정 시 버튼 텍스트 업데이트
+    window.addEventListener('resize', updateButtonText);
+
 // roadview에서 위치가 변경될 때의 이벤트 처리 (miniMap, miniMarker 관련 부분은 삭제)
 // kakao.maps.event.addListener(roadview, 'position_changed', function() {
 //     var rvPosition = roadview.getPosition();
