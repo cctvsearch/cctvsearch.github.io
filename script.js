@@ -8,9 +8,22 @@ var mapOption = {
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
+// 지도와 로드뷰 인스턴스 초기화
 var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
+
+// 지도 클릭 시 로드뷰 업데이트
+kakao.maps.event.addListener(map, 'idle', function() {
+    if (roadviewContainer.style.display === 'block') {
+        var position = map.getCenter();
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+            }
+        });
+    }
+});
 
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
