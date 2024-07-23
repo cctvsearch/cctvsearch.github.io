@@ -91,9 +91,8 @@ html, body {
 
 #newSearchForm {
     position: absolute;
-    bottom: 20px; /* 화면 중앙 아래로 위치 조정 */
-    left: 50%;
-    transform: translateX(-50%); /* 수평 중앙 정렬 */
+    top: 10px; /* 화면 중앙 아래로 위치 조정 */
+    right: 10px;
     z-index: 3; /* 검색창의 z-index를 높게 설정 */
     display: flex;
     align-items: center;
@@ -108,9 +107,8 @@ html, body {
 }
 
 #newSearchForm button {
-    padding: 3px; /* 버튼 패딩 조정 */
+    padding: 6px 10px; /* 버튼 패딩 조정 */
     font-size: 12px; /* 버튼 폰트 크기 조정 */
-    width: 60px; /* 버튼 너비 조정 */
     background-color: rgba(0, 86, 179, 0.9);
     color: rgba(0, 86, 179, 0.9);
     border: none;
@@ -124,10 +122,11 @@ html, body {
 
 #latLngButton, #roadviewToggle {
     position: absolute;
+    top: 60px;
     right: 10px;
-    width: 60px; /* 버튼 너비 조정 */
     height: 30px; /* 버튼 높이 조정 */
-    padding: 10px; /* 버튼 패딩 조정 */
+    z-index: 1;
+    padding: 10px 15px; /* 버튼 패딩 조정 */
     font-size: 12px; /* 버튼 폰트 크기 조정 */
     line-height: 30px; /* 버튼 텍스트 줄 높이 조정 */
     display: flex; /* 버튼 텍스트 중앙 정렬 */
