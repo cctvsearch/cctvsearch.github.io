@@ -124,6 +124,7 @@ html, body {
     position: absolute;
     top: 60px;
     right: 10px;
+    width: 60px; /* 버튼 너비 조정 */
     height: 30px; /* 버튼 높이 조정 */
     z-index: 1;
     padding: 10px 15px; /* 버튼 패딩 조정 */
@@ -135,7 +136,7 @@ html, body {
 }
 
 #latLngButton {
-    top: 10px; /* 위도/경도 버튼 위치 조정 */
+    top: 30px; /* 위도/경도 버튼 위치 조정 */
     background-color: #007BFF;
     color: #fff;
     border-radius: 5px; /* 버튼 모서리 둥글게 */
@@ -147,7 +148,7 @@ html, body {
 }
 
 #roadviewToggle {
-    top: 50px; /* 로드뷰 토글 버튼 위치 조정 */
+    top: 70px; /* 로드뷰 토글 버튼 위치 조정 */
     background-color: #28a745;
     color: #fff;
     border-radius: 5px; /* 버튼 모서리 둥글게 */
