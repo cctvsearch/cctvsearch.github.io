@@ -204,4 +204,15 @@ html, body {
         max-width: none; /* 모바일 환경에서 최대 너비 제거 */
         margin-bottom: 5px; /* 모바일 환경에서 여백 설정 */
     }
+
+    #roadviewToggle, #latLngButton {
+        top: auto; /* 모바일 환경에서 기존의 top 속성 제거 */
+        bottom: 70px; /* 모바일 환경에서 하단 여백 설정 */
+        right: 10px; /* 모바일 환경에서 오른쪽 정렬 */
+        width: calc(100% - 20px); /* 모바일 환경에서 너비 조정 */
+    }
+
+    #roadviewToggle {
+        bottom: 10px; /* 모바일 환경에서 하단 여백 설정 */
+    }
 }
