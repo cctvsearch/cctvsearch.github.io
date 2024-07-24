@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kakao2</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Kakao Maps SDK 로드 스크립트 -->
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c853f1d10da9175222476044cffe3531&libraries=services"></script>
 </head>
 <body>
     <div id="mapWrapper">
         <div id="map"></div>
-        <div id="roadviewContainer">
-            <div id="roadview"></div>
-            <div id="miniMap"></div> <!-- 미니맵 추가 -->
-        </div>
+        <div id="roadview" class="hidden"></div>
         <div id="categoryDropdownContainer">
             <select id="categoryDropdown"></select>
         </div>
+        <!-- 검색창을 오른쪽 상단에 추가합니다. -->
         <div id="newSearchForm">
             <input type="text" id="newSearchInput" placeholder="위도/경도 또는 관리번호 입력" required>
             <button type="submit" id="newSearchBtn">검색</button>
@@ -24,6 +23,7 @@
         <button id="latLngButton">좌표</button>
         <button id="roadviewToggle">로드뷰</button>
     </div>
+    <!-- 카테고리별 JavaScript 파일 로드 -->
     <script src="data/categoryA.js"></script>
     <script src="data/categoryB.js"></script>
     <script src="data/categoryC.js"></script>
@@ -32,6 +32,7 @@
     <script src="data/categoryF.js"></script>
     <script src="data/categoryG.js"></script>
     <script src="data/categoryH.js"></script>
+    <!-- 메인 JavaScript 파일 로드 -->
     <script src="script.js"></script>
 </body>
 </html>
