@@ -42,27 +42,34 @@ function createMarkersAndOverlays(category) {
     });
     markers = [];
 
+    // 카테고리별 마커 이미지 URL 정의
+    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
+
+    if (category === '회전형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
+    } else if (category === '고정형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
+    }
+
     allPositions.forEach(function(position, index) {
         var showMarker = true;
 
         if (category === '회전형') {
-            // 회전형 카테고리인 경우, rotation 값이 1 이상이어야 함
             showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
         } else if (category === '고정형') {
-            // 고정형 카테고리인 경우, fixed 값이 1 이상이어야 함
             showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
         } else if (category !== '전부') {
-            // 개별 카테고리 필터링
             showMarker = (position.category === category);
         }
 
         if (showMarker) {
             var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-            var markerImage = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+
+            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, new kakao.maps.Size(30, 40));
 
             var marker = new kakao.maps.Marker({
                 position: markerPosition,
-                image: new kakao.maps.MarkerImage(markerImage, new kakao.maps.Size(30, 40))
+                image: markerImage
             });
             markers.push(marker);
 
@@ -78,6 +85,7 @@ function createMarkersAndOverlays(category) {
         }
     });
 }
+
 
 
 function closeCustomOverlay() {
