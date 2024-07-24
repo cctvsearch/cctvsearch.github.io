@@ -1,6 +1,7 @@
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
+// 로드뷰와 미니맵, 지도 초기화
 var mapContainer = document.getElementById('map');
 var roadviewContainer = document.getElementById('roadview');
 var miniMapContainer = document.getElementById('miniMap');
@@ -30,6 +31,18 @@ kakao.maps.event.addListener(map, 'idle', function() {
                 updateMiniMap(position);
             } else {
                 console.error('No panoId found for the given position.');
+                // Fallback to a default position or notify the user
+                // Example: Default to the center of the map
+                var defaultPosition = map.getCenter();
+                roadviewClient.getNearestPanoId(defaultPosition, 50, function(panoId) {
+                    if (panoId) {
+                        roadview.setPanoId(panoId, defaultPosition);
+                        updateMiniMap(defaultPosition);
+                    } else {
+                        console.error('No panoId found for the default position.');
+                        // Handle the case where no panoId is found
+                    }
+                });
             }
         });
     }
@@ -58,6 +71,16 @@ function toggleRoadview() {
                     roadview.setPanoId(panoId, position);
                 } else {
                     console.error('No panoId found during Roadview toggle.');
+                    // Fallback to a default position or notify the user
+                    var defaultPosition = map.getCenter();
+                    roadviewClient.getNearestPanoId(defaultPosition, 50, function(panoId) {
+                        if (panoId) {
+                            roadview.setPanoId(panoId, defaultPosition);
+                        } else {
+                            console.error('No panoId found for the default position during toggle.');
+                            // Handle the case where no panoId is found
+                        }
+                    });
                 }
             });
         }, 1000); // 로드뷰 초기화에 약간의 지연을 두기
@@ -75,6 +98,10 @@ var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
 });
+
+// 기타 코드 유지
+// ...
+
 
 // 기타 함수들
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
