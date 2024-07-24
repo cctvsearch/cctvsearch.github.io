@@ -1,109 +1,29 @@
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
-// 로드뷰와 미니맵, 지도 초기화
 var mapContainer = document.getElementById('map');
-var roadviewContainer = document.getElementById('roadview');
-var miniMapContainer = document.getElementById('miniMap');
-
 var mapOption = {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
     level: 5
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
+// 지도와 로드뷰 인스턴스 초기화
+var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
-// 미니맵 인스턴스 초기화
-var miniMap = new kakao.maps.Map(miniMapContainer, {
-    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
-    level: 6
-});
-
-// 로드뷰와 지도의 연동 및 미니맵 업데이트
 kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
-                updateMiniMap(position);
-            } else {
-                console.error('No panoId found for the given position.');
-                // Fallback to a default position or notify the user
-                // Example: Default to the center of the map
-                var defaultPosition = map.getCenter();
-                roadviewClient.getNearestPanoId(defaultPosition, 50, function(panoId) {
-                    if (panoId) {
-                        roadview.setPanoId(panoId, defaultPosition);
-                        updateMiniMap(defaultPosition);
-                    } else {
-                        console.error('No panoId found for the default position.');
-                        // Handle the case where no panoId is found
-                    }
-                });
             }
         });
     }
 });
 
-kakao.maps.event.addListener(roadview, 'position_changed', function() {
-    var position = roadview.getPosition();
-    updateMiniMap(position);
-});
-
-function updateMiniMap(position) {
-    miniMap.setCenter(position);
-}
-
-function toggleRoadview() {
-    if (roadviewContainer.style.display === 'none') {
-        roadviewContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
-        miniMapContainer.style.display = 'block'; // 미니맵 표시
-
-        // 로드뷰가 제대로 로드되었는지 확인
-        setTimeout(function() {
-            var position = map.getCenter();
-            roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-                if (panoId) {
-                    roadview.setPanoId(panoId, position);
-                } else {
-                    console.error('No panoId found during Roadview toggle.');
-                    // Fallback to a default position or notify the user
-                    var defaultPosition = map.getCenter();
-                    roadviewClient.getNearestPanoId(defaultPosition, 50, function(panoId) {
-                        if (panoId) {
-                            roadview.setPanoId(panoId, defaultPosition);
-                        } else {
-                            console.error('No panoId found for the default position during toggle.');
-                            // Handle the case where no panoId is found
-                        }
-                    });
-                }
-            });
-        }, 1000); // 로드뷰 초기화에 약간의 지연을 두기
-    } else {
-        roadviewContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
-        miniMapContainer.style.display = 'none'; // 미니맵 숨기기
-
-        // 지도의 레이아웃을 새로 고침
-        map.relayout();
-    }
-}
-
-var roadviewToggleBtn = document.getElementById('roadviewToggle');
-roadviewToggleBtn.addEventListener('click', function() {
-    toggleRoadview();
-});
-
-// 기타 코드 유지
-// ...
-
-
-// 기타 함수들
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
@@ -116,20 +36,22 @@ createMarkersAndOverlays('전부');
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
 
+    // 기존 마커 제거
     markers.forEach(function(marker) {
         marker.setMap(null);
     });
     markers = [];
 
-    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-    var markerSize = new kakao.maps.Size(30, 40);
+    // 카테고리별 마커 이미지 URL 및 사이즈 정의
+    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
+    var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
 
     if (category === '회전형') {
         markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
-        markerSize = new kakao.maps.Size(27, 27);
+        markerSize = new kakao.maps.Size(27, 27); // 회전형 사이즈
     } else if (category === '고정형') {
         markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
-        markerSize = new kakao.maps.Size(27, 27);
+        markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
     }
 
     allPositions.forEach(function(position, index) {
@@ -145,6 +67,7 @@ function createMarkersAndOverlays(category) {
 
         if (showMarker) {
             var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+
             var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
 
             var marker = new kakao.maps.Marker({
@@ -165,6 +88,9 @@ function createMarkersAndOverlays(category) {
         }
     });
 }
+
+
+
 
 function closeCustomOverlay() {
     if (currentOverlay) {
@@ -340,6 +266,33 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     }
 });
 
+function toggleRoadview() {
+    if (roadviewContainer.style.display === 'none') {
+        roadviewContainer.style.display = 'block';
+        mapContainer.style.display = 'none';
+    } else {
+        roadviewContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
+
+         map.relayout();
+    }
+}
+
+var roadviewToggleBtn = document.getElementById('roadviewToggle');
+roadviewToggleBtn.addEventListener('click', function() {
+    toggleRoadview();
+});
+
+kakao.maps.event.addListener(map, 'idle', function() {
+    if (roadviewContainer.style.display === 'block') {
+        var position = map.getCenter();
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+            }
+        });
+    }
+});
 
 function updateButtonText() {
     const latLngButton = document.getElementById('latLngButton');
