@@ -48,10 +48,10 @@ function createMarkersAndOverlays(category) {
 
     if (category === '회전형') {
         markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
-        markerSize = new kakao.maps.Size(20, 27); // 회전형 사이즈
+        markerSize = new kakao.maps.Size(27, 27); // 회전형 사이즈
     } else if (category === '고정형') {
         markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
-        markerSize = new kakao.maps.Size(20, 27); // 고정형 사이즈
+        markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
     }
 
     allPositions.forEach(function(position, index) {
