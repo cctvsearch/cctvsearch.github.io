@@ -42,13 +42,16 @@ function createMarkersAndOverlays(category) {
     });
     markers = [];
 
-    // 카테고리별 마커 이미지 URL 정의
+    // 카테고리별 마커 이미지 URL 및 사이즈 정의
     var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
+    var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
 
     if (category === '회전형') {
         markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
+        markerSize = new kakao.maps.Size(20, 27); // 회전형 사이즈
     } else if (category === '고정형') {
         markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
+        markerSize = new kakao.maps.Size(20, 27); // 고정형 사이즈
     }
 
     allPositions.forEach(function(position, index) {
@@ -65,7 +68,7 @@ function createMarkersAndOverlays(category) {
         if (showMarker) {
             var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
 
-            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, new kakao.maps.Size(30, 40));
+            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
 
             var marker = new kakao.maps.Marker({
                 position: markerPosition,
@@ -85,6 +88,7 @@ function createMarkersAndOverlays(category) {
         }
     });
 }
+
 
 
 
