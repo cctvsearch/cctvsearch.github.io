@@ -285,10 +285,20 @@ function toggleRoadview() {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
         miniMapContainer.style.display = 'block'; // 미니맵 표시
+
+        // 로드뷰가 제대로 로드되었는지 확인
+        setTimeout(function() {
+            if (!roadviewClient.getNearestPanoId(map.getCenter(), 50)) {
+                roadview.setPanoId(null, map.getCenter()); // 로드뷰를 강제로 초기화
+            }
+        }, 1000); // 로드뷰 초기화에 약간의 지연을 두기
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
         miniMapContainer.style.display = 'none'; // 미니맵 숨기기
+
+        // 지도의 레이아웃을 새로 고침
+        map.relayout();
     }
 }
 
