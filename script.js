@@ -282,7 +282,7 @@ function updateButtonText() {
         latLngButton.textContent = '좌표';
         roadviewToggle.textContent = '로드뷰';
     } else {
-        latLngButton.textContent = '위도/경도';
+        latLngButton.textContent = '좌표';
         roadviewToggle.textContent = '로드뷰';
     }
 }
