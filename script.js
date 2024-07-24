@@ -35,6 +35,8 @@ createMarkersAndOverlays('전부');
 
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
+
+    // 기존 마커 제거
     markers.forEach(function(marker) {
         marker.setMap(null);
     });
@@ -43,36 +45,40 @@ function createMarkersAndOverlays(category) {
     allPositions.forEach(function(position, index) {
         var showMarker = true;
 
-        if (category === '회전형' && allInfo[index].rotation < 1) {
-            showMarker = false;
-        } else if (category === '고정형' && allInfo[index].fixed < 1) {
-            showMarker = false;
+        if (category === '회전형') {
+            // 회전형 카테고리인 경우, rotation 값이 1 이상이어야 함
+            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
+        } else if (category === '고정형') {
+            // 고정형 카테고리인 경우, fixed 값이 1 이상이어야 함
+            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
+        } else if (category !== '전부') {
+            // 개별 카테고리 필터링
+            showMarker = (position.category === category);
         }
 
-        if (category === '전부' || position.category === category) {
-            if (showMarker) {
-                var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-                var markerImage = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+        if (showMarker) {
+            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+            var markerImage = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
 
-                var marker = new kakao.maps.Marker({
-                    position: markerPosition,
-                    image: new kakao.maps.MarkerImage(markerImage, new kakao.maps.Size(30, 40))
-                });
-                markers.push(marker);
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: new kakao.maps.MarkerImage(markerImage, new kakao.maps.Size(30, 40))
+            });
+            markers.push(marker);
 
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    showCustomOverlay(position, index);
-                });
+            kakao.maps.event.addListener(marker, 'click', function() {
+                showCustomOverlay(position, index);
+            });
 
-                kakao.maps.event.addListener(marker, 'touchstart', function() {
-                    showCustomOverlay(position, index);
-                });
+            kakao.maps.event.addListener(marker, 'touchstart', function() {
+                showCustomOverlay(position, index);
+            });
 
-                marker.setMap(map);
-            }
+            marker.setMap(map);
         }
     });
 }
+
 
 function closeCustomOverlay() {
     if (currentOverlay) {
