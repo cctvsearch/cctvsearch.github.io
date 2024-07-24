@@ -13,7 +13,6 @@ var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
-// 지도 클릭 시 로드뷰 업데이트
 kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
@@ -270,35 +269,25 @@ kakao.maps.event.addListener(map, 'idle', function() {
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
-                // miniMap과 miniMarker는 코드에 없으므로 이 부분은 삭제했습니다.
-                // miniMap.setCenter(position);
-                // miniMarker.setPosition(position);
             }
         });
     }
 });
 
-    function updateButtonText() {
-        const latLngButton = document.getElementById('latLngButton');
-        const roadviewToggle = document.getElementById('roadviewToggle');
+function updateButtonText() {
+    const latLngButton = document.getElementById('latLngButton');
+    const roadviewToggle = document.getElementById('roadviewToggle');
 
-        if (window.innerWidth <= 728) {
-            latLngButton.textContent = '좌표';
-            roadviewToggle.textContent = '로드뷰';
-        } else {
-            latLngButton.textContent = '위도/경도'; // 원래 텍스트로 복원
-            roadviewToggle.textContent = '로드뷰'; // 원래 텍스트로 복원
-        }
+    if (window.innerWidth <= 728) {
+        latLngButton.textContent = '좌표';
+        roadviewToggle.textContent = '로드뷰';
+    } else {
+        latLngButton.textContent = '위도/경도';
+        roadviewToggle.textContent = '로드뷰';
     }
+}
 
-    // 페이지 로드 시 버튼 텍스트 업데이트
-    window.addEventListener('load', updateButtonText);
-    // 화면 크기 조정 시 버튼 텍스트 업데이트
-    window.addEventListener('resize', updateButtonText);
-
-// roadview에서 위치가 변경될 때의 이벤트 처리 (miniMap, miniMarker 관련 부분은 삭제)
-// kakao.maps.event.addListener(roadview, 'position_changed', function() {
-//     var rvPosition = roadview.getPosition();
-//     miniMap.setCenter(rvPosition);
-//     miniMarker.setPosition(rvPosition);
-// });
+// 페이지 로드 시 버튼 텍스트 업데이트
+window.addEventListener('load', updateButtonText);
+// 화면 크기 조정 시 버튼 텍스트 업데이트
+window.addEventListener('resize', updateButtonText);
