@@ -3,7 +3,7 @@ const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
 var mapContainer = document.getElementById('map');
 var roadviewContainer = document.getElementById('roadview');
-var miniMapContainer = document.getElementById('miniMap'); // 미니맵 컨테이너
+var miniMapContainer = document.getElementById('miniMap');
 
 var mapOption = {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
@@ -11,7 +11,6 @@ var mapOption = {
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 지도와 로드뷰 인스턴스 초기화
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
@@ -21,7 +20,7 @@ var miniMap = new kakao.maps.Map(miniMapContainer, {
     level: 6
 });
 
-// 지도와 로드뷰 연결 및 미니맵 업데이트
+// 로드뷰와 지도의 연동 및 미니맵 업데이트
 kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
@@ -29,6 +28,8 @@ kakao.maps.event.addListener(map, 'idle', function() {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
                 updateMiniMap(position);
+            } else {
+                console.error('No panoId found for the given position.');
             }
         });
     }
@@ -42,6 +43,38 @@ kakao.maps.event.addListener(roadview, 'position_changed', function() {
 function updateMiniMap(position) {
     miniMap.setCenter(position);
 }
+
+function toggleRoadview() {
+    if (roadviewContainer.style.display === 'none') {
+        roadviewContainer.style.display = 'block';
+        mapContainer.style.display = 'none';
+        miniMapContainer.style.display = 'block'; // 미니맵 표시
+
+        // 로드뷰가 제대로 로드되었는지 확인
+        setTimeout(function() {
+            var position = map.getCenter();
+            roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+                if (panoId) {
+                    roadview.setPanoId(panoId, position);
+                } else {
+                    console.error('No panoId found during Roadview toggle.');
+                }
+            });
+        }, 1000); // 로드뷰 초기화에 약간의 지연을 두기
+    } else {
+        roadviewContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
+        miniMapContainer.style.display = 'none'; // 미니맵 숨기기
+
+        // 지도의 레이아웃을 새로 고침
+        map.relayout();
+    }
+}
+
+var roadviewToggleBtn = document.getElementById('roadviewToggle');
+roadviewToggleBtn.addEventListener('click', function() {
+    toggleRoadview();
+});
 
 // 기타 함수들
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
@@ -280,32 +313,6 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     }
 });
 
-function toggleRoadview() {
-    if (roadviewContainer.style.display === 'none') {
-        roadviewContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
-        miniMapContainer.style.display = 'block'; // 미니맵 표시
-
-        // 로드뷰가 제대로 로드되었는지 확인
-        setTimeout(function() {
-            if (!roadviewClient.getNearestPanoId(map.getCenter(), 50)) {
-                roadview.setPanoId(null, map.getCenter()); // 로드뷰를 강제로 초기화
-            }
-        }, 1000); // 로드뷰 초기화에 약간의 지연을 두기
-    } else {
-        roadviewContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
-        miniMapContainer.style.display = 'none'; // 미니맵 숨기기
-
-        // 지도의 레이아웃을 새로 고침
-        map.relayout();
-    }
-}
-
-var roadviewToggleBtn = document.getElementById('roadviewToggle');
-roadviewToggleBtn.addEventListener('click', function() {
-    toggleRoadview();
-});
 
 function updateButtonText() {
     const latLngButton = document.getElementById('latLngButton');
