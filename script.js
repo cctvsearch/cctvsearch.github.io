@@ -2,6 +2,9 @@ const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Eposi
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
 var mapContainer = document.getElementById('map');
+var roadviewContainer = document.getElementById('roadview');
+var miniMapContainer = document.getElementById('miniMap'); // 미니맵 컨테이너
+
 var mapOption = {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
     level: 5
@@ -9,21 +12,38 @@ var mapOption = {
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
 // 지도와 로드뷰 인스턴스 초기화
-var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
+// 미니맵 인스턴스 초기화
+var miniMap = new kakao.maps.Map(miniMapContainer, {
+    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+    level: 6
+});
+
+// 지도와 로드뷰 연결 및 미니맵 업데이트
 kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
+                updateMiniMap(position);
             }
         });
     }
 });
 
+kakao.maps.event.addListener(roadview, 'position_changed', function() {
+    var position = roadview.getPosition();
+    updateMiniMap(position);
+});
+
+function updateMiniMap(position) {
+    miniMap.setCenter(position);
+}
+
+// 기타 함수들
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
@@ -35,41 +55,53 @@ createMarkersAndOverlays('전부');
 
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
+
     markers.forEach(function(marker) {
         marker.setMap(null);
     });
     markers = [];
 
+    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+    var markerSize = new kakao.maps.Size(30, 40);
+
+    if (category === '회전형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
+        markerSize = new kakao.maps.Size(27, 27);
+    } else if (category === '고정형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
+        markerSize = new kakao.maps.Size(27, 27);
+    }
+
     allPositions.forEach(function(position, index) {
         var showMarker = true;
 
-        if (category === '회전형' && allInfo[index].rotation < 1) {
-            showMarker = false;
-        } else if (category === '고정형' && allInfo[index].fixed < 1) {
-            showMarker = false;
+        if (category === '회전형') {
+            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
+        } else if (category === '고정형') {
+            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
+        } else if (category !== '전부') {
+            showMarker = (position.category === category);
         }
 
-        if (category === '전부' || position.category === category) {
-            if (showMarker) {
-                var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-                var markerImage = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+        if (showMarker) {
+            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
 
-                var marker = new kakao.maps.Marker({
-                    position: markerPosition,
-                    image: new kakao.maps.MarkerImage(markerImage, new kakao.maps.Size(30, 40))
-                });
-                markers.push(marker);
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            markers.push(marker);
 
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    showCustomOverlay(position, index);
-                });
+            kakao.maps.event.addListener(marker, 'click', function() {
+                showCustomOverlay(position, index);
+            });
 
-                kakao.maps.event.addListener(marker, 'touchstart', function() {
-                    showCustomOverlay(position, index);
-                });
+            kakao.maps.event.addListener(marker, 'touchstart', function() {
+                showCustomOverlay(position, index);
+            });
 
-                marker.setMap(map);
-            }
+            marker.setMap(map);
         }
     });
 }
@@ -252,26 +284,17 @@ function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
+        miniMapContainer.style.display = 'block'; // 미니맵 표시
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
+        miniMapContainer.style.display = 'none'; // 미니맵 숨기기
     }
 }
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
-});
-
-kakao.maps.event.addListener(map, 'idle', function() {
-    if (roadviewContainer.style.display === 'block') {
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
-    }
 });
 
 function updateButtonText() {
