@@ -231,9 +231,9 @@ var latLngButton = document.getElementById('latLngButton');
 latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
-        latLngButton.textContent = '위도/경도 끄기';
+        latLngButton.textContent = '끄기';
     } else {
-        latLngButton.textContent = '위도/경도 찾기';
+        latLngButton.textContent = '찾기';
     }
 });
 
