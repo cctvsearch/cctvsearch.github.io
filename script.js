@@ -311,3 +311,76 @@ function updateButtonText() {
 window.addEventListener('load', updateButtonText);
 // 화면 크기 조정 시 버튼 텍스트 업데이트
 window.addEventListener('resize', updateButtonText);
+
+// 버튼을 동적으로 생성하여 body에 추가합니다
+var currentPosButton = document.createElement('button');
+currentPosButton.style.position = 'absolute';
+currentPosButton.style.bottom = '8%';
+currentPosButton.style.right = '10%';
+currentPosButton.style.width = '50px'; // 버튼 크기 설정
+currentPosButton.style.height = '50px'; // 버튼 크기 설정
+currentPosButton.style.border = 'none'; // 버튼 테두리 제거
+currentPosButton.style.background = 'none'; // 버튼 배경 제거
+currentPosButton.style.cursor = 'pointer'; // 커서 스타일 설정
+currentPosButton.style.zIndex = '3'; // 버튼이 다른 요소들 위에 표시되도록 z-index 설정
+
+// 이미지를 버튼에 추가합니다
+var img = document.createElement('img');
+img.src = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/maker.png?raw=true'; // 이미지 URL을 지정합니다
+img.style.width = '100%'; // 이미지 크기 설정
+img.style.height = '100%'; // 이미지 크기 설정
+currentPosButton.appendChild(img);
+
+document.body.appendChild(currentPosButton);
+
+// 이벤트 리스너를 등록합니다
+currentPosButton.addEventListener('click', getCurrentPos);
+
+function getCurrentPos() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude; // 위도
+            var lon = position.coords.longitude; // 경도
+            var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>'; // 인포윈도우에 표시될 내용입니다
+
+            // 마커와 인포윈도우를 표시합니다
+            displayMarker(locPosition, message);
+        }, function(error) {
+            console.error(error);
+            alert('위치 정보를 가져올 수 없습니다.');
+        });
+    } else {
+        alert('GPS를 지원하지 않습니다.');
+    }
+}
+
+function displayMarker(locPosition, message) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        position: locPosition,
+        map: map
+    });
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: message,
+        position: locPosition,
+        removable: true
+    });
+
+    // 인포윈도우를 마커에 표시합니다
+    infowindow.open(map, marker);
+
+    // 3초 후에 마커와 인포윈도우를 제거합니다
+    setTimeout(function() {
+        marker.setMap(null);
+        infowindow.close();
+    }, 3000);
+
+    // 지도의 중심을 현재 위치로 이동합니다
+    map.setCenter(locPosition);
+    map.setLevel(4);
+}
+
+
