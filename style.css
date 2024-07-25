@@ -183,8 +183,8 @@ html, body {
 
 #roadviewMiniMap {
     position: absolute;
-    bottom: 10px; /* 화면 하단에서 10px 거리 */
-    right: 10px; /* 화면 우측에서 10px 거리 */
+    bottom: 13%; /* 화면 하단에서 10px 거리 */
+    left: 2%; /* 화면 우측에서 10px 거리 */
     width: 150px; /* 미니맵 너비 */
     height: 150px; /* 미니맵 높이 */
     border: 2px solid #ccc; /* 미니맵 테두리 */
