@@ -264,90 +264,140 @@ function initialize() {
     }
 
     function updateButtonText() {
-        var roadviewToggleBtn = document.getElementById('roadviewToggle');
-        if (roadviewContainer.style.display === 'none') {
-            roadviewToggleBtn.textContent = '로드뷰 보기';
+        const latLngButton = document.getElementById('latLngButton');
+        const roadviewToggle = document.getElementById('roadviewToggle');
+
+        if (window.innerWidth <= 728) {
+            latLngButton.textContent = '좌표';
+            roadviewToggle.textContent = (roadviewContainer.style.display === 'none') ? '로드뷰 보기' : '로드뷰 닫기';
         } else {
-            roadviewToggleBtn.textContent = '로드뷰 닫기';
+            latLngButton.textContent = '좌표';
+            roadviewToggle.textContent = (roadviewContainer.style.display === 'none') ? '로드뷰 보기' : '로드뷰 닫기';
         }
     }
 
-    function createMarkersAndOverlays(category) {
-        // 기존 마커와 오버레이를 삭제합니다.
-        markers.forEach(function(marker) {
-            marker.setMap(null);
-        });
-        markers = [];
+    window.addEventListener('load', updateButtonText);
+    window.addEventListener('resize', updateButtonText);
 
-        if (category === '전부') {
-            allPositions.forEach(function(position, index) {
-                createMarker(position, allInfo[index]);
-            });
-        } else {
-            var filteredPositions = allPositions.filter(function(pos) {
-                return pos.category === category;
-            });
-            filteredPositions.forEach(function(position) {
-                var info = allInfo[allPositions.indexOf(position)];
-                createMarker(position, info);
-            });
-        }
+    createMarkersAndOverlays('전부');
+}
+
+// 마커와 오버레이 생성 함수
+function createMarkersAndOverlays(category) {
+    // 기존 마커 제거
+    markers.forEach(function(marker) {
+        marker.setMap(null);
+    });
+    markers = [];
+
+    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+    var markerSize = new kakao.maps.Size(30, 40);
+
+    if (category === '회전형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
+        markerSize = new kakao.maps.Size(27, 27);
+    } else if (category === '고정형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
+        markerSize = new kakao.maps.Size(27, 27);
     }
 
-    function createMarker(position, info) {
-        var marker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(position.lat, position.lng),
-            map: map
-        });
+    var showMarker;
 
-        kakao.maps.event.addListener(marker, 'click', function() {
-            if (currentOverlay) {
-                currentOverlay.setMap(null);
+    if (category === '전부') {
+        allPositions.forEach(function(position, index) {
+            createMarker(position, allInfo[index]);
+        });
+    } else {
+        allPositions.forEach(function(position, index) {
+            if (category === '회전형') {
+                showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
+            } else if (category === '고정형') {
+                showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
+            } else {
+                showMarker = (position.category === category);
             }
 
-            var content = '<div class="customOverlay">' +
-                          '    <span class="closeBtn" onclick="closeOverlay()">×</span>' +
-                          '    <div class="overlayContent">' +
-                          '        <h4>' + info.title + '</h4>' +
-                          '        <p>' + info.description + '</p>' +
-                          '    </div>' +
-                          '</div>';
-
-            currentOverlay = new kakao.maps.CustomOverlay({
-                content: content,
-                map: map,
-                position: marker.getPosition(),
-                yAnchor: 2.0
-            });
+            if (showMarker) {
+                createMarker(position, allInfo[index]);
+            }
         });
-
-        markers.push(marker);
-    }
-
-    function closeOverlay() {
-        if (currentOverlay) {
-            currentOverlay.setMap(null);
-            currentOverlay = null;
-        }
-    }
-
-    function getCurrentPos() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-                var currentPosition = new kakao.maps.LatLng(lat, lng);
-
-                map.setCenter(currentPosition);
-                map.setLevel(4);
-            }, function(error) {
-                console.error('위치 정보를 가져오는 데 실패했습니다.', error);
-            });
-        } else {
-            alert('Geolocation이 지원되지 않습니다.');
-        }
     }
 }
 
-// 페이지 로드 후 초기화
-window.onload = initialize;
+function createMarker(position, info) {
+    var markerImage = new kakao.maps.MarkerImage('markerImageUrl', new kakao.maps.Size(30, 40));
+    var marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(position.lat, position.lng),
+        image: markerImage,
+        map: map
+    });
+
+    kakao.maps.event.addListener(marker, 'click', function() {
+        if (currentOverlay) {
+            currentOverlay.setMap(null);
+        }
+
+        var overlayContent =
+            '<div class="customOverlay">' +
+            '    <span class="closeBtn" onclick="closeOverlay()">×</span>' +
+            '    <div class="overlayContent">' +
+            '        <h4>' + info.title + '</h4>' +
+            '        <p>' + info.description + '</p>' +
+            '    </div>' +
+            '</div>';
+
+        currentOverlay = new kakao.maps.CustomOverlay({
+            content: overlayContent,
+            map: map,
+            position: marker.getPosition(),
+            yAnchor: 2.0
+        });
+    });
+
+    markers.push(marker);
+}
+
+function closeOverlay() {
+    if (currentOverlay) {
+        currentOverlay.setMap(null);
+        currentOverlay = null;
+    }
+}
+
+function getCurrentPos() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var currentPosition = new kakao.maps.LatLng(lat, lng);
+
+            map.setCenter(currentPosition);
+            map.setLevel(4);
+
+            var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>';
+            displayMarker(currentPosition, message);
+        }, function(error) {
+            console.error('위치 정보를 가져오는 데 실패했습니다.', error);
+        });
+    } else {
+        alert('Geolocation이 지원되지 않습니다.');
+    }
+}
+
+function displayMarker(locPosition, message) {
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: locPosition
+    });
+
+    var infowindow = new kakao.maps.InfoWindow({
+        content: message,
+        removable: true
+    });
+    infowindow.open(map, marker);
+
+    setTimeout(function() {
+        marker.setMap(null);
+        infowindow.close();
+    }, 3000);
+}
