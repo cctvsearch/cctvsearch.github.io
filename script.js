@@ -307,15 +307,7 @@ function updateButtonText() {
     }
 }
 
-// 페이지 로드 시 버튼 텍스트 업데이트
-window.addEventListener('load', updateButtonText);
-// 화면 크기 조정 시 버튼 텍스트 업데이트
-window.addEventListener('resize', updateButtonText);
-
-
-<!-- 버튼을 동적으로 생성하여 body에 추가합니다 -->
-<script>
-    var currentPosButton = document.createElement('button');
+var currentPosButton = document.createElement('button');
     currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
 
     // 이미지를 버튼에 추가합니다
@@ -362,4 +354,10 @@ window.addEventListener('resize', updateButtonText);
     }
 
     currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
-</script>
+
+// 페이지 로드 시 버튼 텍스트 업데이트
+window.addEventListener('load', updateButtonText);
+// 화면 크기 조정 시 버튼 텍스트 업데이트
+window.addEventListener('resize', updateButtonText);
+
+
