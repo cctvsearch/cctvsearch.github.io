@@ -260,86 +260,21 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         setTimeout(function() {
             tempMarker.setMap(null);
         }, 3000);
-
-        // 로드뷰에서 가장 가까운 파노라마 ID를 가져옴
-        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, latlng);
-                roadviewContainer.style.display = 'block';
-                mapContainer.style.display = 'none';
-            }
-        });
     }
 });
-
-// 로드뷰 위치 변경 시 지도 및 UI 업데이트
-kakao.maps.event.addListener(roadview, 'position_changed', function() {
-    var position = roadview.getPosition();
-    if (position) {
-        var latlng = new kakao.maps.LatLng(position.getLat(), position.getLng());
-        map.setCenter(latlng);
-        map.setLevel(4); // 필요에 따라 줌 레벨 조정
-
-        // 로드뷰 모드일 때만 다른 UI 요소를 숨김
-        if (roadviewContainer.style.display === 'block') {
-            document.getElementById('categoryDropdownContainer').style.display = 'none';
-            document.getElementById('newSearchForm').style.display = 'none';
-            document.getElementById('latLngButton').style.display = 'block'; // GPS 좌표 버튼 보이기
-            document.getElementById('roadviewToggle').style.display = 'block'; // 로드뷰 토글 버튼 보이기
-            document.getElementById('currentPosButton').style.display = 'block'; // 현재 위치 버튼 보이기
-        }
-    }
-});
-
 
 function toggleRoadview() {
-    const roadviewContainer = document.querySelector('#roadview');
-    const mapContainer = document.querySelector('#map');
-
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 제거
-
-        // 숨길 UI 요소에 roadview-hide 클래스 추가
-        document.querySelectorAll('.hideable-ui').forEach(function(element) {
-            element.classList.add('roadview-hide');
-        });
-
-        // 로드뷰 모드에서 버튼 위치 조정을 위한 클래스 추가
-        document.body.classList.add('roadview-visible');
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 추가
-
-        // 숨길 UI 요소에 roadview-hide 클래스 제거
-        document.querySelectorAll('.hideable-ui').forEach(function(element) {
-            element.classList.remove('roadview-hide');
-        });
-
-        // 로드뷰 모드에서 버튼 위치 조정을 위한 클래스 제거
-        document.body.classList.remove('roadview-visible');
     }
     map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
 }
-
-document.querySelector('#roadviewToggle').addEventListener('click', function() {
-    toggleRoadview();
-    if (document.querySelector('#roadview').style.display === 'block') {
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
-    }
-});
-
-
-
-
-
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
