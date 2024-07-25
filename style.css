@@ -170,8 +170,8 @@ html, body {
 
 #currentPosButton {
     position: absolute;
-    bottom: 8%;
-    right: 2%;
+    top: 8%;
+    left: 2%;
     width: 50px;
     height: 45px;
     border: none;
@@ -263,8 +263,8 @@ html, body {
     }
     
   #currentPosButton {
-        bottom: 8%; /* 모바일에서는 버튼을 더 낮게 위치시킵니다 */
-        right: 2%; /* 모바일에서는 버튼을 더 오른쪽으로 위치시킵니다 */
+        top: 8%; /* 모바일에서는 버튼을 더 낮게 위치시킵니다 */
+        left: 2%; /* 모바일에서는 버튼을 더 오른쪽으로 위치시킵니다 */
         width: 50px; /* 모바일에서는 버튼 크기를 줄입니다 */
         height: 45px; /* 모바일에서는 버튼 크기를 줄입니다 */
     }
