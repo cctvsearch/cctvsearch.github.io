@@ -260,21 +260,65 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         setTimeout(function() {
             tempMarker.setMap(null);
         }, 3000);
+
+        // 로드뷰에서 가장 가까운 파노라마 ID를 가져옴
+        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, latlng);
+                roadviewContainer.style.display = 'block';
+                mapContainer.style.display = 'none';
+            }
+        });
     }
 });
+
+// 로드뷰 위치 변경 시 지도 및 UI 업데이트
+kakao.maps.event.addListener(roadview, 'position_changed', function() {
+    var position = roadview.getPosition();
+    if (position) {
+        var latlng = new kakao.maps.LatLng(position.getLat(), position.getLng());
+        map.setCenter(latlng);
+        map.setLevel(4); // 필요에 따라 줌 레벨 조정
+
+        // UI가 로드뷰 모드일 때 다른 UI 요소를 숨김
+        if (roadviewContainer.style.display === 'block') {
+            document.getElementById('categoryDropdownContainer').style.display = 'none';
+            document.getElementById('newSearchForm').style.display = 'none';
+            document.getElementById('latLngButton').style.display = 'none';
+            document.getElementById('roadviewToggle').style.display = 'none';
+            document.getElementById('currentPosButton').style.display = 'none';
+        }
+    }
+});
+
 
 function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 제거
+
+        // UI 숨기기
+        document.getElementById('categoryDropdownContainer').style.display = 'none';
+        document.getElementById('newSearchForm').style.display = 'none';
+        document.getElementById('latLngButton').style.display = 'none';
+        document.getElementById('roadviewToggle').style.display = 'none';
+        document.getElementById('currentPosButton').style.display = 'none';
+
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 추가
+
+        // UI 보이기
+        document.getElementById('categoryDropdownContainer').style.display = 'block';
+        document.getElementById('newSearchForm').style.display = 'flex';
+        document.getElementById('latLngButton').style.display = 'block';
+        document.getElementById('roadviewToggle').style.display = 'block';
+        document.getElementById('currentPosButton').style.display = 'block';
     }
     map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
 }
+
+
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
