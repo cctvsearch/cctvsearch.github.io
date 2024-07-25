@@ -89,9 +89,6 @@ function createMarkersAndOverlays(category) {
     });
 }
 
-
-
-
 function closeCustomOverlay() {
     if (currentOverlay) {
         currentOverlay.setMap(null);
@@ -270,9 +267,11 @@ function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 제거
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 추가
     }
     map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
 }
@@ -280,17 +279,6 @@ function toggleRoadview() {
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
-    if (roadviewContainer.style.display === 'block') {
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
-    }
-});
-
-kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
@@ -315,56 +303,54 @@ function updateButtonText() {
 }
 
 var currentPosButton = document.createElement('button');
-    currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
+currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
 
-    // 이미지를 버튼에 추가합니다
-    var img = document.createElement('img');
-    img.src = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/maker.png?raw=true'; // 이미지 URL을 지정합니다
+// 이미지를 버튼에 추가합니다
+var img = document.createElement('img');
+img.src = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/maker.png?raw=true'; // 이미지 URL을 지정합니다
 
-    currentPosButton.appendChild(img);
-    document.body.appendChild(currentPosButton);
+currentPosButton.appendChild(img);
+document.body.appendChild(currentPosButton);
 
-    function displayMarker(locPosition, message) {
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: locPosition
-        });
+function displayMarker(locPosition, message) {
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: locPosition
+    });
 
-        var iwContent = message;
-        var infowindow = new kakao.maps.InfoWindow({
-            content: iwContent,
-            removable: true
-        });
-        infowindow.open(map, marker);
+    var iwContent = message;
+    var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: true
+    });
+    infowindow.open(map, marker);
 
-        // 3초 후에 마커와 인포윈도우를 제거합니다
-        setTimeout(function() {
-            marker.setMap(null);
-            infowindow.close();
-        }, 3000);
-    }
+    // 3초 후에 마커와 인포윈도우를 제거합니다
+    setTimeout(function() {
+        marker.setMap(null);
+        infowindow.close();
+    }, 3000);
+}
 
-    function getCurrentPos() {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                var lat = position.coords.latitude;
-                var lon = position.coords.longitude;
-                var locPosition = new kakao.maps.LatLng(lat, lon);
-                var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>';
-                displayMarker(locPosition, message);
-                map.setCenter(locPosition); // 현재 위치로 지도를 이동
-            },
-            function (error) {
-                console.error('위치 정보를 가져오는 데 실패했습니다:', error.message);
-            }
-        );
-    }
+function getCurrentPos() {
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var locPosition = new kakao.maps.LatLng(lat, lon);
+            var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>';
+            displayMarker(locPosition, message);
+            map.setCenter(locPosition); // 현재 위치로 지도를 이동
+        },
+        function (error) {
+            console.error('위치 정보를 가져오는 데 실패했습니다:', error.message);
+        }
+    );
+}
 
-    currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
+currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
 
 // 페이지 로드 시 버튼 텍스트 업데이트
 window.addEventListener('load', updateButtonText);
 // 화면 크기 조정 시 버튼 텍스트 업데이트
 window.addEventListener('resize', updateButtonText);
-
-
