@@ -353,12 +353,6 @@ var currentPosButton = document.createElement('button');
                 var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>';
                 displayMarker(locPosition, message);
                 map.setCenter(locPosition); // 현재 위치로 지도를 이동
-
-                           // 로드뷰가 표시되고 있을 때, 지도 상태로 전환
-            if (roadviewContainer.style.display === 'block') {
-                toggleRoadview();
-            }
-                
             },
             function (error) {
                 console.error('위치 정보를 가져오는 데 실패했습니다:', error.message);
