@@ -280,13 +280,13 @@ kakao.maps.event.addListener(roadview, 'position_changed', function() {
         map.setCenter(latlng);
         map.setLevel(4); // 필요에 따라 줌 레벨 조정
 
-        // UI가 로드뷰 모드일 때 다른 UI 요소를 숨김
+        // 로드뷰 모드일 때만 다른 UI 요소를 숨김
         if (roadviewContainer.style.display === 'block') {
             document.getElementById('categoryDropdownContainer').style.display = 'none';
             document.getElementById('newSearchForm').style.display = 'none';
-            document.getElementById('latLngButton').style.display = 'none';
-            document.getElementById('roadviewToggle').style.display = 'none';
-            document.getElementById('currentPosButton').style.display = 'none';
+            document.getElementById('latLngButton').style.display = 'block'; // GPS 좌표 버튼 보이기
+            document.getElementById('roadviewToggle').style.display = 'block'; // 로드뷰 토글 버튼 보이기
+            document.getElementById('currentPosButton').style.display = 'block'; // 현재 위치 버튼 보이기
         }
     }
 });
@@ -297,26 +297,27 @@ function toggleRoadview() {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
 
-        // UI 숨기기
+        // 로드뷰 모드일 때, GPS 좌표 버튼과 로드뷰 토글 버튼만 보이게 하고 나머지 UI 숨김
         document.getElementById('categoryDropdownContainer').style.display = 'none';
         document.getElementById('newSearchForm').style.display = 'none';
-        document.getElementById('latLngButton').style.display = 'none';
-        document.getElementById('roadviewToggle').style.display = 'none';
-        document.getElementById('currentPosButton').style.display = 'none';
+        document.getElementById('latLngButton').style.display = 'block'; // GPS 좌표 버튼 보이기
+        document.getElementById('roadviewToggle').style.display = 'block'; // 로드뷰 토글 버튼 보이기
+        document.getElementById('currentPosButton').style.display = 'block'; // 현재 위치 버튼 보이기
 
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
 
-        // UI 보이기
+        // 로드뷰 모드가 아닐 때, 모든 UI 요소를 보이게 함
         document.getElementById('categoryDropdownContainer').style.display = 'block';
         document.getElementById('newSearchForm').style.display = 'flex';
-        document.getElementById('latLngButton').style.display = 'block';
-        document.getElementById('roadviewToggle').style.display = 'block';
-        document.getElementById('currentPosButton').style.display = 'block';
+        document.getElementById('latLngButton').style.display = 'block'; // GPS 좌표 버튼 보이기
+        document.getElementById('roadviewToggle').style.display = 'block'; // 로드뷰 토글 버튼 보이기
+        document.getElementById('currentPosButton').style.display = 'block'; // 현재 위치 버튼 보이기
     }
     map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
 }
+
 
 
 
