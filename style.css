@@ -195,9 +195,9 @@ html, body {
         width: 90%; /* 검색창 너비 조정 */
         max-width: 300px; /* 최대 너비 설정 */
         top: auto;
-        bottom: 20%; /* 화면 중앙 아래로 위치 조정 */
+        bottom: 5%; /* 화면 중앙 아래로 위치 조정 */
         left: 50%; /* 수평 중앙 정렬 */
-        transform: translateX(-50%, 30%); /* 수평 중앙 정렬 */
+        transform: translateX(-50%); /* 수평 중앙 정렬 */
         position: absolute; /* 위치 조정 */
     }
 
