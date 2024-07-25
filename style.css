@@ -181,6 +181,53 @@ html, body {
     height: 100%;
 }
 
+
+/* 로드뷰 모드일 때 숨기고 싶은 UI 요소 */
+.roadview-hide {
+    display: none !important;
+}
+
+/* 버튼의 기본 스타일 */
+#latLngButton,
+#roadviewToggle,
+#currentPosButton {
+    position: absolute;
+    z-index: 1000;
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 각 버튼의 위치 조정 */
+#latLngButton {
+    top: 10px;
+    left: 10px;
+}
+
+#roadviewToggle {
+    top: 50px;
+    left: 10px;
+}
+
+#currentPosButton {
+    top: 90px;
+    left: 10px;
+}
+
+/* 로드뷰 모드일 때 버튼의 위치를 유지 */
+.roadview-visible #latLngButton,
+.roadview-visible #roadviewToggle,
+.roadview-visible #currentPosButton {
+    top: auto;
+    left: auto;
+}
+
+
+
 /* 모바일 환경에서 적용할 스타일 */
 @media screen and (max-width: 728px) {
     #categoryDropdownContainer {
