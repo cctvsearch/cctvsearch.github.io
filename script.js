@@ -273,14 +273,21 @@ function toggleRoadview() {
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
-
-         map.relayout();
     }
+    map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
 }
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
+    if (roadviewContainer.style.display === 'block') {
+        var position = map.getCenter();
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+            }
+        });
+    }
 });
 
 kakao.maps.event.addListener(map, 'idle', function() {
@@ -346,6 +353,12 @@ var currentPosButton = document.createElement('button');
                 var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>';
                 displayMarker(locPosition, message);
                 map.setCenter(locPosition); // 현재 위치로 지도를 이동
+
+                           // 로드뷰가 표시되고 있을 때, 지도 상태로 전환
+            if (roadviewContainer.style.display === 'block') {
+                toggleRoadview();
+            }
+                
             },
             function (error) {
                 console.error('위치 정보를 가져오는 데 실패했습니다:', error.message);
