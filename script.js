@@ -24,6 +24,95 @@ kakao.maps.event.addListener(map, 'idle', function() {
     }
 });
 
+// 지도와 로드뷰에 사용될 MapWalker 아이콘 생성 클래스
+function MapWalker(position) {
+    var content = document.createElement('div');
+    var figure = document.createElement('div');
+    var angleBack = document.createElement('div');
+
+    content.className = 'MapWalker';
+    figure.className = 'figure';
+    angleBack.className = 'angleBack';
+
+    content.appendChild(angleBack);
+    content.appendChild(figure);
+
+    var walker = new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        yAnchor: 1
+    });
+
+    this.walker = walker;
+    this.content = content;
+}
+
+MapWalker.prototype.setAngle = function(angle) {
+    var threshold = 22.5;
+    for (var i = 0; i < 16; i++) {
+        if (angle > (threshold * i) && angle < (threshold * (i + 1))) {
+            var className = 'm' + i;
+            this.content.className = this.content.className.split(' ')[0];
+            this.content.className += (' ' + className);
+            break;
+        }
+    }
+};
+
+MapWalker.prototype.setPosition = function(position) {
+    this.walker.setPosition(position);
+};
+
+MapWalker.prototype.setMap = function(map) {
+    this.walker.setMap(map);
+};
+
+// 로드뷰 및 지도 토글 버튼 처리
+function toggleRoadview() {
+    if (roadviewContainer.style.display === 'none') {
+        roadviewContainer.style.display = 'block';
+        mapContainer.style.display = 'none';
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 제거
+    } else {
+        roadviewContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 추가
+    }
+    map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
+}
+
+var roadviewToggleBtn = document.getElementById('roadviewToggle');
+roadviewToggleBtn.addEventListener('click', function() {
+    toggleRoadview();
+    if (roadviewContainer.style.display === 'block') {
+        var position = map.getCenter();
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+            }
+        });
+    }
+});
+
+// MapWalker 및 로드뷰 초기화
+var mapWalker = null;
+
+kakao.maps.event.addListener(roadview, 'init', function() {
+    mapWalker = new MapWalker(map.getCenter());
+    mapWalker.setMap(map);
+
+    kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
+        var viewpoint = roadview.getViewpoint();
+        mapWalker.setAngle(viewpoint.pan);
+    });
+
+    kakao.maps.event.addListener(roadview, 'position_changed', function() {
+        var position = roadview.getPosition();
+        mapWalker.setPosition(position);
+        map.setCenter(position);
+    });
+});
+
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
@@ -227,11 +316,7 @@ var latLngButton = document.getElementById('latLngButton');
 
 latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
-    if (isLatLngClickMode) {
-        latLngButton.textContent = '끄기';
-    } else {
-        latLngButton.textContent = '찾기';
-    }
+    latLngButton.textContent = isLatLngClickMode ? '끄기' : '찾기';
 });
 
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
@@ -260,32 +345,6 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         setTimeout(function() {
             tempMarker.setMap(null);
         }, 3000);
-    }
-});
-
-function toggleRoadview() {
-    if (roadviewContainer.style.display === 'none') {
-        roadviewContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 제거
-    } else {
-        roadviewContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 추가
-    }
-    map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
-}
-
-var roadviewToggleBtn = document.getElementById('roadviewToggle');
-roadviewToggleBtn.addEventListener('click', function() {
-    toggleRoadview();
-    if (roadviewContainer.style.display === 'block') {
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
     }
 });
 
