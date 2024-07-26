@@ -237,9 +237,9 @@ latLngButton.addEventListener('click', function() {
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isLatLngClickMode) {
         var latlng = mouseEvent.latLng;
-
+        
         closeTempOverlay();
-
+        
         var tempOverlayContent =
             '<div class="customOverlay">' +
             '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
@@ -260,19 +260,18 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         setTimeout(function() {
             tempMarker.setMap(null);
         }, 3000);
+    } else {
+        var latlng = mouseEvent.latLng;
+        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, latlng);
+                roadviewContainer.style.display = 'block';
+                mapContainer.style.display = 'none';
+                map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+                roadview.relayout();
+            }
+        });
     }
-});
-kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-    var latlng = mouseEvent.latLng;
-    roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
-        if (panoId) {
-            roadview.setPanoId(panoId, latlng);
-            roadviewContainer.style.display = 'block';
-            mapContainer.style.display = 'none';
-            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-            roadview.relayout();
-        }
-    });
 });
 
 // 로드뷰 활성화 버튼 클릭 핸들러
@@ -292,17 +291,39 @@ function disableRoadview() {
 
 }
 
+// 로드뷰 활성화 버튼 클릭 핸들러
+var roadviewEnableButton = document.getElementById('roadviewEnableButton');
+roadviewEnableButton.addEventListener('click', function() {
+    enableRoadview();
+    var position = map.getCenter();
+    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+        if (panoId) {
+            roadview.setPanoId(panoId, position);
+        }
+    });
+});
+
+// 로드뷰 비활성화 버튼 클릭 핸들러
+var roadviewDisableButton = document.getElementById('roadviewDisableButton');
+roadviewDisableButton.addEventListener('click', function() {
+    disableRoadview();
+});
+
+// 로드뷰 토글 버튼 클릭 핸들러
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
-    toggleRoadview();
     if (roadviewContainer.style.display === 'block') {
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
+        disableRoadview();
+    } else {
+        enableRoadview();
     }
+    // 로드뷰가 활성화될 때, 현재 위치에 가장 가까운 파노라마 ID를 가져와 설정
+    var position = map.getCenter();
+    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+        if (panoId) {
+            roadview.setPanoId(panoId, position);
+        }
+    });
 });
 
 function updateButtonText() {
@@ -317,6 +338,9 @@ function updateButtonText() {
         roadviewToggle.textContent = '로드뷰';
     }
 }
+
+// 초기 버튼 텍스트 업데이트
+updateButtonText();
 
 var currentPosButton = document.createElement('button');
 currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
