@@ -229,6 +229,7 @@ latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
         latLngButton.textContent = '끄기';
+        hideRoadview();
     } else {
         latLngButton.textContent = '찾기';
     }
