@@ -278,12 +278,10 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
-        roadviewContainer.style.visibility = 'visible'; // 명시적으로 가시성 설정
         mapContainer.style.display = 'none';
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     } else {
         roadviewContainer.style.display = 'none';
-        roadviewContainer.style.visibility = 'hidden'; // 명시적으로 가시성 숨기기
         mapContainer.style.display = 'block';
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     }
