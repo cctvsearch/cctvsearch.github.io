@@ -14,7 +14,7 @@ var roadviewClient = new kakao.maps.RoadviewClient();
 var isRoadviewEnabled = false;
 
 kakao.maps.event.addListener(map, 'idle', function() {
-    if (roadviewContainer.style.display === 'block') {
+    if (isRoadviewEnabled) {
         var position = map.getCenter();
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
             if (panoId) {
@@ -262,6 +262,7 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         }, 3000);
     }
 });
+
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isRoadviewEnabled) {
         var latlng = mouseEvent.latLng;
@@ -280,18 +281,8 @@ function toggleRoadview() {
     isRoadviewEnabled = !isRoadviewEnabled;
     if (isRoadviewEnabled) {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-        roadviewContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
     } else {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-        roadviewContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
     }
 }
 
