@@ -262,18 +262,40 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         }, 3000);
     }
 });
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+    var latlng = mouseEvent.latLng;
+    roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+        if (panoId) {
+            roadview.setPanoId(panoId, latlng);
+            roadviewContainer.style.display = 'block';
+            mapContainer.style.display = 'none';
+            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+            roadview.relayout();
+
+            // 임시 마커를 추가합니다.
+            var tempMarker = new kakao.maps.Marker({
+                position: latlng,
+                map: roadview,
+                title: '임시 로드뷰 마커'
+            });
+            setTimeout(function() {
+                tempMarker.setMap(null);
+            }, 3000);
+        }
+    });
+});
 
 function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 제거
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 추가
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     }
-    map.relayout(); // 지도를 다시 레이아웃하여 정상적으로 표시되도록 함
+    map.relayout();
 }
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
