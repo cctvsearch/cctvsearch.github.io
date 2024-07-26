@@ -306,6 +306,7 @@ roadviewToggleBtn.addEventListener('click', function() {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
             }
+        });
     } else {
         // 지도에서 로드뷰 버튼 클릭 시 로드뷰 도로를 활성화합니다.
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
