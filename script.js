@@ -338,6 +338,10 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
                 roadviewContainer.style.display = 'block';
                 minimapContainer.style.display = 'block'; // 추가된 코드
                 mapContainer.style.display = 'none';
+                setTimeout(function() {
+                    kakao.maps.event.trigger(minimap, 'resize'); // minimap 강제 리프레시
+                    minimap.setCenter(latlng); // minimap 중심 재설정
+                }, 0);
             }
         });
     }
@@ -350,6 +354,10 @@ function toggleRoadview() {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
         roadviewContainer.style.display = 'block';
         minimapContainer.style.display = 'block'; // 추가된 코드
+        setTimeout(function() {
+            kakao.maps.event.trigger(minimap, 'resize'); // minimap 강제 리프레시
+            minimap.setCenter(map.getCenter()); // minimap 중심 재설정
+        }, 0);
     } else {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
         roadviewContainer.style.display = 'none';
