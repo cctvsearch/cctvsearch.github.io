@@ -309,14 +309,7 @@ roadviewDisableButton.addEventListener('click', function() {
     disableRoadview();
 });
 
-// 로드뷰 토글 버튼 클릭 핸들러
-var roadviewToggleBtn = document.getElementById('roadviewToggle');
-roadviewToggleBtn.addEventListener('click', function() {
-    if (roadviewContainer.style.display === 'block') {
-        disableRoadview();
-    } else {
-        enableRoadview();
-    }
+
     // 로드뷰가 활성화될 때, 현재 위치에 가장 가까운 파노라마 ID를 가져와 설정
     var position = map.getCenter();
     roadviewClient.getNearestPanoId(position, 50, function(panoId) {
@@ -324,18 +317,20 @@ roadviewToggleBtn.addEventListener('click', function() {
             roadview.setPanoId(panoId, position);
         }
     });
-});
 
 function updateButtonText() {
     const latLngButton = document.getElementById('latLngButton');
-    const roadviewToggle = document.getElementById('roadviewToggle');
-
+    const roadviewEnableButton = document.getElementById('roadviewEnableButton');
+    const roadviewDisableButton = document.getElementById('roadviewDisableButton');
+    
     if (window.innerWidth <= 728) {
         latLngButton.textContent = '좌표';
-        roadviewToggle.textContent = '로드뷰';
+        roadviewEnableButton.textContent = '로드뷰 켜기';
+        roadviewDisableButton.textContent = '로드뷰 끄기';
     } else {
         latLngButton.textContent = '좌표';
-        roadviewToggle.textContent = '로드뷰';
+        roadviewEnableButton.textContent = '로드뷰 켜기';
+        roadviewDisableButton.textContent = '로드뷰 끄기';
     }
 }
 
