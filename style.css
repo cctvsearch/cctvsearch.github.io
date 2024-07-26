@@ -14,17 +14,6 @@ html, body {
     height: 100vh; /* 브라우저 창의 높이를 100% 차지 */
 }
 
-#mapContainer {
-    display: block;
-    /* 추가적인 CSS 속성 확인 및 조정 */
-    position: absolute; /* 위치 조정이 필요한 경우 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* 적절한 z-index 설정 */
-}
-
 #map, #roadview {
     width: 100%;
     height: 100%; /* mapWrapper의 100% 높이를 차지 */
