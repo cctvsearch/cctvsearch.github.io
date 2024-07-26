@@ -291,7 +291,8 @@ function toggleRoadview() {
 var isRoadviewActive = false;
 
 // 로드뷰 버튼 클릭 이벤트 핸들러
-var roadviewToggleBtn.addEventListener('click', function() {
+var roadviewToggleBtn = document.getElementById('roadviewToggle');
+roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
     if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
