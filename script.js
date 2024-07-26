@@ -262,7 +262,6 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         }, 3000);
     }
 });
-
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     var latlng = mouseEvent.latLng;
     roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
@@ -280,11 +279,11 @@ function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 비활성화
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 활성화
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     }
     map.relayout();
 }
@@ -292,15 +291,26 @@ function toggleRoadview() {
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
-    updateRoadviewButtonText();
+    if (roadviewContainer.style.display === 'block') {
+        var position = map.getCenter();
+        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, position);
+            }
+        });
+    }
 });
 
-function updateRoadviewButtonText() {
-    var roadviewToggleBtn = document.getElementById('roadviewToggle');
-    if (roadviewContainer.style.display === 'none') {
-        roadviewToggleBtn.textContent = '로드뷰';
+function updateButtonText() {
+    const latLngButton = document.getElementById('latLngButton');
+    const roadviewToggle = document.getElementById('roadviewToggle');
+
+    if (window.innerWidth <= 728) {
+        latLngButton.textContent = '좌표';
+        roadviewToggle.textContent = '로드뷰';
     } else {
-        roadviewToggleBtn.textContent = '로드뷰';
+        latLngButton.textContent = '좌표';
+        roadviewToggle.textContent = '로드뷰';
     }
 }
 
