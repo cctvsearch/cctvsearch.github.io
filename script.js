@@ -280,11 +280,11 @@ function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 활성화
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 비활성화
     } else {
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 비활성화
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); // 로드뷰 활성화
     }
     map.relayout();
 }
@@ -298,16 +298,11 @@ roadviewToggleBtn.addEventListener('click', function() {
 function updateRoadviewButtonText() {
     var roadviewToggleBtn = document.getElementById('roadviewToggle');
     if (roadviewContainer.style.display === 'none') {
-        roadviewToggleBtn.textContent = '로드뷰 활성화';
+        roadviewToggleBtn.textContent = '로드뷰';
     } else {
-        roadviewToggleBtn.textContent = '로드뷰 비활성화';
+        roadviewToggleBtn.textContent = '로드뷰';
     }
 }
-
-// 페이지 로드 시 버튼 텍스트 업데이트
-window.addEventListener('load', updateRoadviewButtonText);
-// 화면 크기 조정 시 버튼 텍스트 업데이트
-window.addEventListener('resize', updateRoadviewButtonText);
 
 var currentPosButton = document.createElement('button');
 currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
