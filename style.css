@@ -191,6 +191,7 @@ html, body {
     border: 2px solid #333;
     z-index: 1000; /* 미니맵이 다른 요소 위에 표시되도록 설정 */
     background-color: #fff; /* 미니맵 배경 색상 (선택 사항) */
+    display: none;
 }
 
 
