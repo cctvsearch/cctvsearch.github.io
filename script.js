@@ -283,6 +283,8 @@ function toggleRoadview() {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     } else {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+        roadviewContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
     }
 }
 
@@ -303,7 +305,6 @@ function updateButtonText() {
         roadviewToggle.textContent = '로드뷰';
     }
 }
-
 
 var currentPosButton = document.createElement('button');
 currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
