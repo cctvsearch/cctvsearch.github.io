@@ -57,8 +57,8 @@ var roadviewClient = new kakao.maps.RoadviewClient();
 // 미니맵의 지도 상태를 제어하기 위해 미니맵 지도 객체를 생성
 var minimapContainer = document.getElementById('minimap');
 var minimap = new kakao.maps.Map(minimapContainer, {
-    center: map.getCenter(), // 초기 위치
-    level: map.getLevel() // 초기 확대 레벨
+    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+    level: 3
 });
 
 kakao.maps.event.addListener(roadview, 'init', function() {
