@@ -62,8 +62,8 @@ var minimap = new kakao.maps.Map(minimapContainer, {
 });
 
 kakao.maps.event.addListener(roadview, 'init', function() {
-    mapWalker = new MapWalker(map.getCenter());
-    mapWalker.setMap(map);
+    var mapWalker = new MapWalker(map.getCenter());
+    mapWalker.setMap(minimap);
 
     kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
         var viewpoint = roadview.getViewpoint();
