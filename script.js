@@ -61,6 +61,12 @@ function createMarkersAndOverlays(category) {
     });
     markers = [];
 
+    // 미니맵 마커 제거
+    minimapMarkers.forEach(function(marker) {
+        marker.setMap(null);
+    });
+    minimapMarkers = [];
+
     // 카테고리별 마커 이미지 URL 및 사이즈 정의
     var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
     var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
@@ -95,6 +101,17 @@ function createMarkersAndOverlays(category) {
             });
             markers.push(marker);
 
+            // 메인 지도에 마커 추가
+            marker.setMap(map);
+
+            // 미니맵에 마커 추가
+            var minimapMarker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            minimapMarkers.push(minimapMarker);
+            minimapMarker.setMap(minimap);
+
             kakao.maps.event.addListener(marker, 'click', function() {
                 showCustomOverlay(position, index);
             });
@@ -102,8 +119,6 @@ function createMarkersAndOverlays(category) {
             kakao.maps.event.addListener(marker, 'touchstart', function() {
                 showCustomOverlay(position, index);
             });
-
-            marker.setMap(map);
         }
     });
 }
