@@ -166,10 +166,12 @@ button.roadview-toggle:hover {
 
 /* 기존 latLngButton 스타일 */
 #latLngButton {
-    top: 10px; /* 위도/경도 버튼 위치 조정 */
+    top: 50px; /* 위도/경도 버튼 위치 조정 */
     right: 10px;
     background-color: #007BFF;
     color: #fff;
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
 }
 
 #latLngButton:hover {
@@ -181,6 +183,8 @@ button.roadview-toggle:hover {
     top: 90px; /* 로드뷰 토글 버튼 위치 조정 */
     background-color: #28a745;
     color: #fff;
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
 }
 
 /* Roadview 컨테이너 스타일 */
@@ -267,6 +271,8 @@ button.roadview-toggle:hover {
         z-index: 3;
         align-items: center; /* 버튼 텍스트 수직 중앙 정렬 */
         justify-content: center; /* 버튼 텍스트 수평 중앙 정렬 */
+            border-radius: 5px; /* 버튼 모서리 둥글게 */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
     }
 
     #latLngButton {
