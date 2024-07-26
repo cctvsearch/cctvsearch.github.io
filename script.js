@@ -2,16 +2,16 @@ const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Eposi
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
 var mapContainer = document.getElementById('map');
+var roadviewContainer = document.getElementById('roadview');
 var mapOption = {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
     level: 5
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
-
-// 지도와 로드뷰 인스턴스 초기화
-var roadviewContainer = document.getElementById('roadview');
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
+
+var isRoadviewEnabled = false;
 
 kakao.maps.event.addListener(map, 'idle', function() {
     if (roadviewContainer.style.display === 'block') {
@@ -263,42 +263,41 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     }
 });
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-    var latlng = mouseEvent.latLng;
-    roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
-        if (panoId) {
-            roadview.setPanoId(panoId, latlng);
-            roadviewContainer.style.display = 'block';
-            mapContainer.style.display = 'none';
-            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-            roadview.relayout();
-        }
-    });
+    if (isRoadviewEnabled) {
+        var latlng = mouseEvent.latLng;
+        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, latlng);
+                roadviewContainer.style.display = 'block';
+                mapContainer.style.display = 'none';
+            }
+        });
+    }
 });
 
+// Toggle Roadview on/off
 function toggleRoadview() {
-    if (roadviewContainer.style.display === 'none') {
+    isRoadviewEnabled = !isRoadviewEnabled;
+    if (isRoadviewEnabled) {
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-    } else {
-        roadviewContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-    }
-    map.relayout();
-}
-
-var roadviewToggleBtn = document.getElementById('roadviewToggle');
-roadviewToggleBtn.addEventListener('click', function() {
-    toggleRoadview();
-    if (roadviewContainer.style.display === 'block') {
         var position = map.getCenter();
         roadviewClient.getNearestPanoId(position, 50, function(panoId) {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
             }
         });
+    } else {
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+        roadviewContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
     }
+}
+
+var roadviewToggleBtn = document.getElementById('roadviewToggle');
+roadviewToggleBtn.addEventListener('click', function() {
+    toggleRoadview();
 });
 
 function updateButtonText() {
@@ -313,6 +312,7 @@ function updateButtonText() {
         roadviewToggle.textContent = '로드뷰';
     }
 }
+
 
 var currentPosButton = document.createElement('button');
 currentPosButton.id = 'currentPosButton'; // CSS 스타일 적용을 위해 id를 설정합니다
