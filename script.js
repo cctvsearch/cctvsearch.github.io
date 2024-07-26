@@ -355,7 +355,7 @@ function toggleRoadview() {
         roadviewContainer.style.display = 'block';
         minimapContainer.style.display = 'block'; // 추가된 코드
         setTimeout(function() {
-            kakao.maps.event.trigger(minimap, 'resize'); // minimap 강제 리프레시
+            minimap.relayout();  // minimap 강제 리프레시
             minimap.setCenter(map.getCenter()); // minimap 중심 재설정
         }, 0);
     } else {
@@ -370,6 +370,7 @@ var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
 });
+
 
 function updateButtonText() {
     const latLngButton = document.getElementById('latLngButton');
