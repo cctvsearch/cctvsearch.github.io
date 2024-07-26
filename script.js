@@ -229,7 +229,6 @@ latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
         latLngButton.textContent = '끄기';
-        hideRoadview();
     } else {
         latLngButton.textContent = '찾기';
     }
@@ -263,27 +262,36 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         }, 3000);
     }
 });
+
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     var latlng = mouseEvent.latLng;
-    roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
-        if (panoId) {
-            roadview.setPanoId(panoId, latlng);
-            roadviewContainer.style.display = 'block';
-            mapContainer.style.display = 'none';
-            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-            roadview.relayout();
-        }
-    });
+    if (roadviewContainer.style.display === 'block') {
+        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+            if (panoId) {
+                roadview.setPanoId(panoId, latlng);
+                roadviewContainer.style.display = 'block';
+                mapContainer.style.display = 'none';
+                map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+                roadview.relayout();
+            }
+        });
+    }
 });
 
 function toggleRoadview() {
     if (roadviewContainer.style.display === 'none') {
+        // 로드뷰 창을 표시하고 지도 창을 숨깁니다.
         roadviewContainer.style.display = 'block';
         mapContainer.style.display = 'none';
+        
+        // 로드뷰 도로 비활성화
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     } else {
+        // 지도 창을 표시하고 로드뷰 창을 숨깁니다.
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
+        
+        // 지도에서 로드뷰 도로를 활성화합니다.
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     }
     map.relayout();
@@ -298,7 +306,9 @@ roadviewToggleBtn.addEventListener('click', function() {
             if (panoId) {
                 roadview.setPanoId(panoId, position);
             }
-        });
+    } else {
+        // 지도에서 로드뷰 버튼 클릭 시 로드뷰 도로를 활성화합니다.
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     }
 });
 
