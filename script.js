@@ -1,3 +1,46 @@
+function MapWalker(position) {
+    var content = document.createElement('div');
+    var figure = document.createElement('div');
+    var angleBack = document.createElement('div');
+    
+    content.className = 'MapWalker';
+    figure.className = 'figure';
+    angleBack.className = 'angleBack';
+
+    content.appendChild(angleBack);
+    content.appendChild(figure);
+
+    var walker = new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        yAnchor: 1
+    });
+
+    this.walker = walker;
+    this.content = content;
+}
+
+MapWalker.prototype.setAngle = function(angle) {
+    var threshold = 22.5;
+    for (var i = 0; i < 16; i++) {
+        if (angle > (threshold * i) && angle < (threshold * (i + 1))) {
+            var className = 'm' + i;
+            this.content.className = this.content.className.split(' ')[0];
+            this.content.className += (' ' + className);
+            break;
+        }
+    }
+};
+
+MapWalker.prototype.setPosition = function(position) {
+    this.walker.setPosition(position);
+};
+
+MapWalker.prototype.setMap = function(map) {
+    this.walker.setMap(map);
+};
+
+
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
@@ -11,6 +54,29 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
+// 미니맵을 생성합니다.
+var minimapContainer = document.getElementById('minimap');
+var minimap = new kakao.maps.Map(minimapContainer, {
+    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+    level: 3
+});
+
+kakao.maps.event.addListener(roadview, 'init', function() {
+    mapWalker = new MapWalker(map.getCenter());
+    mapWalker.setMap(map);
+
+    kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
+        var viewpoint = roadview.getViewpoint();
+        mapWalker.setAngle(viewpoint.pan);
+    });
+
+    kakao.maps.event.addListener(roadview, 'position_changed', function() {
+        var position = roadview.getPosition();
+        mapWalker.setPosition(position);
+        map.setCenter(position);
+        minimap.setCenter(position); // 미니맵의 중심 업데이트
+    });
+});
 var isRoadviewEnabled = false;
 
 kakao.maps.event.addListener(map, 'idle', function() {
