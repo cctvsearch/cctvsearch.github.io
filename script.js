@@ -54,7 +54,7 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
-// 미니맵의 지도 상태를 제어하기 위해 미니맵 지도 객체를 생성
+// 미니맵을 생성합니다.
 var minimapContainer = document.getElementById('minimap');
 var minimap = new kakao.maps.Map(minimapContainer, {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
@@ -347,12 +347,8 @@ function toggleRoadview() {
     isRoadviewEnabled = !isRoadviewEnabled;
     if (isRoadviewEnabled) {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-        document.getElementById('minimap').style.display = 'block'; // 미니맵 표시
-        roadviewContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
     } else {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-        document.getElementById('minimap').style.display = 'none'; // 미니맵 숨김
         roadviewContainer.style.display = 'none';
         mapContainer.style.display = 'block';
     }
