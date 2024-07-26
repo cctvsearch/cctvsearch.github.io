@@ -275,17 +275,21 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     });
 });
 
-function toggleRoadview() {
-    if (roadviewContainer.style.display === 'none') {
-        roadviewContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
-        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-    } else {
-        roadviewContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
-        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-    }
+// 로드뷰 활성화 버튼 클릭 핸들러
+function enableRoadview() {
+    roadviewContainer.style.display = 'block';
+    mapContainer.style.display = 'none';
+    map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
     map.relayout();
+}
+
+// 로드뷰 비활성화 버튼 클릭 핸들러
+function disableRoadview() {
+    roadviewContainer.style.display = 'none';
+    mapContainer.style.display = 'block';
+    map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+    map.relayout();
+
 }
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
