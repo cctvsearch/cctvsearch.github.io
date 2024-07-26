@@ -234,7 +234,6 @@ latLngButton.addEventListener('click', function() {
     }
 });
 
-// 지도 클릭 이벤트 핸들러
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isLatLngClickMode) {
         var latlng = mouseEvent.latLng;
@@ -261,18 +260,19 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
         setTimeout(function() {
             tempMarker.setMap(null);
         }, 3000);
-    } else if (isRoadviewActive) {
-        var latlng = mouseEvent.latLng;
-        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, latlng);
-                roadviewContainer.style.display = 'block';
-                mapContainer.style.display = 'none';
-                map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
-                roadview.relayout();
-            }
-        });
     }
+});
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+    var latlng = mouseEvent.latLng;
+    roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+        if (panoId) {
+            roadview.setPanoId(panoId, latlng);
+            roadviewContainer.style.display = 'block';
+            mapContainer.style.display = 'none';
+            map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+            roadview.relayout();
+        }
+    });
 });
 
 function toggleRoadview() {
@@ -288,9 +288,6 @@ function toggleRoadview() {
     map.relayout();
 }
 
-var isRoadviewActive = false;
-
-// 로드뷰 버튼 클릭 이벤트 핸들러
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
@@ -301,9 +298,6 @@ roadviewToggleBtn.addEventListener('click', function() {
                 roadview.setPanoId(panoId, position);
             }
         });
-        isRoadviewActive = true; // 로드뷰 활성화 상태로 설정
-    } else {
-        isRoadviewActive = false; // 로드뷰 비활성화 상태로 설정
     }
 });
 
