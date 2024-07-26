@@ -358,11 +358,6 @@ function toggleRoadview() {
     }
 }
 
-document.getElementById('roadviewToggle').addEventListener('click', function() {
-    toggleRoadview();
-});
-
-
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
