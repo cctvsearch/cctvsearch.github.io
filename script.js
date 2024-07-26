@@ -216,6 +216,12 @@ newSearchBtn.addEventListener('click', function() {
     newSearchForm.dispatchEvent(new Event('submit'));
 });
 
+function hideRoadview() {
+    roadviewContainer.style.display = 'none';
+    mapContainer.style.display = 'block';
+    map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+}
+
 function closeTempOverlay() {
     if (tempOverlay) {
         tempOverlay.setMap(null);
@@ -229,10 +235,12 @@ latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
         latLngButton.textContent = '끄기';
+        hideRoadview();  // 로드뷰 도로를 숨깁니다
     } else {
         latLngButton.textContent = '찾기';
     }
 });
+
 
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isLatLngClickMode) {
@@ -288,6 +296,7 @@ function toggleRoadview() {
     map.relayout();
 }
 
+
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
@@ -300,6 +309,7 @@ roadviewToggleBtn.addEventListener('click', function() {
         });
     }
 });
+
 
 function updateButtonText() {
     const latLngButton = document.getElementById('latLngButton');
