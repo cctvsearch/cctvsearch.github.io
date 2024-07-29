@@ -1,4 +1,3 @@
-
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
@@ -20,8 +19,11 @@ var minimap = new kakao.maps.Map(minimapContainer, {
     level: 3
 });
 
+var isRoadviewEnabled = false;
+var roadviewMarker = null;
+
 kakao.maps.event.addListener(roadview, 'init', function() {
-kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
+    kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
         var viewpoint = roadview.getViewpoint();
     });
 
@@ -31,7 +33,6 @@ kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
         minimap.setCenter(position); // 미니맵의 중심 업데이트
     });
 });
-var isRoadviewEnabled = false;
 
 kakao.maps.event.addListener(map, 'idle', function() {
     if (isRoadviewEnabled) {
@@ -157,6 +158,15 @@ function showCustomOverlay(position, index) {
         map: map,
         position: new kakao.maps.LatLng(position.lat, position.lng),
         yAnchor: 1.1
+    });
+
+    // 로드뷰 마커 표시
+    if (roadviewMarker) {
+        roadviewMarker.setMap(null);
+    }
+    roadviewMarker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(position.lat, position.lng),
+        map: roadview
     });
 }
 
@@ -298,8 +308,6 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     }
 });
 
-
-// Add this function
 function toggleRoadviewMode(isRoadview) {
     const elements = document.querySelectorAll('.roadview');
     elements.forEach(element => {
@@ -307,7 +315,6 @@ function toggleRoadviewMode(isRoadview) {
     });
 }
 
-// Modify the existing roadview toggle logic to call toggleRoadviewMode
 document.getElementById('roadviewToggle').addEventListener('click', function() {
     const roadviewContainer = document.getElementById('roadview');
     const mapContainer = document.getElementById('map');
@@ -321,8 +328,6 @@ document.getElementById('roadviewToggle').addEventListener('click', function() {
         toggleRoadviewMode(false);
     }
 });
-
-
 
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isRoadviewEnabled) {
@@ -342,7 +347,6 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     }
 });
 
-// Toggle Roadview on/off
 function toggleRoadview() {
     isRoadviewEnabled = !isRoadviewEnabled;
     if (isRoadviewEnabled) {
@@ -365,7 +369,6 @@ var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
     toggleRoadview();
 });
-
 
 function updateButtonText() {
     const latLngButton = document.getElementById('latLngButton');
@@ -428,7 +431,5 @@ function getCurrentPos() {
 
 currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
 
-// 페이지 로드 시 버튼 텍스트 업데이트
 window.addEventListener('load', updateButtonText);
-// 화면 크기 조정 시 버튼 텍스트 업데이트
 window.addEventListener('resize', updateButtonText);
