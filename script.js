@@ -427,6 +427,90 @@ function getCurrentPos() {
 
 currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
 
+
+// 로드뷰 마커를 저장할 변수
+var roadviewMarkers = [];
+
+// 일정 거리 이상 떨어지면 마커를 숨기기 위한 거리 설정 (단위: 미터)
+var distanceThreshold = 50;
+
+// 로드뷰의 위치와 마커를 업데이트하는 함수
+function updateRoadviewMarkers() {
+    var currentPosition = roadview.getPosition();
+
+    allPositions.forEach(function(position, index) {
+        var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+        var distance = kakao.maps.util.getDistance(currentPosition, markerPosition);
+
+        if (distance <= distanceThreshold) {
+            if (!roadviewMarkers[index]) {
+                var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                    image: markerImage,
+                    map: roadviewContainer
+                });
+
+                // 마커 저장
+                roadviewMarkers[index] = marker;
+            }
+        } else {
+            if (roadviewMarkers[index]) {
+                roadviewMarkers[index].setMap(null);
+                roadviewMarkers[index] = null;
+            }
+        }
+    });
+}
+
+kakao.maps.event.addListener(roadview, 'position_changed', function() {
+    updateRoadviewMarkers();
+});
+
+function toggleRoadview() {
+    isRoadviewEnabled = !isRoadviewEnabled;
+    if (isRoadviewEnabled) {
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+        roadviewContainer.style.display = 'block';
+        minimapContainer.style.display = 'block'; // 추가된 코드
+        setTimeout(function() {
+            minimap.relayout();  // minimap 강제 리프레시
+            minimap.setCenter(map.getCenter()); // minimap 중심 재설정
+        }, 0);
+
+        // 로드뷰 모드 활성화 시 마커 업데이트
+        updateRoadviewMarkers();
+    } else {
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
+        roadviewContainer.style.display = 'none';
+        minimapContainer.style.display = 'none'; // 추가된 코드
+        mapContainer.style.display = 'block';
+
+        // 기존 마커 제거
+        roadviewMarkers.forEach(function(marker) {
+            if (marker) {
+                marker.setMap(null);
+            }
+        });
+        roadviewMarkers = [];
+    }
+}
+
+window.addEventListener('load', function() {
+    updateButtonText();
+    if (isRoadviewEnabled) {
+        updateRoadviewMarkers();
+    }
+});
+
+window.addEventListener('resize', function() {
+    updateButtonText();
+    if (isRoadviewEnabled) {
+        updateRoadviewMarkers();
+    }
+});
+
+
 // 페이지 로드 시 버튼 텍스트 업데이트
 window.addEventListener('load', updateButtonText);
 // 화면 크기 조정 시 버튼 텍스트 업데이트
