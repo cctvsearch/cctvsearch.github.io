@@ -298,6 +298,32 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     }
 });
 
+
+// Add this function
+function toggleRoadviewMode(isRoadview) {
+    const elements = document.querySelectorAll('.roadview');
+    elements.forEach(element => {
+        element.style.display = isRoadview ? 'none' : 'block';
+    });
+}
+
+// Modify the existing roadview toggle logic to call toggleRoadviewMode
+document.getElementById('roadviewToggle').addEventListener('click', function() {
+    const roadviewContainer = document.getElementById('roadview');
+    const mapContainer = document.getElementById('map');
+    if (roadviewContainer.classList.contains('hidden')) {
+        roadviewContainer.classList.remove('hidden');
+        mapContainer.classList.add('hidden');
+        toggleRoadviewMode(true);
+    } else {
+        roadviewContainer.classList.add('hidden');
+        mapContainer.classList.remove('hidden');
+        toggleRoadviewMode(false);
+    }
+});
+
+
+
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isRoadviewEnabled) {
         var latlng = mouseEvent.latLng;
