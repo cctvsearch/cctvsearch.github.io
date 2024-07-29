@@ -1,17 +1,33 @@
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
-var mapContainer = document.getElementById('map');
-var roadviewContainer = document.getElementById('roadview');
-var minimapMarkers = [];
-var mapOption = {
-    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
-    level: 5
-};
-var map = new kakao.maps.Map(mapContainer, mapOption);
-var roadview = new kakao.maps.Roadview(roadviewContainer);
-var roadviewClient = new kakao.maps.RoadviewClient();
+if (typeof kakao !== 'undefined' && kakao.maps) {
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        }; 
 
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    var roadviewContainer = document.getElementById('roadview'); // 로드뷰를 표시할 div
+    var roadview = new kakao.maps.Roadview(roadviewContainer); // 로드뷰 객체
+    var roadviewClient = new kakao.maps.RoadviewClient(); // 좌표로부터 로드뷰 파노라마 ID를 가져올 로드뷰 helper 객체
+
+    // 로드뷰 초기화
+    var position = new kakao.maps.LatLng(33.450701, 126.570667);
+
+    // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 설정합니다.
+    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+        roadview.setPanoId(panoId, position); // 로드뷰 실행
+    });
+
+    // 마커 생성
+    var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+    var marker = new kakao.maps.Marker({
+        position: markerPosition,
+        map: roadview
+    });
 // 미니맵을 생성합니다.
 var minimapContainer = document.getElementById('minimap');
 var minimap = new kakao.maps.Map(minimapContainer, {
@@ -25,9 +41,17 @@ kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
     });
 
     kakao.maps.event.addListener(roadview, 'position_changed', function() {
-        var position = roadview.getPosition();
-        map.setCenter(position);
-        minimap.setCenter(position); // 미니맵의 중심 업데이트
+        var rvPosition = roadview.getPosition(); // 로드뷰의 현재 위치
+
+        // 두 지점 사이의 거리 계산
+        var distance = kakao.maps.geometry.spherical.computeDistanceBetween(rvPosition, markerPosition);
+
+        // 거리 기준으로 마커 표시 여부 결정
+        if (distance > 100) { // 예: 100m 이상 떨어지면 마커 숨김
+            marker.setMap(null); // 마커 숨기기
+        } else {
+            marker.setMap(roadview); // 마커 표시
+        }
     });
 });
 var isRoadviewEnabled = false;
