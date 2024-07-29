@@ -272,6 +272,10 @@ latLngButton.addEventListener('click', function() {
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isLatLngClickMode) {
         var latlng = mouseEvent.latLng;
+         marker.setPosition(latlng);
+        roadviewClient.getNearestPanoId(latlng, 50, function(panoId) {
+            roadview.setPanoId(panoId, latlng);
+            rvMarker.setPosition(latlng);
 
         closeTempOverlay();
 
