@@ -1,6 +1,4 @@
-const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
-const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
-
+// Ensure the Kakao Maps SDK is loaded
 if (typeof kakao !== 'undefined' && kakao.maps) {
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
         mapOption = {
@@ -28,18 +26,8 @@ if (typeof kakao !== 'undefined' && kakao.maps) {
         position: markerPosition,
         map: roadview
     });
-// 미니맵을 생성합니다.
-var minimapContainer = document.getElementById('minimap');
-var minimap = new kakao.maps.Map(minimapContainer, {
-    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
-    level: 3
-});
 
-kakao.maps.event.addListener(roadview, 'init', function() {
-kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
-        var viewpoint = roadview.getViewpoint();
-    });
-
+    // 로드뷰의 위치가 변경될 때마다 실행되는 이벤트 핸들러
     kakao.maps.event.addListener(roadview, 'position_changed', function() {
         var rvPosition = roadview.getPosition(); // 로드뷰의 현재 위치
 
@@ -52,6 +40,39 @@ kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
         } else {
             marker.setMap(roadview); // 마커 표시
         }
+    });
+}
+
+const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
+const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
+
+var mapContainer = document.getElementById('map');
+var roadviewContainer = document.getElementById('roadview');
+var minimapMarkers = [];
+var mapOption = {
+    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+    level: 5
+};
+var map = new kakao.maps.Map(mapContainer, mapOption);
+var roadview = new kakao.maps.Roadview(roadviewContainer);
+var roadviewClient = new kakao.maps.RoadviewClient();
+
+// 미니맵을 생성합니다.
+var minimapContainer = document.getElementById('minimap');
+var minimap = new kakao.maps.Map(minimapContainer, {
+    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+    level: 3
+});
+
+kakao.maps.event.addListener(roadview, 'init', function() {
+    kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
+        var viewpoint = roadview.getViewpoint();
+    });
+
+    kakao.maps.event.addListener(roadview, 'position_changed', function() {
+        var position = roadview.getPosition();
+        map.setCenter(position);
+        minimap.setCenter(position); // 미니맵의 중심 업데이트
     });
 });
 var isRoadviewEnabled = false;
@@ -66,7 +87,6 @@ kakao.maps.event.addListener(map, 'idle', function() {
         });
     }
 });
-
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
