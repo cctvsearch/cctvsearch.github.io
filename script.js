@@ -1,48 +1,3 @@
-// Ensure the Kakao Maps SDK is loaded
-if (typeof kakao !== 'undefined' && kakao.maps) {
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-        mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
-        }; 
-
-    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-    var roadviewContainer = document.getElementById('roadview'); // 로드뷰를 표시할 div
-    var roadview = new kakao.maps.Roadview(roadviewContainer); // 로드뷰 객체
-    var roadviewClient = new kakao.maps.RoadviewClient(); // 좌표로부터 로드뷰 파노라마 ID를 가져올 로드뷰 helper 객체
-
-    // 로드뷰 초기화
-    var position = new kakao.maps.LatLng(33.450701, 126.570667);
-
-    // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 설정합니다.
-    roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-        roadview.setPanoId(panoId, position); // 로드뷰 실행
-    });
-
-    // 마커 생성
-    var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-    var marker = new kakao.maps.Marker({
-        position: markerPosition,
-        map: roadview
-    });
-
-    // 로드뷰의 위치가 변경될 때마다 실행되는 이벤트 핸들러
-    kakao.maps.event.addListener(roadview, 'position_changed', function() {
-        var rvPosition = roadview.getPosition(); // 로드뷰의 현재 위치
-
-        // 두 지점 사이의 거리 계산
-        var distance = kakao.maps.geometry.spherical.computeDistanceBetween(rvPosition, markerPosition);
-
-        // 거리 기준으로 마커 표시 여부 결정
-        if (distance > 100) { // 예: 100m 이상 떨어지면 마커 숨김
-            marker.setMap(null); // 마커 숨기기
-        } else {
-            marker.setMap(roadview); // 마커 표시
-        }
-    });
-}
-
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
@@ -65,7 +20,7 @@ var minimap = new kakao.maps.Map(minimapContainer, {
 });
 
 kakao.maps.event.addListener(roadview, 'init', function() {
-    kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
+kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
         var viewpoint = roadview.getViewpoint();
     });
 
@@ -87,6 +42,7 @@ kakao.maps.event.addListener(map, 'idle', function() {
         });
     }
 });
+
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
