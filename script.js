@@ -46,6 +46,48 @@ kakao.maps.event.addListener(map, 'idle', function() {
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
+var lines = [];
+
+function addMarker(position, title) {
+    var marker = new kakao.maps.Marker({
+        position: position,
+        map: map,
+        title: title
+    });
+
+    markers.push(marker);
+
+    kakao.maps.event.addListener(marker, 'click', function() {
+        toggleLines(marker);
+    });
+
+    return marker;
+}
+
+function addLine(marker1, marker2, color) {
+    var linePath = [marker1.getPosition(), marker2.getPosition()];
+
+    var polyline = new kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight: 5,
+        strokeColor: color,
+        strokeOpacity: 1,
+        strokeStyle: 'solid'
+    });
+
+    polyline.setMap(null); // 초기에는 선을 숨깁니다
+    lines.push({ line: polyline, markers: [marker1, marker2] });
+}
+
+function toggleLines(clickedMarker) {
+    lines.forEach(function(item) {
+        if (item.markers.includes(clickedMarker)) {
+            var currentDisplay = item.line.getMap() ? null : map;
+            item.line.setMap(currentDisplay);
+        }
+    });
+}
+
 var currentOverlay = null;
 var isLatLngClickMode = false;
 var tempOverlay = null;
