@@ -327,9 +327,9 @@ var latLngButton = document.getElementById('latLngButton');
 latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
-        latLngButton.textContent = '끄기';
+        latLngButton.textContent = '좌표';
     } else {
-        latLngButton.textContent = '찾기';
+        latLngButton.textContent = '좌표';
     }
 });
 
