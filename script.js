@@ -46,71 +46,6 @@ kakao.maps.event.addListener(map, 'idle', function() {
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
-var lines = [];
-function addLine(marker1, marker2, color) {
-    var linePath = [marker1.getPosition(), marker2.getPosition()];
-
-    var polyline = new kakao.maps.Polyline({
-        path: linePath,
-        strokeWeight: 5,
-        strokeColor: color,
-        strokeOpacity: 1,
-        strokeStyle: 'solid'
-    });
-
-    polyline.setMap(null); // 초기에는 선을 숨깁니다
-    lines.push({ line: polyline, markers: [marker1, marker2] });
-}
-
-// 선 보이기/숨기기 함수
-function toggleLines(clickedMarker) {
-    lines.forEach(function(item) {
-        if (item.markers.includes(clickedMarker)) {
-            var currentDisplay = item.line.getMap() ? null : map;
-            item.line.setMap(currentDisplay);
-        }
-    });
-}
-
-// 각 카테고리 파일을 로드
-function loadCategoryScripts() {
-    var scriptA = document.createElement('script');
-    scriptA.src = 'categoryA.js';
-    document.head.appendChild(scriptA);
-
-    var scriptB = document.createElement('script');
-    scriptB.src = 'categoryB.js';
-    document.head.appendChild(scriptB);
-
-    var scriptC = document.createElement('script');
-    scriptC.src = 'categoryC.js';
-    document.head.appendChild(scriptC);
-
-    var scriptD = document.createElement('script');
-    scriptD.src = 'categoryD.js';
-    document.head.appendChild(scriptD);
-
-    var scriptE = document.createElement('script');
-    scriptE.src = 'categoryE.js';
-    document.head.appendChild(scriptE);
-
-    var scriptF = document.createElement('script');
-    scriptF.src = 'categoryF.js';
-    document.head.appendChild(scriptF);
-
-    var scriptG = document.createElement('script');
-    scriptG.src = 'categoryG.js';
-    document.head.appendChild(scriptG);
-
-    var scriptH = document.createElement('script');
-    scriptH.src = 'categoryH.js';
-    document.head.appendChild(scriptH);
-
-    // 필요한 모든 카테고리 스크립트를 로드
-}
-
-loadCategoryScripts();
-
 var currentOverlay = null;
 var isLatLngClickMode = false;
 var tempOverlay = null;
@@ -327,9 +262,9 @@ var latLngButton = document.getElementById('latLngButton');
 latLngButton.addEventListener('click', function() {
     isLatLngClickMode = !isLatLngClickMode;
     if (isLatLngClickMode) {
-        latLngButton.textContent = '좌표';
+        latLngButton.textContent = '끄기';
     } else {
-        latLngButton.textContent = '좌표';
+        latLngButton.textContent = '찾기';
     }
 });
 
