@@ -196,36 +196,25 @@ var EInfo = [
 
 
 
-var burimMarkers = [];
-
 // 마커를 생성하고 배열에 저장합니다.
 for (var i = 0; i < Epositions.length; i++) {
     var position = new kakao.maps.LatLng(Epositions[i].lat, Epositions[i].lng);
-    var marker = new kakao.maps.Marker({
-        position: position,
-        map: map
-    });
-
-    burimMarkers.push(marker);
-
-    // 각 마커에 클릭 이벤트를 추가하여 선을 토글
-    kakao.maps.event.addListener(marker, 'click', function() {
-        toggleLines(marker);
-    });
+    var marker = addMarker(position, EInfo[i].number, EInfo[i].description, EInfo[i].image);
+    categoryAMarkers.push(marker);
 }
 
 // 부림동 마커를 특정한 방식으로 연결
 // 마커 1과 마커 2를 붉은색 선으로 연결
-addLine(burimMarkers[0], burimMarkers[1], '#FF0000');
+addLine(categoryEMarkers[0], categoryEMarkers[1], '#FF0000');
 
 // 마커 2와 마커 3을 파란색 선으로 연결
-addLine(burimMarkers[1], burimMarkers[2], '#0000FF');
+addLine(categoryEMarkers[1], categoryEMarkers[2], '#0000FF');
 
 // 마커 3과 마커 4를 녹색 선으로 연결
-addLine(burimMarkers[2], burimMarkers[3], '#00FF00');
+addLine(categoryEMarkers[2], categoryEMarkers[3], '#00FF00');
 
 // 마커 4와 마커 5를 노란색 선으로 연결
-addLine(burimMarkers[3], burimMarkers[4], '#FFFF00');
+addLine(categoryEMarkers[3], categoryEMarkers[4], '#FFFF00');
 
 // 마커 5와 마커 1을 보라색 선으로 연결 (원형으로 연결)
-addLine(burimMarkers[4], burimMarkers[0], '#800080');
+addLine(categoryEMarkers[4], categoryEMarkers[0], '#800080');
