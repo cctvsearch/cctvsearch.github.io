@@ -81,31 +81,37 @@ function createMarkersAndOverlays(category) {
         markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
     }
 
-    allPositions.forEach(function(position, index) {
-        var showMarker = true;
+allPositions.forEach(function(position, index) {
+    console.log("Processing position:", position);
+    var showMarker = true;
 
-        if (category === '회전형') {
-            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
-        } else if (category === '고정형') {
-            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
-        } else if (category !== '전부') {
-            showMarker = (position.category === category);
-        }
+    if (category === '회전형') {
+        showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
+    } else if (category === '고정형') {
+        showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
+    } else if (category !== '전부') {
+        showMarker = (position.category === category);
+    }
 
-        if (showMarker) {
-            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+    if (showMarker) {
+        console.log("Creating marker for:", position);
+        var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
 
-            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
-            var clickedMarkerImage = new kakao.maps.MarkerImage(clickedMarkerImageUrl, markerSize); // 클릭된 마커 이미지
+        var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
+        var clickedMarkerImage = new kakao.maps.MarkerImage(clickedMarkerImageUrl, markerSize);
 
-            var marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage
-            });
-            markers.push(marker);
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage
+        });
+        markers.push(marker);
 
-            // 메인 지도에 마커 추가
-            marker.setMap(map);
+        // 메인 지도에 마커 추가
+        marker.setMap(map);
+    } else {
+        console.log("Skipping marker for:", position);
+    }
+
 
             // 미니맵에 마커 추가
             var minimapMarker = new kakao.maps.Marker({
@@ -133,8 +139,7 @@ function createMarkersAndOverlays(category) {
                 // 커스텀 오버레이를 표시
                 showCustomOverlay(position, index);
             });
-        }
-    });
+        });
 }
 
 
