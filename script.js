@@ -55,8 +55,8 @@ var clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/
 var selectedMarker = null;  // 이전에 클릭된 마커를 저장할 변수
 
 function createMarkersAndOverlays(category) {
-    closeCustomOverlay();
-
+   createMarkersAndOverlays('전부');
+    
     // 기존 마커 제거
     markers.forEach(function(marker) {
         marker.setMap(null);
