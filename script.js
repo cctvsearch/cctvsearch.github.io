@@ -50,13 +50,15 @@ var currentOverlay = null;
 var isLatLngClickMode = false;
 var tempOverlay = null;
 
-var defaultMarkerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-var clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
-var selectedMarker = null;  // 이전에 클릭된 마커를 저장할 변수
+createMarkersAndOverlays('전부');
+
+// Define the new marker image URL
+const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
+var lastClickedMarker = null; // Store the last clicked marker
 
 function createMarkersAndOverlays(category) {
-   createMarkersAndOverlays('전부');
-    
+    closeCustomOverlay();
+
     // 기존 마커 제거
     markers.forEach(function(marker) {
         marker.setMap(null);
@@ -70,7 +72,7 @@ function createMarkersAndOverlays(category) {
     minimapMarkers = [];
 
     // 카테고리별 마커 이미지 URL 및 사이즈 정의
-    var markerImageUrl = defaultMarkerImageUrl; // 기본 이미지
+    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
     var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
 
     if (category === '회전형') {
@@ -81,37 +83,30 @@ function createMarkersAndOverlays(category) {
         markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
     }
 
-allPositions.forEach(function(position, index) {
-    console.log("Processing position:", position);
-    var showMarker = true;
+    allPositions.forEach(function(position, index) {
+        var showMarker = true;
 
-    if (category === '회전형') {
-        showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
-    } else if (category === '고정형') {
-        showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
-    } else if (category !== '전부') {
-        showMarker = (position.category === category);
-    }
+        if (category === '회전형') {
+            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
+        } else if (category === '고정형') {
+            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
+        } else if (category !== '전부') {
+            showMarker = (position.category === category);
+        }
 
-    if (showMarker) {
-        console.log("Creating marker for:", position);
-        var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+        if (showMarker) {
+            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
 
-        var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
-        var clickedMarkerImage = new kakao.maps.MarkerImage(clickedMarkerImageUrl, markerSize);
+            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
 
-        var marker = new kakao.maps.Marker({
-            position: markerPosition,
-            image: markerImage
-        });
-        markers.push(marker);
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            markers.push(marker);
 
-        // 메인 지도에 마커 추가
-        marker.setMap(map);
-    } else {
-        console.log("Skipping marker for:", position);
-    }
-
+            // 메인 지도에 마커 추가
+            marker.setMap(map);
 
             // 미니맵에 마커 추가
             var minimapMarker = new kakao.maps.Marker({
@@ -123,27 +118,45 @@ allPositions.forEach(function(position, index) {
 
             // 마커 클릭 이벤트 추가
             kakao.maps.event.addListener(marker, 'click', function() {
-
-                // 이전에 선택된 마커가 있고, 그것이 현재 클릭된 마커와 다를 경우
-                if (selectedMarker && selectedMarker !== marker) {
-                    // 이전에 선택된 마커의 이미지를 원래대로 돌림
-                    selectedMarker.setImage(markerImage);
-                }
-
-                // 현재 클릭된 마커의 이미지를 변경
-                marker.setImage(clickedMarkerImage);
-
-                // 현재 클릭된 마커를 선택된 마커로 설정
-                selectedMarker = marker;
-
-                // 커스텀 오버레이를 표시
+                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
-        });
+
+            kakao.maps.event.addListener(marker, 'touchstart', function() {
+                handleMarkerClick(marker, markerImageUrl);
+                showCustomOverlay(position, index);
+            });
+        }
+    });
 }
 
+function handleMarkerClick(clickedMarker, defaultImageUrl) {
+    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+    }
 
+    // 현재 클릭한 마커의 이미지를 변경
+    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
 
+    // 마지막으로 클릭된 마커를 현재 마커로 설정
+    lastClickedMarker = clickedMarker;
+}
+
+// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
+function closeCustomOverlay() {
+    if (currentOverlay) {
+        currentOverlay.setMap(null);
+        currentOverlay = null;
+
+        if (lastClickedMarker) {
+            // 마지막 클릭된 마커 이미지 원래대로 복구
+            var defaultImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+            lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+            lastClickedMarker = null;
+        }
+    }
+}
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
