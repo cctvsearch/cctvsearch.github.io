@@ -52,7 +52,7 @@ var tempOverlay = null;
 
 createMarkersAndOverlays('전부');
 
-var defaultMarkerImageUrl = ''http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+var defaultMarkerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
 var clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
 var selectedMarker = null;  // 이전에 클릭된 마커를 저장할 변수
 
