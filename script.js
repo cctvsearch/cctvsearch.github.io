@@ -55,6 +55,7 @@ createMarkersAndOverlays('전부');
 // Define the new marker image URL
 const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
 var lastClickedMarker = null; // Store the last clicked marker
+var lastDefaultImageUrl = null; // Store the last clicked marker's default image URL
 
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
@@ -133,17 +134,15 @@ function createMarkersAndOverlays(category) {
 function handleMarkerClick(clickedMarker, defaultImageUrl) {
     // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
     if (lastClickedMarker && lastClickedMarker !== clickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(lastClickedMarker.defaultImageUrl, new kakao.maps.Size(30, 40)));
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(lastDefaultImageUrl, new kakao.maps.Size(30, 40)));
     }
 
     // 현재 클릭한 마커의 이미지를 변경
     clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
 
-    // 클릭된 마커의 기본 이미지를 기억해두기
-    clickedMarker.defaultImageUrl = defaultImageUrl;
-
     // 마지막으로 클릭된 마커를 현재 마커로 설정
     lastClickedMarker = clickedMarker;
+    lastDefaultImageUrl = defaultImageUrl; // 마지막으로 클릭된 마커의 기본 이미지 URL 저장
 }
 
 // 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
@@ -154,11 +153,12 @@ function closeCustomOverlay() {
 
         if (lastClickedMarker) {
             // 마지막 클릭된 마커 이미지 원래대로 복구
-            lastClickedMarker.setImage(new kakao.maps.MarkerImage(lastClickedMarker.defaultImageUrl, new kakao.maps.Size(30, 40)));
+            lastClickedMarker.setImage(new kakao.maps.MarkerImage(lastDefaultImageUrl, new kakao.maps.Size(30, 40)));
             lastClickedMarker = null;
         }
     }
 }
+
 
 
 function showCustomOverlay(position, index) {
