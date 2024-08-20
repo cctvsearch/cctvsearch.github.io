@@ -52,6 +52,10 @@ var tempOverlay = null;
 
 createMarkersAndOverlays('전부');
 
+// Define the new marker image URL
+const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
+var lastClickedMarker = null; // Store the last clicked marker
+
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
 
@@ -112,24 +116,47 @@ function createMarkersAndOverlays(category) {
             minimapMarkers.push(minimapMarker);
             minimapMarker.setMap(minimap);
 
+            // 마커 클릭 이벤트 추가
             kakao.maps.event.addListener(marker, 'click', function() {
+                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
 
             kakao.maps.event.addListener(marker, 'touchstart', function() {
+                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
         }
     });
 }
 
+function handleMarkerClick(clickedMarker, defaultImageUrl) {
+    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+    }
+
+    // 현재 클릭한 마커의 이미지를 변경
+    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+
+    // 마지막으로 클릭된 마커를 현재 마커로 설정
+    lastClickedMarker = clickedMarker;
+}
+
+// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
     if (currentOverlay) {
         currentOverlay.setMap(null);
         currentOverlay = null;
+
+        if (lastClickedMarker) {
+            // 마지막 클릭된 마커 이미지 원래대로 복구
+            var defaultImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+            lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+            lastClickedMarker = null;
+        }
     }
 }
-
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
