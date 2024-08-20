@@ -132,12 +132,15 @@ function createMarkersAndOverlays(category) {
 
 function handleMarkerClick(clickedMarker, defaultImageUrl) {
     // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+    if (lastClickedMarker && lastClickedMarker !== clickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(lastClickedMarker.defaultImageUrl, new kakao.maps.Size(30, 40)));
     }
 
     // 현재 클릭한 마커의 이미지를 변경
     clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+
+    // 클릭된 마커의 기본 이미지를 기억해두기
+    clickedMarker.defaultImageUrl = defaultImageUrl;
 
     // 마지막으로 클릭된 마커를 현재 마커로 설정
     lastClickedMarker = clickedMarker;
@@ -151,12 +154,13 @@ function closeCustomOverlay() {
 
         if (lastClickedMarker) {
             // 마지막 클릭된 마커 이미지 원래대로 복구
-            var defaultImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-            lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+            lastClickedMarker.setImage(new kakao.maps.MarkerImage(lastClickedMarker.defaultImageUrl, new kakao.maps.Size(30, 40)));
             lastClickedMarker = null;
         }
     }
 }
+
+
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
