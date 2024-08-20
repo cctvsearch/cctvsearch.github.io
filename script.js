@@ -159,7 +159,6 @@ function closeCustomOverlay() {
     }
 }
 
-// 오버레이가 활성화된 상태에서 다른 마커 클릭 시 오버레이를 닫지 않고 이전 마커를 복구
 function showCustomOverlay(position, index) {
     // 기존 오버레이가 열려있는 경우
     if (currentOverlay) {
@@ -178,6 +177,7 @@ function showCustomOverlay(position, index) {
 
     currentOverlay.setMap(map);
 }
+
 
 
 
