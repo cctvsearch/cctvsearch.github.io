@@ -158,27 +158,6 @@ function closeCustomOverlay() {
     }
 }
 
-function showCustomOverlay(position, index) {
-    // 기존 오버레이가 열려있는 경우 닫기
-    if (currentOverlay) {
-        closeCustomOverlay();
-    }
-
-    var overlayContent = '<div>' + allInfo[index].name + '</div>';
-    var overlayPosition = new kakao.maps.LatLng(position.lat, position.lng);
-
-    currentOverlay = new kakao.maps.CustomOverlay({
-        content: overlayContent,
-        position: overlayPosition,
-        xAnchor: 0.5,
-        yAnchor: 1.0
-    });
-
-    currentOverlay.setMap(map);
-}
-
-
-
 
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
@@ -207,6 +186,8 @@ function showCustomOverlay(position, index) {
         position: new kakao.maps.LatLng(position.lat, position.lng),
         yAnchor: 1.1
     });
+
+   currentOverlay.setMap(map); 
 }
 
 var categoryDropdown = document.getElementById('categoryDropdown');
