@@ -225,8 +225,9 @@ newSearchForm.addEventListener('submit', function(event) {
             }
         });
     } else {
-        var filtered = allInfo.filter(function(item) {
-            return item.number.toLowerCase() === userInput.toLowerCase();
+var filtered = allInfo.filter(function(item) {
+    return item.number.toLowerCase().includes(userInput.toLowerCase());
+
         });
         if (filtered.length > 0) {
             var foundItem = filtered[0];
