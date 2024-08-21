@@ -204,27 +204,40 @@ var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
 var newSearchBtn = document.getElementById('newSearchBtn');
 
+var newSearchForm = document.getElementById('newSearchForm');
+var newSearchInput = document.getElementById('newSearchInput');
+var newSearchBtn = document.getElementById('newSearchBtn');
+
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = newSearchInput.value.trim();
+
     var position = null;
     var markerIndex = -1;
 
-    // Normalize input to handle spaces and special characters
-    var normalizedInput = userInput.replace(/[\s-]/g, '').toLowerCase();
+    var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
+    if (latLngPattern.test(userInput)) {
+        var match = userInput.match(latLngPattern);
+        var lat = parseFloat(match[1]);
+        var lng = parseFloat(match[3]);
+        position = new kakao.maps.LatLng(lat, lng);
 
-    var filtered = allInfo.filter(function(item) {
-        return item.number.replace(/[\s-]/g, '').toLowerCase().includes(normalizedInput);
-    });
-
-    if (filtered.length > 0) {
-        var foundItem = filtered[0];
-        var index = allInfo.indexOf(foundItem);
-        position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
-        markerIndex = index;
-    }
-
-    // Rest of your existing code...
+        allPositions.forEach(function(pos, index) {
+            if (pos.lat === lat && pos.lng === lng) {
+                markerIndex = index;
+                return false;
+            }
+        });
+    } else {
+        var filtered = allInfo.filter(function(item) {
+            return item.number.toLowerCase() === userInput.toLowerCase();
+        });
+        if (filtered.length > 0) {
+            var foundItem = filtered[0];
+            var index = allInfo.indexOf(foundItem);
+            position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
+            markerIndex = index;
+        }
 });
 
     }
