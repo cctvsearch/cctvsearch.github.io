@@ -204,10 +204,6 @@ var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
 var newSearchBtn = document.getElementById('newSearchBtn');
 
-var newSearchForm = document.getElementById('newSearchForm');
-var newSearchInput = document.getElementById('newSearchInput');
-var newSearchBtn = document.getElementById('newSearchBtn');
-
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = newSearchInput.value.trim();
@@ -238,8 +234,6 @@ newSearchForm.addEventListener('submit', function(event) {
             position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
             markerIndex = index;
         }
-});
-
     }
 
     if (position) {
