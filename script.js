@@ -273,6 +273,40 @@ var filtered = allInfo.filter(function(item) {
         alert('유효한 위도/경도 또는 관리번호를 입력하세요.');
     }
 });
+var geocoder = new kakao.maps.services.Geocoder();
+
+newSearchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var userInput = newSearchInput.value.trim();
+
+    // 주소 검색
+    geocoder.addressSearch(userInput, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var position = new kakao.maps.LatLng(result[0].y, result[0].x);
+            
+            // 지도를 검색된 주소 위치로 이동
+            map.setCenter(position);
+            map.setLevel(4);
+
+            // 임시 마커 생성 및 표시
+            var tempMarker = new kakao.maps.Marker({
+                position: position,
+                map: map
+            });
+
+            // 일정 시간 후 임시 마커 제거
+            setTimeout(function() {
+                tempMarker.setMap(null);
+            }, 3000);
+        } else {
+            alert('유효한 주소를 입력하세요.');
+        }
+    });
+});
+
+
+
+
 
 newSearchBtn.addEventListener('click', function() {
     newSearchForm.dispatchEvent(new Event('submit'));
