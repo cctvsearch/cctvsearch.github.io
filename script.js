@@ -200,10 +200,12 @@ categoryDropdown.addEventListener('change', function() {
     var selectedCategory = categoryDropdown.value;
     createMarkersAndOverlays(selectedCategory);
 });
-
 var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
 var newSearchBtn = document.getElementById('newSearchBtn');
+
+// geocoder 객체 초기화
+var geocoder = new kakao.maps.services.Geocoder();
 
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -211,10 +213,12 @@ newSearchForm.addEventListener('submit', function(event) {
     var position = null;
     var markerIndex = -1;
 
-geocoder.addressSearch(userInput, function(result, status) {
-    if (status === kakao.maps.services.Status.OK) {
-     var position = new kakao.maps.LatLng(result[0].y, result[0].x);
-        // 가장 가까운 마커를 찾음
+    // 먼저 주소 검색을 시도
+    geocoder.addressSearch(userInput, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            position = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 가장 가까운 마커를 찾음
             var closestMarkerIndex = findClosestMarker(position);
 
             if (closestMarkerIndex !== -1) {
@@ -225,67 +229,76 @@ geocoder.addressSearch(userInput, function(result, status) {
                 showTempMarker(position);
             }
 
-    var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
-    if (latLngPattern.test(userInput)) {
-        var match = userInput.match(latLngPattern);
-        var lat = parseFloat(match[1]);
-        var lng = parseFloat(match[3]);
-        position = new kakao.maps.LatLng(lat, lng);
+            // 지도를 검색된 주소 위치로 이동
+            map.setCenter(position);
+            map.setLevel(4);
 
-        allPositions.forEach(function(pos, index) {
-            if (pos.lat === lat && pos.lng === lng) {
-                markerIndex = index;
-                return false;
-            }
-        });
-    } else {
-var filtered = allInfo.filter(function(item) {
-    return item.number.toLowerCase().includes(userInput.toLowerCase());
-
-        });
-        if (filtered.length > 0) {
-            var foundItem = filtered[0];
-            var index = allInfo.indexOf(foundItem);
-            position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
-            markerIndex = index;
-        }
-    }
-
-    if (position) {
-        map.setCenter(position);
-        map.setLevel(4);
-
-        createMarkersAndOverlays('전부');
-
-        if (markerIndex !== -1) {
-            kakao.maps.event.trigger(markers[markerIndex], 'click');
         } else {
-            var tempMarker = new kakao.maps.Marker({
-                position: position,
-                map: map
-            });
+            // 주소가 유효하지 않다면, 위도/경도나 관리번호로 검색 시도
+            var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
 
-            var tempOverlayContent =
-                '<div class="customOverlay">' +
-                '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
-                '    해당 위치에 정보가 없습니다.' +
-                '</div>';
+            if (latLngPattern.test(userInput)) {
+                var match = userInput.match(latLngPattern);
+                var lat = parseFloat(match[1]);
+                var lng = parseFloat(match[3]);
+                position = new kakao.maps.LatLng(lat, lng);
 
-            tempOverlay = new kakao.maps.CustomOverlay({
-                content: tempOverlayContent,
-                map: map,
-                position: position,
-                yAnchor: 2.0
-            });
+                allPositions.forEach(function(pos, index) {
+                    if (pos.lat === lat && pos.lng === lng) {
+                        markerIndex = index;
+                        return false;
+                    }
+                });
+            } else {
+                var filtered = allInfo.filter(function(item) {
+                    return item.number.toLowerCase().includes(userInput.toLowerCase());
+                });
 
-            setTimeout(function() {
-                tempMarker.setMap(null);
-                tempOverlay.setMap(null);
-            }, 3000);
+                if (filtered.length > 0) {
+                    var foundItem = filtered[0];
+                    var index = allInfo.indexOf(foundItem);
+                    position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
+                    markerIndex = index;
+                }
+            }
+
+            if (position) {
+                map.setCenter(position);
+                map.setLevel(4);
+
+                createMarkersAndOverlays('전부');
+
+                if (markerIndex !== -1) {
+                    kakao.maps.event.trigger(markers[markerIndex], 'click');
+                } else {
+                    var tempMarker = new kakao.maps.Marker({
+                        position: position,
+                        map: map
+                    });
+
+                    var tempOverlayContent =
+                        '<div class="customOverlay">' +
+                        '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
+                        '    해당 위치에 정보가 없습니다.' +
+                        '</div>';
+
+                    tempOverlay = new kakao.maps.CustomOverlay({
+                        content: tempOverlayContent,
+                        map: map,
+                        position: position,
+                        yAnchor: 2.0
+                    });
+
+                    setTimeout(function() {
+                        tempMarker.setMap(null);
+                        tempOverlay.setMap(null);
+                    }, 3000);
+                }
+            } else {
+                alert('유효한 주소, 위도/경도 또는 관리번호를 입력하세요.');
+            }
         }
-    } else {
-        alert('유효한 위도/경도 또는 관리번호를 입력하세요.');
-    }
+    });
 });
 
 newSearchBtn.addEventListener('click', function() {
@@ -298,6 +311,36 @@ function closeTempOverlay() {
         tempOverlay = null;
     }
 }
+
+// 가장 가까운 마커 찾기 함수
+function findClosestMarker(position) {
+    var closestIndex = -1;
+    var closestDistance = Number.MAX_VALUE;
+
+    markers.forEach(function(marker, index) {
+        var distance = kakao.maps.geometry.spherical.computeDistanceBetween(marker.getPosition(), position);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+        }
+    });
+
+    return closestIndex;
+}
+
+// 임시 마커 생성 함수
+function showTempMarker(position) {
+    var tempMarker = new kakao.maps.Marker({
+        position: position,
+        map: map
+    });
+
+    // 일정 시간 후 임시 마커 제거
+    setTimeout(function() {
+        tempMarker.setMap(null);
+    }, 3000);
+}
+
 
 var latLngButton = document.getElementById('latLngButton');
 
