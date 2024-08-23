@@ -200,39 +200,45 @@ categoryDropdown.addEventListener('change', function() {
     var selectedCategory = categoryDropdown.value;
     createMarkersAndOverlays(selectedCategory);
 });
-
 var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
 var newSearchBtn = document.getElementById('newSearchBtn');
 
-// 주소 검색을 위한 배열 (예시)
-var allPositions = [
-    { lat: 37.566826, lng: 126.9786567 }, // 예시 위치
-    { lat: 37.565, lng: 126.976 } // 예시 위치
-];
-
-var allInfo = [
-    { address: "서울특별시 중구 세종대로 110", number: "001" },
-    { address: "서울특별시 종로구 종로1가 1", number: "002" }
-];
-
+// 이벤트 리스너 설정
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = newSearchInput.value.trim();
     var position = null;
     var markerIndex = -1;
 
-    // 주소 또는 관리번호로 검색
-    var filtered = allInfo.filter(function(item) {
-        return item.address.toLowerCase().includes(userInput.toLowerCase()) ||
-               item.number.toLowerCase().includes(userInput.toLowerCase());
-    });
+    // 위도/경도 패턴 검색
+    var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
+    if (latLngPattern.test(userInput)) {
+        var match = userInput.match(latLngPattern);
+        var lat = parseFloat(match[1]);
+        var lng = parseFloat(match[3]);
+        position = new kakao.maps.LatLng(lat, lng);
 
-    if (filtered.length > 0) {
-        var foundItem = filtered[0];
-        var index = allInfo.indexOf(foundItem);
-        position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
-        markerIndex = index;
+        // 위도/경도가 일치하는 마커 찾기
+        allPositions.forEach(function(pos, index) {
+            if (pos.lat === lat && pos.lng === lng) {
+                markerIndex = index;
+                return false;
+            }
+        });
+    } else {
+        // 주소 또는 관리번호로 검색
+        var filtered = allInfo.filter(function(item) {
+            return item.address.toLowerCase().includes(userInput.toLowerCase()) ||
+                   item.number.toLowerCase().includes(userInput.toLowerCase());
+        });
+
+        if (filtered.length > 0) {
+            var foundItem = filtered[0];
+            var index = allInfo.indexOf(foundItem);
+            position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
+            markerIndex = index;
+        }
     }
 
     if (position) {
@@ -242,8 +248,10 @@ newSearchForm.addEventListener('submit', function(event) {
         createMarkersAndOverlays('전부');
 
         if (markerIndex !== -1) {
+            // 검색된 마커 클릭 이벤트 트리거
             kakao.maps.event.trigger(markers[markerIndex], 'click');
         } else {
+            // 해당 위치에 정보가 없는 경우 임시 마커 생성
             var tempMarker = new kakao.maps.Marker({
                 position: position,
                 map: map
@@ -262,13 +270,14 @@ newSearchForm.addEventListener('submit', function(event) {
                 yAnchor: 2.0
             });
 
+            // 일정 시간 후 임시 마커 제거
             setTimeout(function() {
                 tempMarker.setMap(null);
                 tempOverlay.setMap(null);
             }, 3000);
         }
     } else {
-        alert('유효한 주소 또는 관리번호를 입력하세요.');
+        alert('유효한 주소, 위도/경도 또는 관리번호를 입력하세요.');
     }
 });
 
@@ -281,35 +290,6 @@ function closeTempOverlay() {
         tempOverlay.setMap(null);
         tempOverlay = null;
     }
-}
-
-// 가장 가까운 마커 찾기 함수
-function findClosestMarker(position) {
-    var closestIndex = -1;
-    var closestDistance = Number.MAX_VALUE;
-
-    markers.forEach(function(marker, index) {
-        var distance = kakao.maps.geometry.spherical.computeDistanceBetween(marker.getPosition(), position);
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestIndex = index;
-        }
-    });
-
-    return closestIndex;
-}
-
-// 임시 마커 생성 함수
-function showTempMarker(position) {
-    var tempMarker = new kakao.maps.Marker({
-        position: position,
-        map: map
-    });
-
-    // 일정 시간 후 임시 마커 제거
-    setTimeout(function() {
-        tempMarker.setMap(null);
-    }, 3000);
 }
 
 
