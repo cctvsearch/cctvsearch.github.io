@@ -208,9 +208,22 @@ var newSearchBtn = document.getElementById('newSearchBtn');
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = newSearchInput.value.trim();
-
     var position = null;
     var markerIndex = -1;
+
+geocoder.addressSearch(userInput, function(result, status) {
+    if (status === kakao.maps.services.Status.OK) {
+     var position = new kakao.maps.LatLng(result[0].y, result[0].x);
+        // 가장 가까운 마커를 찾음
+            var closestMarkerIndex = findClosestMarker(position);
+
+            if (closestMarkerIndex !== -1) {
+                // 가장 가까운 마커가 있는 경우 해당 마커 클릭 이벤트 트리거
+                kakao.maps.event.trigger(markers[closestMarkerIndex], 'click');
+            } else {
+                // 가장 가까운 마커가 없는 경우 임시 마커 생성
+                showTempMarker(position);
+            }
 
     var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
     if (latLngPattern.test(userInput)) {
