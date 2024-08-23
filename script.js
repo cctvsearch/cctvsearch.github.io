@@ -200,14 +200,19 @@ categoryDropdown.addEventListener('change', function() {
     var selectedCategory = categoryDropdown.value;
     createMarkersAndOverlays(selectedCategory);
 });
+
 var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
 var newSearchBtn = document.getElementById('newSearchBtn');
 
-// 이벤트 리스너 설정
+// 문자열 전처리 함수: 하이픈과 공백을 제거
+function normalizeString(str) {
+    return str.replace(/[-\s]/g, '').toLowerCase();
+}
+
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
-    var userInput = newSearchInput.value.trim();
+    var userInput = normalizeString(newSearchInput.value.trim());
     var position = null;
     var markerIndex = -1;
 
@@ -229,8 +234,8 @@ newSearchForm.addEventListener('submit', function(event) {
     } else {
         // 주소 또는 관리번호로 검색
         var filtered = allInfo.filter(function(item) {
-            return item.address.toLowerCase().includes(userInput.toLowerCase()) ||
-                   item.number.toLowerCase().includes(userInput.toLowerCase());
+            return normalizeString(item.address).includes(userInput) ||
+                   normalizeString(item.number).includes(userInput);
         });
 
         if (filtered.length > 0) {
