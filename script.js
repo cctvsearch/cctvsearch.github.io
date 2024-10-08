@@ -3,10 +3,10 @@ var mapContainer = document.getElementById('map');
 var roadviewContainer = document.getElementById('roadview');
 var minimapMarkers = [];
 var markers = []; // 마커 저장 배열
-var isRoadviewEnabled = false;
 var polylines = []; // 폴리라인을 저장하는 배열
 var lastClickedMarker = null; // 마지막 클릭된 마커 저장
 var currentOverlay = null; // 현재 커스텀 오버레이 저장
+var isRoadviewEnabled = false;
 var isRoadviewInitialized = false;
 var isConnectionModeEnabled = false; // 연결점 모드 상태
 
@@ -73,7 +73,7 @@ document.getElementById('roadviewToggle').addEventListener('click', function() {
     }
 });
 
-// 연결점 버튼 기능 추가
+// '연결점' 버튼 기능 추가
 document.getElementById('connectionToggle').addEventListener('click', function() {
     isConnectionModeEnabled = !isConnectionModeEnabled;
 
