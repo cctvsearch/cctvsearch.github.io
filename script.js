@@ -466,6 +466,14 @@ function getCurrentPos() {
     );
 }
 
+currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
+
+// 페이지 로드 시 버튼 텍스트 업데이트
+window.addEventListener('load', updateButtonText);
+// 화면 크기 조정 시 버튼 텍스트 업데이트
+window.addEventListener('resize', updateButtonText);
+
+
 var lines = {};  // Object to store the lines for each marker
 
 // Define connections for A-MW-14 and A-MW-48
@@ -479,7 +487,7 @@ function drawLines(markerNumber) {
     var positions = markerConnections[markerNumber];
     if (!positions) return;
 
-    var markerPosition = allPositions.find(pos => pos.number === markerNumber);
+    var markerPosition = CInfo.find(info => info.number === markerNumber);  // CInfo에서 관리번호를 기준으로 위치 찾기
     if (!markerPosition) return;
 
     if (!lines[markerNumber]) {
@@ -488,7 +496,7 @@ function drawLines(markerNumber) {
 
     // Iterate through connected markers and draw lines
     positions.forEach(connectedMarker => {
-        var connectedPosition = allPositions.find(pos => pos.number === connectedMarker);
+        var connectedPosition = CInfo.find(info => info.number === connectedMarker);  // 연결된 마커 찾기
         if (connectedPosition) {
             var line = new kakao.maps.Polyline({
                 path: [
@@ -496,9 +504,9 @@ function drawLines(markerNumber) {
                     new kakao.maps.LatLng(connectedPosition.lat, connectedPosition.lng)
                 ],
                 strokeWeight: 5,
-                strokeColor: '#FF0000',
-                strokeOpacity: 1,
-                strokeStyle: 'solid'
+                strokeColor: '#FF0000',  // 선의 색상을 빨간색으로 설정
+                strokeOpacity: 0.8,       // 선의 투명도 설정
+                strokeStyle: 'solid'      // 선의 스타일 설정
             });
             line.setMap(map);  // Display the line on the map
             lines[markerNumber].push(line);
@@ -516,7 +524,8 @@ function hideLines(markerNumber) {
 
 // Modify the marker click event to show/hide lines
 function handleMarkerClick(clickedMarker, defaultImageUrl) {
-    var markerNumber = allInfo[markers.indexOf(clickedMarker)].number;
+    var markerIndex = markers.indexOf(clickedMarker);
+    var markerNumber = CInfo[markerIndex].number;
 
     // Toggle lines based on whether the marker is already clicked
     if (clickedMarker === lastClickedMarker) {
@@ -528,7 +537,8 @@ function handleMarkerClick(clickedMarker, defaultImageUrl) {
 
     // Hide lines for the last clicked marker
     if (lastClickedMarker) {
-        var lastMarkerNumber = allInfo[markers.indexOf(lastClickedMarker)].number;
+        var lastMarkerIndex = markers.indexOf(lastClickedMarker);
+        var lastMarkerNumber = CInfo[lastMarkerIndex].number;
         hideLines(lastMarkerNumber);
         lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
     }
@@ -541,10 +551,3 @@ function handleMarkerClick(clickedMarker, defaultImageUrl) {
     lastClickedMarker = clickedMarker;
 }
 
-
-currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
-
-// 페이지 로드 시 버튼 텍스트 업데이트
-window.addEventListener('load', updateButtonText);
-// 화면 크기 조정 시 버튼 텍스트 업데이트
-window.addEventListener('resize', updateButtonText);
