@@ -60,7 +60,7 @@ function handleMarkerClick(clickedMarker, markerInfo) {
     }
 
     // 커스텀 오버레이 표시 (모든 마커에서 오버레이가 뜨도록 보장)
-    showCustomOverlay(markerInfo.position, allInfo.findIndex(info => info.number === markerInfo.number));
+    showCustomOverlay(clickedMarker.getPosition(), allInfo.findIndex(info => info.number === markerInfo.number));
 }
 
 // 마커 간의 폴리라인 그리기
@@ -280,11 +280,6 @@ function showCustomOverlay(position, index) {
         yAnchor: 1.1
     });
 }
-
-// 기타 로직 유지
-
-
-// 기타 로직 유지
 
 // 기타 로직 유지
 
