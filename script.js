@@ -8,6 +8,7 @@ var polylines = []; // 폴리라인을 저장하는 배열
 var lastClickedMarker = null; // 마지막 클릭된 마커 저장
 var currentOverlay = null; // 현재 커스텀 오버레이 저장
 var isRoadviewInitialized = false;
+var isConnectionModeEnabled = false; // 연결점 모드 상태
 
 const defaultMarkerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
 const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
@@ -56,6 +57,7 @@ document.getElementById('roadviewToggle').addEventListener('click', function() {
             if (panoId) {
                 roadview.setPanoId(panoId, map.getCenter());
                 roadview.setViewpoint({ pan: 0, tilt: 0, zoom: 0 });
+                isRoadviewInitialized = true; // 초기화 완료 플래그 설정
             }
         });
     }
@@ -71,6 +73,18 @@ document.getElementById('roadviewToggle').addEventListener('click', function() {
     }
 });
 
+// 연결점 버튼 기능 추가
+document.getElementById('connectionToggle').addEventListener('click', function() {
+    isConnectionModeEnabled = !isConnectionModeEnabled;
+
+    if (isConnectionModeEnabled) {
+        this.textContent = '연결점 끄기';
+    } else {
+        this.textContent = '연결점';
+        clearPolylines(); // 연결점 모드 비활성화 시 모든 선 삭제
+    }
+});
+
 // 마커 클릭 이벤트 및 커스텀 오버레이 처리
 function handleMarkerClick(clickedMarker, markerId) {
     // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
@@ -82,20 +96,20 @@ function handleMarkerClick(clickedMarker, markerId) {
     clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
     lastClickedMarker = clickedMarker;
 
-    // 기존 폴리라인 제거
-    clearPolylines();
-
-    // 해당 마커와 연결된 다른 마커들에 대해 폴리라인 생성
-    var connections = markerConnections[markerId];
-    if (connections) {
-        if (connections.red) {
-            drawPolyline(clickedMarker, connections.red, '#FF0000'); // 빨간선
-        }
-        if (connections.blue) {
-            drawPolyline(clickedMarker, connections.blue, '#0000FF'); // 파란선
-        }
-        if (connections.black) {
-            drawPolyline(clickedMarker, connections.black, '#000000'); // 검정선
+    // 연결점 모드가 활성화된 경우에만 폴리라인 표시
+    if (isConnectionModeEnabled) {
+        clearPolylines();
+        var connections = markerConnections[markerId];
+        if (connections) {
+            if (connections.red) {
+                drawPolyline(clickedMarker, connections.red, '#FF0000'); // 빨간선
+            }
+            if (connections.blue) {
+                drawPolyline(clickedMarker, connections.blue, '#0000FF'); // 파란선
+            }
+            if (connections.black) {
+                drawPolyline(clickedMarker, connections.black, '#000000'); // 검정선
+            }
         }
     }
 
@@ -105,6 +119,7 @@ function handleMarkerClick(clickedMarker, markerId) {
 
 // 마커 간의 폴리라인 그리기
 function drawPolyline(startMarker, connectedMarkerIds, color) {
+    clearPolylines(); // 다른 마커의 선은 삭제
     var path = [startMarker.getPosition()];
     connectedMarkerIds.forEach(function(id) {
         var targetMarker = findMarkerById(id);
@@ -147,27 +162,30 @@ function closeCustomOverlay() {
     if (currentOverlay) {
         currentOverlay.setMap(null);
         currentOverlay = null;
-        clearPolylines();
+        if (!isConnectionModeEnabled) {
+            clearPolylines(); // 연결점 모드가 활성화되어 있지 않으면 폴리라인 제거
+        }
     }
 }
 
-// 커스텀 오버레이 표시
+// 커스텀 오버레이 표시 (undefined 처리 포함)
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
+    var info = allInfo[index] || {}; // 값이 없을 경우 빈 객체 반환
     var overlayContent = 
         '<div class="customOverlay">' +
         '    <span class="closeBtn" onclick="closeCustomOverlay()">×</span>' +
-        '    <div class="title">' + allInfo[index].category + '</div>' +
+        '    <div class="title">' + (info.category || '') + '</div>' +
         '    <div class="desc">' +
         '        <div class="desc-content">' +
-        '            <img src="' + allInfo[index].image + '" width="50" height="50">' +
+        '            <img src="' + (info.image || '') + '" width="50" height="50">' +
         '            <div>' +
-        '                <p>관리번호 : ' + allInfo[index].number + '</p>' +
-        '                <p>주소 : ' + allInfo[index].address + '</p>' +
-        '                <p>회전형 : ' + allInfo[index].rotation + '</p>' +
-        '                <p>고정형 : ' + allInfo[index].fixed + '</p>' +
-        '                <p>상세설명 : ' + allInfo[index].description + '</p>' +
+        '                <p>관리번호 : ' + (info.number || '') + '</p>' +
+        '                <p>주소 : ' + (info.address || '') + '</p>' +
+        '                <p>회전형 : ' + (info.rotation || '') + '</p>' +
+        '                <p>고정형 : ' + (info.fixed || '') + '</p>' +
+        '                <p>상세설명 : ' + (info.description || '') + '</p>' +
         '            </div>' +
         '        </div>' +
         '    </div>' +
@@ -227,3 +245,84 @@ function createMarkersAndOverlays(category) {
         }
     });
 }
+
+// 검색 기능 복구
+var newSearchForm = document.getElementById('newSearchForm');
+var newSearchInput = document.getElementById('newSearchInput');
+
+// 문자열 전처리 함수: 하이픈과 공백을 제거
+function normalizeString(str) {
+    return str.replace(/[-\s]/g, '').toLowerCase();
+}
+
+newSearchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var userInput = normalizeString(newSearchInput.value.trim());
+    var position = null;
+    var markerIndex = -1;
+
+    // 위도/경도 패턴 검색
+    var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/;
+    if (latLngPattern.test(userInput)) {
+        var match = userInput.match(latLngPattern);
+        var lat = parseFloat(match[1]);
+        var lng = parseFloat(match[3]);
+        position = new kakao.maps.LatLng(lat, lng);
+
+        // 위도/경도가 일치하는 마커 찾기
+        allPositions.forEach(function(pos, index) {
+            if (pos.lat === lat && pos.lng === lng) {
+                markerIndex = index;
+                return false;
+            }
+        });
+    } else {
+        // 주소 또는 관리번호로 검색
+        var filtered = allInfo.filter(function(item) {
+            return normalizeString(item.address).includes(userInput) ||
+                   normalizeString(item.number).includes(userInput);
+        });
+
+        if (filtered.length > 0) {
+            var foundItem = filtered[0];
+            var index = allInfo.indexOf(foundItem);
+            position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
+            markerIndex = index;
+        }
+    }
+
+    if (position) {
+        map.setCenter(position);
+        map.setLevel(4); // 확대 수준 설정
+
+        // 검색된 마커 클릭 이벤트 트리거
+        if (markerIndex !== -1) {
+            kakao.maps.event.trigger(markers[markerIndex], 'click');
+        } else {
+            // 위치 정보가 없을 경우 임시 마커 및 오버레이 생성
+            var tempMarker = new kakao.maps.Marker({
+                position: position,
+                map: map
+            });
+
+            var tempOverlayContent =
+                '<div class="customOverlay">' +
+                '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
+                '    해당 위치에 정보가 없습니다.' +
+                '</div>';
+
+            var tempOverlay = new kakao.maps.CustomOverlay({
+                content: tempOverlayContent,
+                map: map,
+                position: position,
+                yAnchor: 2.0
+            });
+
+            // 일정 시간 후 임시 마커 제거
+            setTimeout(function() {
+                tempMarker.setMap(null);
+                tempOverlay.setMap(null);
+            }, 3000);
+        }
+    }
+});
