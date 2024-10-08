@@ -185,24 +185,28 @@ html, body {
     height: 100%;
 }
 
+/* 연결점 버튼 */
 #connectionToggle {
     position: absolute;
-    top: 130px;
+    top: 120px; /* 좌표 및 로드뷰 버튼과 동일한 위치로 조정 */
     right: 10px;
-    width: 100px;
-    height: 40px;
+    width: 70px;
+    height: 30px;
     z-index: 3;
     background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 30px;
+    text-align: center;
 }
 
 #connectionToggle:hover {
     background-color: #218838;
 }
+
 
 
 /* 미니맵 스타일 */
