@@ -1,8 +1,7 @@
-// 마커 데이터 및 연결 정보
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
-// 각 마커에 대한 연결 정보
+// 마커 데이터 및 연결 정보
 var markerConnections = {
     'A-GC-25': {
         red: ['A-GC-6', 'A-GC-17', 'A-GC-18', 'A-GC-19', 'A-GC-20', 'A-GC-22', 'A-GC-5', 'A-GC-7', 'A-GC-21', 'A-GC-14', 'A-GC-15', 'A-GC-16'],
@@ -15,15 +14,6 @@ var markerConnections = {
     }
 };
 
-// 지도 설정 및 초기화
-var mapContainer = document.getElementById('map');
-var mapOption = {
-    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
-    level: 5
-};
-var map = new kakao.maps.Map(mapContainer, mapOption);
-
-var markers = [];
 var polylines = []; // 선을 저장할 배열
 var lastClickedMarker = null; // 마지막으로 클릭한 마커
 
@@ -59,60 +49,15 @@ function drawLines(baseMarker, connectedMarkerNumbers, color) {
     });
 }
 
-// 마커 클릭 시 연결된 선을 그리는 함수
-function handleMarkerClick(marker, markerInfo) {
-    clearPolylines(); // 기존 선 제거
 
-    var connections = markerConnections[markerInfo.number];
-    if (connections) {
-        if (connections.red) {
-            drawLines(markerInfo, connections.red, 'red');
-        }
-        if (connections.blue) {
-            drawLines(markerInfo, connections.blue, 'blue');
-        }
-        if (connections.black) {
-            drawLines(markerInfo, connections.black, 'black');
-        }
-    }
-
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(
-            'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png', 
-            new kakao.maps.Size(30, 40)
-        ));
-    }
-
-    marker.setImage(new kakao.maps.MarkerImage(
-        'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true', 
-        new kakao.maps.Size(30, 40)
-    ));
-    lastClickedMarker = marker; // 현재 클릭한 마커 저장
-}
-
-// 마커 생성 및 클릭 이벤트 등록
-function createMarkersAndOverlays() {
-    allPositions.forEach(function(position, index) {
-        var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-        var markerImage = new kakao.maps.MarkerImage(
-            'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png', 
-            new kakao.maps.Size(30, 40)
-        );
-        var marker = new kakao.maps.Marker({
-            position: markerPosition,
-            image: markerImage
-        });
-
-        marker.setMap(map);
-        markers.push(marker);
-
-        // 마커 클릭 이벤트 추가
-        kakao.maps.event.addListener(marker, 'click', function() {
-            handleMarkerClick(marker, allInfo[index]);
-        });
-    });
-}
-
+var mapContainer = document.getElementById('map');
+var roadviewContainer = document.getElementById('roadview');
+var minimapMarkers = [];
+var mapOption = {
+    center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+    level: 5
+};
+var map = new kakao.maps.Map(mapContainer, mapOption);
 var geocoder = new kakao.maps.services.Geocoder();
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
@@ -221,11 +166,28 @@ function createMarkersAndOverlays(category) {
             minimapMarkers.push(minimapMarker);
             minimapMarker.setMap(minimap);
 
-            // 마커 클릭 이벤트 추가
-            kakao.maps.event.addListener(marker, 'click', function() {
-                handleMarkerClick(marker, markerImageUrl);
-                showCustomOverlay(position, index);
-            });
+kakao.maps.event.addListener(marker, 'click', function() {
+    var markerNumber = allInfo[index].number;
+
+    // 연결된 마커도 클릭 시 동일하게 연결선 표시
+    var baseMarkerNumber = Object.keys(markerConnections).find(function(key) {
+        return markerConnections[key].red.includes(markerNumber) ||
+               markerConnections[key].blue.includes(markerNumber) ||
+               markerConnections[key].black.includes(markerNumber);
+    });
+
+    if (baseMarkerNumber) {
+        var baseMarkerInfo = allInfo.find(function(info) {
+            return info.number === baseMarkerNumber;
+        });
+        handleMarkerClick(marker, baseMarkerInfo); // 기준 마커로 처리
+    } else {
+        handleMarkerClick(marker, allInfo[index]); // 클릭한 마커 자체가 기준일 때
+    }
+
+    showCustomOverlay(position, index);
+});
+
 
             kakao.maps.event.addListener(marker, 'touchstart', function() {
                 handleMarkerClick(marker, markerImageUrl);
@@ -235,7 +197,22 @@ function createMarkersAndOverlays(category) {
     });
 }
 
-function handleMarkerClick(clickedMarker, defaultImageUrl) {
+function handleMarkerClick(clickedMarker, markerInfo) {
+    clearPolylines(); // 기존 선 제거
+
+    var connections = markerConnections[markerInfo.number];
+    if (connections) {
+        if (connections.red) {
+            drawLines(markerInfo, connections.red, 'red');
+        }
+        if (connections.blue) {
+            drawLines(markerInfo, connections.blue, 'blue');
+        }
+        if (connections.black) {
+            drawLines(markerInfo, connections.black, 'black');
+        }
+    }
+
     // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
     if (lastClickedMarker) {
         lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
@@ -247,6 +224,7 @@ function handleMarkerClick(clickedMarker, defaultImageUrl) {
     // 마지막으로 클릭된 마커를 현재 마커로 설정
     lastClickedMarker = clickedMarker;
 }
+
 
 // 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
