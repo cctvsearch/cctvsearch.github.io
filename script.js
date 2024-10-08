@@ -221,6 +221,9 @@ function createMarkersAndOverlays(category) {
             kakao.maps.event.addListener(marker, 'click', function() {
                 var markerNumber = allInfo[index].number;
 
+                // 모든 마커에 대해 오버레이는 항상 표시
+                showCustomOverlay(position, index);
+
                 // 연결된 마커인지 확인 (선 연결 여부)
                 var baseMarkerNumber = Object.keys(markerConnections).find(function(key) {
                     return markerConnections[key].red.includes(markerNumber) ||
@@ -235,12 +238,9 @@ function createMarkersAndOverlays(category) {
                     });
                     handleMarkerClick(marker, baseMarkerInfo); 
                 } else {
-                    // 연결되지 않은 마커도 커스텀 오버레이 표시
+                    // 연결되지 않은 마커도 오버레이만 표시
                     handleMarkerClick(marker, allInfo[index]); 
                 }
-
-                // 커스텀 오버레이 표시
-                showCustomOverlay(position, index);
             });
 
             kakao.maps.event.addListener(marker, 'touchstart', function() {
