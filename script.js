@@ -16,8 +16,9 @@ var markerConnections = {
 
 var polylines = []; // 선을 저장할 배열
 var lastClickedMarker = null; // 마지막으로 클릭한 마커
+var lastBaseMarkerNumber = null; // 마지막 기준 마커 번호
 
-// 폴리라인 초기화
+// 폴리라인 초기화 함수
 function clearPolylines() {
     polylines.forEach(function(line) {
         line.setMap(null);
@@ -25,7 +26,41 @@ function clearPolylines() {
     polylines = []; // 초기화
 }
 
-// 주어진 색상으로 마커 간의 선을 그리는 함수
+// 마커 클릭 시 연결된 선을 그리는 함수
+function handleMarkerClick(clickedMarker, markerInfo) {
+    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultMarkerImageUrl, new kakao.maps.Size(30, 40)));
+    }
+
+    // 현재 클릭한 마커의 이미지를 변경
+    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+    lastClickedMarker = clickedMarker;
+
+    // 기준 마커가 변경된 경우에만 폴리라인을 새로 그리기
+    if (markerInfo.number !== lastBaseMarkerNumber) {
+        clearPolylines(); // 기존 선 제거
+
+        // 새로운 기준 마커에 연결된 선 그리기
+        var connections = markerConnections[markerInfo.number];
+        if (connections) {
+            if (connections.red) {
+                drawPolyline(clickedMarker, connections.red, '#FF0000'); // 빨간선
+            }
+            if (connections.blue) {
+                drawPolyline(clickedMarker, connections.blue, '#0000FF'); // 파란선
+            }
+            if (connections.black) {
+                drawPolyline(clickedMarker, connections.black, '#000000'); // 검정선
+            }
+
+            // 새로운 기준 마커로 설정
+            lastBaseMarkerNumber = markerInfo.number; // 기준 마커 번호 업데이트
+        }
+    }
+}
+
+// 마커 간의 폴리라인 그리기
 function drawPolyline(startMarker, connectedMarkerIds, color) {
     var path = [startMarker.getPosition()];
     connectedMarkerIds.forEach(function(id) {
@@ -56,36 +91,7 @@ function findMarkerById(markerId) {
     return null;
 }
 
-// 마커 클릭 시 연결된 선을 그리는 함수
-function handleMarkerClick(clickedMarker, markerInfo) {
-    clearPolylines(); // 기존 선 제거
-
-    var connections = markerConnections[markerInfo.number];
-    if (connections) {
-        if (connections.red) {
-            drawPolyline(clickedMarker, connections.red, '#FF0000'); // 빨간선
-        }
-        if (connections.blue) {
-            drawPolyline(clickedMarker, connections.blue, '#0000FF'); // 파란선
-        }
-        if (connections.black) {
-            drawPolyline(clickedMarker, connections.black, '#000000'); // 검정선
-        }
-    }
-
-    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultMarkerImageUrl, new kakao.maps.Size(30, 40)));
-    }
-
-    // 현재 클릭한 마커의 이미지를 변경
-    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
-
-    // 마지막으로 클릭된 마커를 현재 마커로 설정
-    lastClickedMarker = clickedMarker;
-}
-
-// 커스텀 오버레이를 닫을 때 선이 남아있게 수정
+// 커스텀 오버레이를 닫을 때 선이 남아있게 수정 (clearPolylines 제거)
 function closeCustomOverlay() {
     if (currentOverlay) {
         currentOverlay.setMap(null);
@@ -208,65 +214,30 @@ function createMarkersAndOverlays(category) {
             minimapMarkers.push(minimapMarker);
             minimapMarker.setMap(minimap);
 
-// 마커 클릭 이벤트 설정
-kakao.maps.event.addListener(marker, 'click', function() {
-    var markerNumber = allInfo[index].number;
+            // 마커 클릭 이벤트 설정
+            kakao.maps.event.addListener(marker, 'click', function() {
+                var markerNumber = allInfo[index].number;
 
-    // 연결된 마커도 클릭 시 동일하게 연결선 표시
-    var baseMarkerNumber = Object.keys(markerConnections).find(function(key) {
-        return markerConnections[key].red.includes(markerNumber) ||
-               markerConnections[key].blue.includes(markerNumber) ||
-               markerConnections[key].black.includes(markerNumber);
-    });
+                // 연결된 마커도 클릭 시 동일하게 연결선 표시
+                var baseMarkerNumber = Object.keys(markerConnections).find(function(key) {
+                    return markerConnections[key].red.includes(markerNumber) ||
+                           markerConnections[key].blue.includes(markerNumber) ||
+                           markerConnections[key].black.includes(markerNumber);
+                });
 
-    if (baseMarkerNumber) {
-        var baseMarkerInfo = allInfo.find(function(info) {
-            return info.number === baseMarkerNumber;
-        });
-        handleMarkerClick(marker, baseMarkerInfo); // 기준 마커로 처리
-    } else {
-        handleMarkerClick(marker, allInfo[index]); // 클릭한 마커 자체가 기준일 때
-    }
+                if (baseMarkerNumber) {
+                    var baseMarkerInfo = allInfo.find(function(info) {
+                        return info.number === baseMarkerNumber;
+                    });
+                    handleMarkerClick(marker, baseMarkerInfo); // 기준 마커로 처리
+                } else {
+                    handleMarkerClick(marker, allInfo[index]); // 클릭한 마커 자체가 기준일 때
+                }
 
-    showCustomOverlay(position, index);
-});
-// 여기서부터 handleMarkerClick 함수가 위치합니다.
+                // 커스텀 오버레이 표시
+                showCustomOverlay(position, index);
+            });
 
-var lastBaseMarker = null; // 마지막 기준 마커를 추적하는 변수
-
-// 마커 클릭 시 연결된 선을 그리는 함수
-function handleMarkerClick(clickedMarker, markerInfo) {
-    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultMarkerImageUrl, new kakao.maps.Size(30, 40)));
-    }
-
-    // 현재 클릭한 마커의 이미지를 변경
-    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
-    lastClickedMarker = clickedMarker;
-
-    // 이미 기준 마커가 설정된 경우 연결된 마커를 눌렀을 때 선을 새로 그리지 않고 유지
-    if (markerInfo.number !== lastBaseMarker) {
-        clearPolylines(); // 기준 마커가 변경되었을 때만 기존 선 제거
-
-        // 새로운 기준 마커에 연결된 선 그리기
-        var connections = markerConnections[markerInfo.number];
-        if (connections) {
-            if (connections.red) {
-                drawPolyline(clickedMarker, connections.red, '#FF0000'); // 빨간선
-            }
-            if (connections.blue) {
-                drawPolyline(clickedMarker, connections.blue, '#0000FF'); // 파란선
-            }
-            if (connections.black) {
-                drawPolyline(clickedMarker, connections.black, '#000000'); // 검정선
-            }
-
-            // 새로운 기준 마커로 설정
-            lastBaseMarker = markerInfo.number;
-        }
-    }
-}
             kakao.maps.event.addListener(marker, 'touchstart', function() {
                 handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
@@ -275,7 +246,7 @@ function handleMarkerClick(clickedMarker, markerInfo) {
     });
 }
 
-// 커스텀 오버레이
+// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
@@ -304,6 +275,8 @@ function showCustomOverlay(position, index) {
         yAnchor: 1.1
     });
 }
+
+// 기타 로직 유지
 
 // 기타 로직 유지
 
