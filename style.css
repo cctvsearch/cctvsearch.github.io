@@ -188,7 +188,7 @@ html, body {
 /* 연결점 버튼 */
 #connectionToggle {
     position: absolute;
-    top: 120px; /* 좌표 및 로드뷰 버튼과 동일한 위치로 조정 */
+    top: 150px; /* 좌표 및 로드뷰 버튼과 동일한 위치로 조정 */
     right: 10px;
     width: 70px;
     height: 30px;
