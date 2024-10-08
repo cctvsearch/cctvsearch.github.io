@@ -1,15 +1,122 @@
-// 모든 포지션과 정보를 합칩니다.
+// 마커 데이터 및 연결 정보
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
+// 각 마커에 대한 연결 정보
+var markerConnections = {
+    'A-GC-25': {
+        red: ['A-GC-6', 'A-GC-17', 'A-GC-18', 'A-GC-19', 'A-GC-20', 'A-GC-22', 'A-GC-5', 'A-GC-7', 'A-GC-21', 'A-GC-14', 'A-GC-15', 'A-GC-16'],
+        blue: ['A-GC-29', 'A-GC-41'],
+        black: ['A-GC-13', 'A-GC-23', 'A-GC-24']
+    },
+    'A-GC-27': {
+        red: ['A-GC-26', 'A-GC-2', 'A-GC-28', 'A-GC-1'],
+        blue: ['A-GC-45', 'A-JA-42']
+    }
+};
+
+// 지도 설정 및 초기화
 var mapContainer = document.getElementById('map');
-var roadviewContainer = document.getElementById('roadview');
-var minimapMarkers = [];
 var mapOption = {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
     level: 5
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var markers = [];
+var polylines = []; // 선을 저장할 배열
+var lastClickedMarker = null; // 마지막으로 클릭한 마커
+
+// 폴리라인 초기화
+function clearPolylines() {
+    polylines.forEach(function(line) {
+        line.setMap(null);
+    });
+    polylines = []; // 초기화
+}
+
+// 주어진 색상으로 마커 간의 선을 그리는 함수
+function drawLines(baseMarker, connectedMarkerNumbers, color) {
+    connectedMarkerNumbers.forEach(function(markerNumber) {
+        var connectedMarker = allPositions.find(function(position, index) {
+            return allInfo[index].number === markerNumber;
+        });
+        if (connectedMarker) {
+            var linePath = [
+                new kakao.maps.LatLng(baseMarker.lat, baseMarker.lng),
+                new kakao.maps.LatLng(connectedMarker.lat, connectedMarker.lng)
+            ];
+            var polyline = new kakao.maps.Polyline({
+                path: linePath,
+                strokeWeight: 3,
+                strokeColor: color,
+                strokeOpacity: 1,
+                strokeStyle: 'solid'
+            });
+            polyline.setMap(map);
+            polylines.push(polyline);
+        }
+    });
+}
+
+// 마커 클릭 시 연결된 선을 그리는 함수
+function handleMarkerClick(marker, markerInfo) {
+    clearPolylines(); // 기존 선 제거
+
+    var connections = markerConnections[markerInfo.number];
+    if (connections) {
+        if (connections.red) {
+            drawLines(markerInfo, connections.red, 'red');
+        }
+        if (connections.blue) {
+            drawLines(markerInfo, connections.blue, 'blue');
+        }
+        if (connections.black) {
+            drawLines(markerInfo, connections.black, 'black');
+        }
+    }
+
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(
+            'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png', 
+            new kakao.maps.Size(30, 40)
+        ));
+    }
+
+    marker.setImage(new kakao.maps.MarkerImage(
+        'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true', 
+        new kakao.maps.Size(30, 40)
+    ));
+    lastClickedMarker = marker; // 현재 클릭한 마커 저장
+}
+
+// 마커 생성 및 클릭 이벤트 등록
+function createMarkersAndOverlays() {
+    allPositions.forEach(function(position, index) {
+        var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+        var markerImage = new kakao.maps.MarkerImage(
+            'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png', 
+            new kakao.maps.Size(30, 40)
+        );
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage
+        });
+
+        marker.setMap(map);
+        markers.push(marker);
+
+        // 마커 클릭 이벤트 추가
+        kakao.maps.event.addListener(marker, 'click', function() {
+            handleMarkerClick(marker, allInfo[index]);
+        });
+    });
+}
+
+// 초기 마커 및 오버레이 생성
+createMarkersAndOverlays();
+
+
 var geocoder = new kakao.maps.services.Geocoder();
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
@@ -22,7 +129,7 @@ var minimap = new kakao.maps.Map(minimapContainer, {
 });
 
 kakao.maps.event.addListener(roadview, 'init', function() {
-    kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
+kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
         var viewpoint = roadview.getViewpoint();
     });
 
@@ -32,7 +139,6 @@ kakao.maps.event.addListener(roadview, 'init', function() {
         minimap.setCenter(position); // 미니맵의 중심 업데이트
     });
 });
-
 var isRoadviewEnabled = false;
 
 kakao.maps.event.addListener(map, 'idle', function() {
@@ -121,22 +227,22 @@ function createMarkersAndOverlays(category) {
 
             // 마커 클릭 이벤트 추가
             kakao.maps.event.addListener(marker, 'click', function() {
-                handleMarkerClick(marker, index);
+                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
 
             kakao.maps.event.addListener(marker, 'touchstart', function() {
-                handleMarkerClick(marker, index);
+                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
         }
     });
 }
 
-function handleMarkerClick(clickedMarker, index) {
+function handleMarkerClick(clickedMarker, defaultImageUrl) {
     // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
     if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
     }
 
     // 현재 클릭한 마커의 이미지를 변경
@@ -144,23 +250,9 @@ function handleMarkerClick(clickedMarker, index) {
 
     // 마지막으로 클릭된 마커를 현재 마커로 설정
     lastClickedMarker = clickedMarker;
-
-    // 연결점 모드가 활성화되면 선을 그립니다.
-    if (isConnectPointsMode) {
-        removeAllLines();  // 기존 선 제거
-
-        if (allInfo[index].number === "A-GC-25") {
-            drawLines(index, [6, 16, 17, 18, 19, 20, 22, 5, 7, 21, 14, 15], 'red');
-            drawLines(index, [29, 41], 'blue');
-            drawLines(index, [13, 23, 24], 'black');
-        } else if (allInfo[index].number === "A-GC-27") {
-            drawLines(index, [26, 2, 28, 1], 'red');
-            drawLines(index, [45, 42], 'blue');
-        }
-    }
 }
 
-// 기존 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
+// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
     if (currentOverlay) {
         currentOverlay.setMap(null);
@@ -174,8 +266,6 @@ function closeCustomOverlay() {
         }
     }
 }
-
-// 커스텀 오버레이를 표시할 때 연결점도 그리기
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
@@ -203,58 +293,7 @@ function showCustomOverlay(position, index) {
         position: new kakao.maps.LatLng(position.lat, position.lng),
         yAnchor: 1.1
     });
-
-    handleMarkerClick(null, index); // 커스텀 오버레이가 뜰 때 연결선도 표시
 }
-
-// 새로운 연결점 버튼 기능 추가
-let isConnectPointsMode = false;  // 연결점 모드 활성화 여부를 저장
-let polylines = [];  // 지도에 표시된 선들을 저장하는 배열
-
-// 연결점 버튼 추가
-const connectPointsButton = document.createElement('button');
-connectPointsButton.textContent = '연결점';
-connectPointsButton.id = 'connectPointsButton';
-document.body.appendChild(connectPointsButton);
-
-// 연결점 버튼 클릭 시 연결 모드 활성화/비활성화
-connectPointsButton.addEventListener('click', function() {
-    isConnectPointsMode = !isConnectPointsMode;
-
-    if (!isConnectPointsMode) {
-        removeAllLines();  // 모드가 비활성화되면 선 모두 제거
-    }
-});
-
-// 모든 선을 제거하는 함수
-function removeAllLines() {
-    polylines.forEach(function(line) {
-        line.setMap(null);  // 선을 지도에서 제거
-    });
-    polylines = [];  // 배열 초기화
-}
-
-// 마커 간 선을 그리는 함수
-function drawLines(baseMarker, connections, color) {
-    const lines = connections.map(function(connectionIndex) {
-        const linePath = [
-            new kakao.maps.LatLng(allPositions[baseMarker].lat, allPositions[baseMarker].lng),
-            new kakao.maps.LatLng(allPositions[connectionIndex].lat, allPositions[connectionIndex].lng)
-        ];
-        const polyline = new kakao.maps.Polyline({
-            path: linePath,
-            strokeWeight: 3,  // 선 두께
-            strokeColor: color,  // 선 색상
-            strokeOpacity: 1,  // 선 투명도
-            strokeStyle: 'solid'  // 선 스타일
-        });
-        polyline.setMap(map);  // 선을 지도에 표시
-        return polyline;
-    });
-    polylines.push(...lines);  // 새로 그린 선들을 배열에 저장
-}
-
-// 좌표/로드뷰 버튼 등의 나머지 기존 코드 유지...
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
