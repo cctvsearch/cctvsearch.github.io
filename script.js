@@ -466,6 +466,82 @@ function getCurrentPos() {
     );
 }
 
+var lines = {};  // Object to store the lines for each marker
+
+// Define connections for A-MW-14 and A-MW-48
+var markerConnections = {
+    'A-MW-14': ['A-MW-13', 'A-MW-18', 'A-MW-19', 'A-MW-20', 'A-MW-21', 'A-MW-22', 'A-MW-58', 'A-MW-17', 'A-MW-55', 'A-MW-6', 'A-MW-15', 'A-MW-16', 'A-MW-23'],
+    'A-MW-48': ['A-MW-50', 'A-MW-54', 'A-MW-49', 'A-MW-47', 'A-MW-59']
+};
+
+// Draw lines between markers
+function drawLines(markerNumber) {
+    var positions = markerConnections[markerNumber];
+    if (!positions) return;
+
+    var markerPosition = allPositions.find(pos => pos.number === markerNumber);
+    if (!markerPosition) return;
+
+    if (!lines[markerNumber]) {
+        lines[markerNumber] = [];
+    }
+
+    // Iterate through connected markers and draw lines
+    positions.forEach(connectedMarker => {
+        var connectedPosition = allPositions.find(pos => pos.number === connectedMarker);
+        if (connectedPosition) {
+            var line = new kakao.maps.Polyline({
+                path: [
+                    new kakao.maps.LatLng(markerPosition.lat, markerPosition.lng),
+                    new kakao.maps.LatLng(connectedPosition.lat, connectedPosition.lng)
+                ],
+                strokeWeight: 5,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1,
+                strokeStyle: 'solid'
+            });
+            line.setMap(map);  // Display the line on the map
+            lines[markerNumber].push(line);
+        }
+    });
+}
+
+// Hide lines for a marker
+function hideLines(markerNumber) {
+    if (lines[markerNumber]) {
+        lines[markerNumber].forEach(line => line.setMap(null));  // Hide the lines
+        lines[markerNumber] = [];
+    }
+}
+
+// Modify the marker click event to show/hide lines
+function handleMarkerClick(clickedMarker, defaultImageUrl) {
+    var markerNumber = allInfo[markers.indexOf(clickedMarker)].number;
+
+    // Toggle lines based on whether the marker is already clicked
+    if (clickedMarker === lastClickedMarker) {
+        hideLines(markerNumber);
+        closeCustomOverlay();
+        lastClickedMarker = null;
+        return;
+    }
+
+    // Hide lines for the last clicked marker
+    if (lastClickedMarker) {
+        var lastMarkerNumber = allInfo[markers.indexOf(lastClickedMarker)].number;
+        hideLines(lastMarkerNumber);
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+    }
+
+    // Draw lines for the clicked marker
+    drawLines(markerNumber);
+
+    // Update the last clicked marker
+    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+    lastClickedMarker = clickedMarker;
+}
+
+
 currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
 
 // 페이지 로드 시 버튼 텍스트 업데이트
