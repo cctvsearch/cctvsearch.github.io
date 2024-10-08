@@ -185,6 +185,26 @@ html, body {
     height: 100%;
 }
 
+#connectionToggle {
+    position: absolute;
+    top: 130px;
+    right: 10px;
+    width: 100px;
+    height: 40px;
+    z-index: 3;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#connectionToggle:hover {
+    background-color: #218838;
+}
+
+
 /* 미니맵 스타일 */
 #minimap {
     width: 200px;
