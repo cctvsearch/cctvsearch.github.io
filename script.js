@@ -2,11 +2,15 @@
 var mapContainer = document.getElementById('map');
 var roadviewContainer = document.getElementById('roadview');
 var minimapMarkers = [];
+var markers = []; // 마커 저장 배열
 var isRoadviewEnabled = false;
 var polylines = []; // 폴리라인을 저장하는 배열
 var lastClickedMarker = null; // 마지막 클릭된 마커 저장
 var currentOverlay = null; // 현재 커스텀 오버레이 저장
 var isRoadviewInitialized = false;
+
+const defaultMarkerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
+const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
 
 // 마커 데이터 및 연결 정보
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
@@ -69,10 +73,12 @@ document.getElementById('roadviewToggle').addEventListener('click', function() {
 
 // 마커 클릭 이벤트 및 커스텀 오버레이 처리
 function handleMarkerClick(clickedMarker, markerId) {
+    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
     if (lastClickedMarker) {
         lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultMarkerImageUrl, new kakao.maps.Size(30, 40)));
     }
 
+    // 현재 클릭한 마커의 이미지를 변경
     clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
     lastClickedMarker = clickedMarker;
 
@@ -187,7 +193,7 @@ function createMarkersAndOverlays(category) {
     minimapMarkers.forEach(marker => marker.setMap(null));
     minimapMarkers = [];
 
-    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; 
+    var markerImageUrl = defaultMarkerImageUrl; 
     var markerSize = new kakao.maps.Size(30, 40);
 
     allPositions.forEach(function(position, index) {
