@@ -113,10 +113,6 @@ function createMarkersAndOverlays() {
     });
 }
 
-// 초기 마커 및 오버레이 생성
-createMarkersAndOverlays();
-
-
 var geocoder = new kakao.maps.services.Geocoder();
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
