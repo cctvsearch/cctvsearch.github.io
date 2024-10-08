@@ -58,6 +58,9 @@ function handleMarkerClick(clickedMarker, markerInfo) {
             lastBaseMarkerNumber = markerInfo.number; // 기준 마커 번호 업데이트
         }
     }
+
+    // 커스텀 오버레이 표시 (모든 마커에서 오버레이가 뜨도록 보장)
+    showCustomOverlay(markerInfo.position, allInfo.findIndex(info => info.number === markerInfo.number));
 }
 
 // 마커 간의 폴리라인 그리기
@@ -218,19 +221,21 @@ function createMarkersAndOverlays(category) {
             kakao.maps.event.addListener(marker, 'click', function() {
                 var markerNumber = allInfo[index].number;
 
-                // 연결된 마커도 클릭 시 동일하게 연결선 표시
+                // 연결된 마커인지 확인
                 var baseMarkerNumber = Object.keys(markerConnections).find(function(key) {
                     return markerConnections[key].red.includes(markerNumber) ||
                            markerConnections[key].blue.includes(markerNumber) ||
                            markerConnections[key].black.includes(markerNumber);
                 });
 
+                // 연결된 마커 또는 기준 마커가 없으면, 일반 마커로 처리
                 if (baseMarkerNumber) {
                     var baseMarkerInfo = allInfo.find(function(info) {
                         return info.number === baseMarkerNumber;
                     });
                     handleMarkerClick(marker, baseMarkerInfo); // 기준 마커로 처리
                 } else {
+                    // 기준 마커로 설정되지 않은 일반 마커도 처리
                     handleMarkerClick(marker, allInfo[index]); // 클릭한 마커 자체가 기준일 때
                 }
 
@@ -275,6 +280,9 @@ function showCustomOverlay(position, index) {
         yAnchor: 1.1
     });
 }
+
+// 기타 로직 유지
+
 
 // 기타 로직 유지
 
