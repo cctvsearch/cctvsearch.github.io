@@ -186,7 +186,7 @@ html, body {
 }
 
 /* 연결점 버튼 */
-#connectionToggle {
+#connectPointsButton {
     position: absolute;
     top: 150px; /* 좌표 및 로드뷰 버튼과 동일한 위치로 조정 */
     right: 10px;
@@ -203,7 +203,7 @@ html, body {
     text-align: center;
 }
 
-#connectionToggle:hover {
+#connectPointsButton:hover {
     background-color: #218838;
 }
 
