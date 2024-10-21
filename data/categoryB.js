@@ -56,7 +56,7 @@ var BInfo = [
         address: "과천동 513-64",
         rotation: 1,
         fixed: 0,
-        description: "A-GC-25*",
+        description: "A-GC-25*,15,16",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -64,7 +64,7 @@ var BInfo = [
         address: "과천동 513-152",
         rotation: 1,
         fixed: 0,
-        description: "A-GC-25*",
+        description: "A-GC-25*,14,16",
         image: "https://via.placeholder.com/150"
     },
                         {
@@ -72,7 +72,7 @@ var BInfo = [
                 address: "과천동 485-6",
                 rotation: 1,
                 fixed: 4,
-                description: "A-GC-25*",
+                description: "A-GC-25*,6",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -80,7 +80,7 @@ var BInfo = [
                 address: "과천동 485-14 과천동 어린이집 앞",
                 rotation: 1,
                 fixed: 4,
-                description: "A-GC-25*",
+                description: "A-GC-25*,19",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -88,7 +88,7 @@ var BInfo = [
                 address: "과천동 475-9",
                 rotation: 0,
                 fixed: 2,
-                description: "A-GC-25*",
+                description: "A-GC-25*,18",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -96,7 +96,7 @@ var BInfo = [
                 address: "과천동 464 열리는어린이집",
                 rotation: 1,
                 fixed: 6,
-                description: "A-GC-25*",
+                description: "A-GC-25*,22",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -104,7 +104,7 @@ var BInfo = [
                 address: "과천동 461-10(답) 열리는어린이집",
                 rotation: 1,
                 fixed: 6,
-                description: "A-GC-25*",
+                description: "A-GC-25*,5,7",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -112,7 +112,7 @@ var BInfo = [
                 address: "과천동 517-40",
                 rotation: 1,
                 fixed: 1,
-                description: "A-GC-25*",
+                description: "A-GC-25*,20",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -120,7 +120,7 @@ var BInfo = [
                 address: "JA-8",
                 rotation: 1,
                 fixed: 6,
-                description: "A-GC-25*",
+                description: "A-GC-25*,13,24,P33",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -128,7 +128,7 @@ var BInfo = [
                 address: "과천동 521-4 스토리아툼 맞은편(주차장 근처)",
                 rotation: 1,
                 fixed: 1,
-                description: "A-GC-25*",
+                description: "A-GC-25*,13,23,P33",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -162,7 +162,7 @@ var BInfo = [
                 address: "과천동 524-5",
                 rotation: 1,
                 fixed: 4,
-                description: "A-GC-27*",
+                description: "A-GC-27*,2,1 / A-GC-84 (FX #10)",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -170,7 +170,7 @@ var BInfo = [
                 address: "무네미길 36",
                 rotation: 1,
                 fixed: 0,
-                description: "A-GC-25*",
+                description: "A-GC-25*,41,P38",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -202,7 +202,7 @@ var BInfo = [
                 address: "과천동 382-1 || 뒷골로 62-3",
                 rotation: 1,
                 fixed: 3,
-                description: "A-GC-38*",
+                description: "A-GC-38*,35,36",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -210,7 +210,7 @@ var BInfo = [
                 address: "과천동 380-2 과천동 어린이집 앞",
                 rotation: 1,
                 fixed: 3,
-                description: "A-GC-38*",
+                description: "A-GC-38*,3,39",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -218,7 +218,7 @@ var BInfo = [
                 address: "과천동 379-9 뒷골",
                 rotation: 1,
                 fixed: 5,
-                description: "A-GC-38*",
+                description: "A-GC-38*,33,36",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -226,7 +226,7 @@ var BInfo = [
                 address: "과천동 378-40 뒷골",
                 rotation: 0,
                 fixed: 2,
-                description: "A-GC-38*",
+                description: "A-GC-38*,33,35",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -251,7 +251,7 @@ var BInfo = [
                 address: "과천동 373-3",
                 rotation: 1,
                 fixed: 1,
-                description: "A-GC-38*",
+                description: "A-GC-38*,3,34",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -259,7 +259,7 @@ var BInfo = [
                 address: "뒷골로 22-11",
                 rotation: 1,
                 fixed: 4,
-                description: "A-GC-38* / A-GC-86 (FX #10)",
+                description: "A-GC-38*,P3 / A-GC-86 (FX #10)",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -267,7 +267,7 @@ var BInfo = [
                 address: "과천동 366-6 선바위역 3번출구 뒤",
                 rotation: 1,
                 fixed: 3,
-                description: "A-GC-25*",
+                description: "A-GC-25*,29,P38",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -299,7 +299,7 @@ var BInfo = [
                 address: "과천동 605-1 남태령지하보도",
                 rotation: 1,
                 fixed: 3,
-                description: "A-GC-27*",
+                description: "A-GC-27*,A-JA-42",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -307,7 +307,7 @@ var BInfo = [
                 address: "과천동 247-7",
                 rotation: 1,
                 fixed: 5,
-                description: "단말 UTP만 연",
+                description: "단말 UTP만 연결",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -419,7 +419,7 @@ var BInfo = [
                 address: "과천동 140-98",
                 rotation: 1,
                 fixed: 2,
-                description: "A-JA-39*",
+                description: "A-JA-39*,4",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -427,7 +427,7 @@ var BInfo = [
                 address: "과천동 142-34 광창마을",
                 rotation: 1,
                 fixed: 2,
-                description: "A-JA-39*",
+                description: "A-JA-39*,62 / A-JA-39*,82",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -435,7 +435,7 @@ var BInfo = [
                 address: "과천동 152-3",
                 rotation: 1,
                 fixed: 0,
-                description: "A-JA-39*",
+                description: "A-JA-39*,61",
                 image: "https://via.placeholder.com/150"
             }
 ];
