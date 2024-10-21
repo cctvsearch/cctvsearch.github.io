@@ -237,7 +237,7 @@ var GInfo = [
         address: "중앙동 67 1006동 앞 대로변",
         rotation: 1,
         fixed: 0,
-        description: "A-JA-39*",
+        description: "A-JA-39* / A-BL-39*",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -245,7 +245,7 @@ var GInfo = [
         address: "중앙동 67 1014동 옆 초소~상가사이",
         rotation: 1,
         fixed: 0,
-        description: "A-JA-39*",
+        description: "A-JA-39* / A-BL-39*",
         image: "https://via.placeholder.com/150"
     }
 ];
