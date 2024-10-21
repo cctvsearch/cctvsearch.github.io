@@ -24,34 +24,35 @@ var Epositions = [
 var EInfo = [
     {
         number: "A-BL-2",
-        address: "부림동 11-5",
+        address: "부림동 11-5 || 부림2길 76",
         rotation: 1,
         fixed: 1,
-        description: "부림2길 76",
+        description: "A-BL-3 (FX #1)/ A-BL-1,5 (FX #5)/ A-BL-9,12,13 (FX #10)
+                      A-BL-7,8 (E #5)/ A-BL-3,4 (E #6)/ A-JA-31 (E #7)",
         image: "https://via.placeholder.com/150"
-    },
+    },j
     {
         number: "A-BL-3",
         address: "부림동 14-14",
         rotation: 1,
         fixed: 5,
-        description: "",
+        description: "A-BL-2* (FX #1)/ A-BL- 2*,4 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-4",
-        address: "부림동 22-1",
+        address: "부림동 22-1 연봉재길",
         rotation: 1,
         fixed: 2,
-        description: "연봉재길",
+        description: "A-BL-2*,3 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-5",
-        address: "부림동 61",
+        address: "부림동 61 || 부림4길 45",
         rotation: 1,
         fixed: 4,
-        description: "부림4길 45",
+        description: "A-BL-2*,1 (FX #5)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -59,15 +60,15 @@ var EInfo = [
         address: "부림동 29-11",
         rotation: 1,
         fixed: 4,
-        description: "",
+        description: "광연결없음 / A-BL-23 (FX #10* ↔ FX #9)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-7",
-        address: "부림동 29-4",
+        address: "부림동 29-4 9단지 상가앞",
         rotation: 1,
         fixed: 8,
-        description: "9단지 상가앞",
+        description: "A-BL-2*,8 (E #5)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -75,31 +76,31 @@ var EInfo = [
         address: "부림동 30-4,5",
         rotation: 1,
         fixed: 4,
-        description: "",
+        description: "A-BL-2*,7 (E #5)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-9",
-        address: "부림동 36-1",
+        address: "부림동 36-1 || 부림로 27",
         rotation: 1,
         fixed: 5,
-        description: "부림로 27",
+        description: "A-BL-2*,12,13 (FX #10)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-10",
-        address: "부림동 41",
+        address: "부림동 41 904동 옆",
         rotation: 1,
         fixed: 2,
-        description: "904동 옆",
+        description: "A-BL-11* (E #5)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-11",
-        address: "부림동",
+        address: "부림동 909동~상가사이",
         rotation: 1,
         fixed: 0,
-        description: "909동 ~ 상가사이",
+        description: "A-BL-10 (E #5)/ A-BL-14 (E #6) ",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -107,7 +108,7 @@ var EInfo = [
         address: "부림동 38-9",
         rotation: 1,
         fixed: 5,
-        description: "",
+        description: "A-BL-2*,9,13 (FX #10)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -115,79 +116,79 @@ var EInfo = [
         address: "부림동 40-8",
         rotation: 1,
         fixed: 1,
-        description: "",
+        description: "A-BL-2*,9,12 (FX #10)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-14",
-        address: "부림동 41",
+        address: "부림동 41 908동~905동 사이(화단)",
         rotation: 1,
         fixed: 0,
-        description: "908동 ~ 905동 사이(화단)",
+        description: "A-BL-11* (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-15",
-        address: "부림동 41",
+        address: "부림동 41 805동~804동 사이",
         rotation: 1,
         fixed: 3,
-        description: "805동~804동 사이",
+        description: "A-BL-16* (E #5)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-16",
-        address: "부림동 41",
+        address: "부림동 41 802동 놀이터안",
         rotation: 1,
         fixed: 0,
-        description: "802동 놀이터안",
+        description: "A-BL-18 (FX #2)/ A-BL-15 (E #5)/ A-BL-17 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-17",
-        address: "부림동 41",
+        address: "부림동 41 810동~상가사이",
         rotation: 1,
         fixed: 4,
-        description: "810동~상가 사이",
+        description: "A-BL-16* (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-18",
-        address: "부림동",
+        address: "부림동 811동 옆 주차장",
         rotation: 1,
         fixed: 0,
-        description: "811동 옆 주차장",
+        description: "A-BL-16* (FX #2)",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-19",
-        address: "별양로 180-1",
+        address: "별양로 180-1 관문초",
         rotation: 1,
         fixed: 0,
-        description: "관문초",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-20",
-        address: "별양로 180-2",
+        address: "별양로 180-2 관문초",
         rotation: 1,
         fixed: 0,
-        description: "관문초",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-21",
-        address: "부림동 49",
+        address: "부림동 49 729동 대공원 나들이길(관문초)",
         rotation: 1,
         fixed: 3,
-        description: "729동 대공원 나들이길(관문초)",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BL-22",
-        address: "부림동 54-5",
+        address: "부림동 54-5 통학로(7단지후문 버스정류장)",
         rotation: 1,
         fixed: 2,
-        description: "통학로(7단지후문 버스정류장)",
+        description: "",
         image: "https://via.placeholder.com/150"
     }
   
@@ -203,18 +204,4 @@ for (var i = 0; i < Epositions.length; i++) {
     categoryAMarkers.push(marker);
 }
 
-// 부림동 마커를 특정한 방식으로 연결
-// 마커 1과 마커 2를 붉은색 선으로 연결
-addLine(categoryEMarkers[0], categoryEMarkers[1], '#FF0000');
 
-// 마커 2와 마커 3을 파란색 선으로 연결
-addLine(categoryEMarkers[1], categoryEMarkers[2], '#0000FF');
-
-// 마커 3과 마커 4를 녹색 선으로 연결
-addLine(categoryEMarkers[2], categoryEMarkers[3], '#00FF00');
-
-// 마커 4와 마커 5를 노란색 선으로 연결
-addLine(categoryEMarkers[3], categoryEMarkers[4], '#FFFF00');
-
-// 마커 5와 마커 1을 보라색 선으로 연결 (원형으로 연결)
-addLine(categoryEMarkers[4], categoryEMarkers[0], '#800080');
