@@ -52,7 +52,7 @@ var DInfo = [
         address: "별양동 7 4단지후문405동 상가방향",
         rotation: 1,
         fixed: 1,
-        description: "A-BY-12*",
+        description: "A-BY-12*,39",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -125,7 +125,7 @@ var DInfo = [
         address: "별양동 16 문원초 정문",
         rotation: 1,
         fixed: 1,
-        description: "A-BY-28*",
+        description: "A-BY-28*,24",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -141,7 +141,7 @@ var DInfo = [
         address: "별양동 39-8 문원초",
         rotation: 1,
         fixed: 3,
-        description: "A-BY-28*",
+        description: "A-BY-28*,21",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -222,7 +222,7 @@ var DInfo = [
         address: "별양동 34-1",
         rotation: 1,
         fixed: 0,
-        description: "A-BY-30*",
+        description: "A-BY-30*,35",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -230,7 +230,7 @@ var DInfo = [
         address: "별양동 34-2 별양상회 놀이터",
         rotation: 1,
         fixed: 3,
-        description: "A-BY-30*",
+        description: "A-BY-30*,34",
         image: "https://via.placeholder.com/150"
     },
         {
