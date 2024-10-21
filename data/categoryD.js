@@ -33,114 +33,115 @@ var Dpositions = [
 var DInfo = [
     {
         number: "A-BY-8",
-        address: "별양동 1-15",
+        address: "별양동 1-15 소방서삼거리",
         rotation: 1,
         fixed: 5,
-        description: "소방서삼거리",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-BY-9",
-        address: "별양상가2로 20",
+        address: "별양상가2로 20 새서울쇼핑 앞",
         rotation: 1,
         fixed: 3,
-        description: "새서울쇼핑 앞",
+        description: "A-BY-12*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-10",
-        address: "별양동 7",
+        address: "별양동 7 4단지후문405동 상가방향",
         rotation: 1,
         fixed: 1,
-        description: "4단지후문405동 상가방향",
+        description: "A-BY-12*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-12",
-        address: "별양동 2-2",
+        address: "별양동 2-2 중앙공원 입구 상가 앞",
         rotation: 1,
         fixed: 6,
-        description: "중앙공원 입구 상가 앞",
+        description: "A-BY-9 (FX #4)/ A-BY-12 (E #5)/ A-BY-10,39 (E #8)",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-13",
-        address: "별양동 2-5",
+        address: "별양동 2-5 중앙공원 내부",
         rotation: 1,
         fixed: 1,
-        description: "중앙공원 내부",
+        description: "A-BY-17*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-14",
-        address: "별양동 5단지",
+        address: "별양동 5단지 505동~506동 사이",
         rotation: 1,
         fixed: 1,
-        description: "505동 ~ 506동 사이",
+        description: "A-BY-15*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-15",
-        address: "별양동 청계초",
+        address: "별양동 청계초 진입로 입구",
         rotation: 1,
         fixed: 2,
-        description: "청계초 진입로 입구",
+        description: "A-BY-4 (FX #1)/ A-BY-3 (FX #2)/ A-BY-6 (FX #5)/ A-BY-5 (FX #6)
+                      A-BY-2 (E #5)/ A-BY-22 (E #6)/ A-BY-14 (E #10)",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-17",
-        address: "별양동 12",
+        address: "별양동 12 중앙공원 과천역 5번출구 앞",
         rotation: 1,
         fixed: 0,
-        description: "중앙공원 과천역 5번출구 앞",
+        description: "A-BY-20 (FX #1)/ A-BY-19 (FX #2)/ A-BY-18 (E #5)/ A-BY-13 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-18",
-        address: "꿈보람길 12호",
+        address: "꿈보람길 12호 청계초(이상음원 시스템)",
         rotation: 1,
         fixed: 3,
-        description: "청계초(이상음원 시스템)",
+        description: "A-BY-17*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-19",
-        address: "별양동 84-2",
+        address: "별양동 84-2 중앙공원 내 물놀이터",
         rotation: 1,
         fixed: 6,
-        description: "중앙공원 내 물놀이터",
+        description: "A-BY-17*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-20",
-        address: "별양동 3-1",
+        address: "별양동 3-1 7-2단지 소공원",
         rotation: 1,
         fixed: 0,
-        description: "7-2단지 소공원",
+        description: "A-BY-17*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-21",
-        address: "별양동 16",
+        address: "별양동 16 문원초 정문",
         rotation: 1,
         fixed: 1,
-        description: "문원초 - 정문",
+        description: "A-BY-28*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-23",
-        address: "별양동 14",
+        address: "별양동 14 문원초 후문",
         rotation: 1,
         fixed: 3,
-        description: "문원초 - 후문",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-24",
-        address: "별양동 39-8",
+        address: "별양동 39-8 문원초",
         rotation: 1,
         fixed: 3,
-        description: "문원초",
+        description: "A-BY-28*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -153,10 +154,10 @@ var DInfo = [
     },
         {
         number: "A-BY-26",
-        address: "별양동 45",
+        address: "별양동 45 과천회관 뒤 향촌소공원",
         rotation: 1,
         fixed: 0,
-        description: "과천회관 뒤 향촌소공원",
+        description: "A-BY-28*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -164,7 +165,7 @@ var DInfo = [
         address: "별양동 23-8",
         rotation: 1,
         fixed: 3,
-        description: "",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -172,15 +173,15 @@ var DInfo = [
         address: "별양동 30",
         rotation: 1,
         fixed: 3,
-        description: "",
+        description: "A-BY-29 (FX #1)/ A-177 (FX #2)/ A-178 (FX #5)/ A-BY-21,24 (FX #6)/ A-BY-26 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-29",
-        address: "별양동 37-4",
+        address: "별양동 37-4 별양동 37-4 ~ 46-7번지 앞",
         rotation: 1,
         fixed: 5,
-        description: "별양동 37-4~46-7번지 앞",
+        description: "A-BY-28* / A-GC-84 (FX #10)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -188,7 +189,8 @@ var DInfo = [
         address: "별양동 18-7",
         rotation: 1,
         fixed: 5,
-        description: "",
+        description: "A-BY-36 (FX #1)/ A-BY-35,34 (FX #2)/ A-BY-31 (FX #5)/ A-BY-33 (FX #6)
+                      A-BY-37 (FX #9)/ A-BY-32 (FX #12)/ A-BY-27 (E #5)/ A-BY-38 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -196,7 +198,7 @@ var DInfo = [
         address: "별양동 32-1",
         rotation: 1,
         fixed: 4,
-        description: "",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -204,7 +206,7 @@ var DInfo = [
         address: "별양동 18-20",
         rotation: 1,
         fixed: 2,
-        description: "",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -212,7 +214,7 @@ var DInfo = [
         address: "별양동 28-4",
         rotation: 1,
         fixed: 4,
-        description: "",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -220,23 +222,23 @@ var DInfo = [
         address: "별양동 34-1",
         rotation: 1,
         fixed: 0,
-        description: "",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-35",
-        address: "별양동 34-2",
+        address: "별양동 34-2 별양상회 놀이터",
         rotation: 1,
         fixed: 3,
-        description: "별양상회 놀이터",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-36",
-        address: "별양동 49-1",
+        address: "별양동 49-1 향촌길 57-11 화단",
         rotation: 1,
         fixed: 2,
-        description: "향촌길 57-11 화단",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -244,31 +246,31 @@ var DInfo = [
         address: "별양동 21-6",
         rotation: 0,
         fixed: 3,
-        description: "",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-BY-38",
-        address: "별양동 85-2",
+        address: "별양동 85-2 굴다리시장",
         rotation: 0,
         fixed: 2,
-        description: "굴다리시장",
+        description: "A-BY-30*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-177",
-        address: "코오롱로 53",
+        address: "코오롱로 53 문원초",
         rotation: 1,
         fixed: 0,
-        description: "문원초",
+        description: "A-BY-28*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-178",
-        address: "코오롱로 54",
+        address: "코오롱로 54 문원초",
         rotation: 1,
         fixed: 0,
-        description: "문원초",
+        description: "A-BY-28*",
         image: "https://via.placeholder.com/150"
     }
 
