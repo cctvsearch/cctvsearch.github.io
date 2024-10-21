@@ -22,42 +22,42 @@ var Apositions = [
 var AInfo = [
     {
         number: "A-GH-3",
-        address: "원문동 1",
+        address: "원문동 1 소공원 지하철역 5번출구",
         rotation: 1,
         fixed: 4,
-        description: "원문동1 소공원 지하철역 5번 출구",
+        description: "A-GH-6*",
         image: "https://via.placeholder.com/150"
     },
     {
         number: "A-GH-4", // 새로운 관리번호 추가
-        address: "원문동 2-1",
+        address: "원문동 2-1 우체국사거리 2단지 소공원",
         rotation: 1,
         fixed: 4,
-        description: "우체국사거리 2단지 소공원",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-GH-6",
-        address: "갈현동 산121",
+        address: "갈현동 산121 12단",
         rotation: 1,
         fixed: 2,
-        description: "12단",
+        description: "A-GH-3 (FX #1)/ A-GH-7 (FX #2)/ J40 중앙고 (FX #5)/ A-GH-6 (FX #6)/ A-GH-8 (E #5)/ A-JA-6 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-GH-8",
-        address: "갈현동 640-8",
+        address: "갈현동 640-8 || 모뎀말길 13 우정병원",
         rotation: 1,
         fixed: 0,
-        description: "모뎀말길 13 우정병원",
+        description: "A-GH-6*",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-GH-9",
-        address: "갈현동 683-1",
+        address: "갈현동 683-1 정보과학도서관 입구",
         rotation: 1,
         fixed: 3,
-        description: "정보과학도서관 입구",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -70,18 +70,18 @@ var AInfo = [
     },
         {
         number: "A-GH-11",
-        address: "갈현동 8-55",
+        address: "갈현동 8-55 놀이터 삼거리",
         rotation: 1,
         fixed: 1,
-        description: "놀이터 삼거",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
         number: "A-GH-12",
-        address: "갈현동 8-5",
+        address: "갈현동 8-5 찬우물공원내",
         rotation: 1,
         fixed: 0,
-        description: "찬우물공원내",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -94,10 +94,10 @@ var AInfo = [
     },
         {
         number: "A-GH-14",
-        address: "갈현동 14-4",
+        address: "갈현동 14-4 가일길 한샘교회 앞",
         rotation: 1,
         fixed: 2,
-        description: "가일길 한샘교회 앞",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -113,7 +113,7 @@ var AInfo = [
         address: "갈현동 산20-7",
         rotation: 1,
         fixed: 1,
-        description: "",
+        description: "A-GH-22 (FX #10)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -126,10 +126,10 @@ var AInfo = [
     },
         {
         number: "A-GH-18",
-        address: "갈현동 336-5",
+        address: "갈현동 336-5 이운정 가든",
         rotation: 1,
         fixed: 2,
-        description: "이운정 가든 ",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -142,10 +142,10 @@ var AInfo = [
     },
         {
         number: "A-GH-20",
-        address: "갈현동 274-4",
+        address: "갈현동 274-4 엘라이트 근처",
         rotation: 1,
         fixed: 1,
-        description: "엘라이트 근처",
+        description: "",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -158,10 +158,10 @@ var AInfo = [
     },
         {
         number: "SPD-028",
-        address: "",
+        address: "지식정보타운",
         rotation: 1,
         fixed: 3,
-        description: "지식정보타운",
+        description: "",
         image: "https://via.placeholder.com/150"
     }
 ];
