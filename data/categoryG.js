@@ -187,7 +187,7 @@ var GInfo = [
         address: "중앙동 79 스타벅스 과천성당옆",
         rotation: 1,
         fixed: 3,
-        description: "",
+        description: "A-BL-2*",
         image: "https://via.placeholder.com/150"
     },
     {
