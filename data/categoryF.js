@@ -30,7 +30,7 @@ var FInfo = [
         image: "https://via.placeholder.com/150"
     },
         {
-                number: "A-GC-63",
+                number: "A-GC-63 || A-192",
                 address: "주암동 415-2 삼포마을입구",
                 rotation: 1,
                 fixed: 3,
@@ -38,7 +38,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-64",
+                number: "A-GC-64 || A-120",
                 address: "주암동 442-2 도로(삼포마을)",
                 rotation: 1,
                 fixed: 3,
@@ -46,7 +46,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-65",
+                number: "A-GC-65 || A-164",
                 address: "주암동 444-18 삼포마을",
                 rotation: 1,
                 fixed: 1,
@@ -54,7 +54,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-66",
+                number: "A-GC-66 || A-122",
                 address: "주암동 450-20 삼포마을",
                 rotation: 1,
                 fixed: 3,
@@ -62,7 +62,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-67",
+                number: "A-GC-67 || A-121",
                 address: "주암동 458 삼포마을",
                 rotation: 1,
                 fixed: 3,
@@ -70,7 +70,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-68",
+                number: "A-GC-68 || A-222",
                 address: "주암동 691-63",
                 rotation: 1,
                 fixed: 4,
@@ -78,7 +78,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-69",
+                number: "A-GC-69 || A-193",
                 address: "추사로78",
                 rotation: 1,
                 fixed: 3,
@@ -86,7 +86,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-70",
+                number: "A-GC-70 || A-125",
                 address: "주암동 105-16 시립원주암어린이집",
                 rotation: 1,
                 fixed: 3,
@@ -94,7 +94,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-71",
+                number: "A-GC-71 || A-88",
                 address: "주암동 44-8",
                 rotation: 1,
                 fixed: 1,
@@ -102,7 +102,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-72",
+                number: "A-GC-72 || A-73",
                 address: "주암동 18-13",
                 rotation: 1,
                 fixed: 3,
@@ -110,7 +110,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-73",
+                number: "A-GC-73 || A-26",
                 address: "주암동 27 죽바위로",
                 rotation:1,
                 fixed: 3,
@@ -118,7 +118,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-74",
+                number: "A-GC-74 || A-42",
                 address: "주암동 14-4 양재동 지하보도 앞",
                 rotation: 1,
                 fixed: 3,
@@ -126,7 +126,7 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
                         {
-                number: "A-GC-75",
+                number: "A-GC-75 || A-163",
                 address: "주암동 69-19",
                 rotation: 1,
                 fixed: 3,
