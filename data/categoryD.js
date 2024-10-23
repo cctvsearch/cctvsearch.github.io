@@ -84,8 +84,8 @@ var DInfo = [
         address: "별양동 청계초 진입로 입구",
         rotation: 1,
         fixed: 2,
-        description: "A-BY-4 (FX #1)/ A-BY-3 (FX #2)/ A-BY-6 (FX #5)/ A-BY-5 (FX #6)
-                      A-BY-2 (E #5)/ A-BY-22 (E #6)/ A-BY-14 (E #10)",
+        description: "A-BY-4 (FX #1)/ A-BY-3 (FX #2)/ A-BY-6 (FX #5)/ A-BY-5 (FX #6)<br>" +
+                     "A-BY-2 (E #5)/ A-BY-22 (E #6)/ A-BY-14 (E #10)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -189,8 +189,8 @@ var DInfo = [
         address: "별양동 18-7",
         rotation: 1,
         fixed: 5,
-        description: "A-BY-36 (FX #1)/ A-BY-35,34 (FX #2)/ A-BY-31 (FX #5)/ A-BY-33 (FX #6)
-                      A-BY-37 (FX #9)/ A-BY-32 (FX #12)/ A-BY-27 (E #5)/ A-BY-38 (E #6)",
+        description: "A-BY-36 (FX #1)/ A-BY-35,34 (FX #2)/ A-BY-31 (FX #5)/ A-BY-33 (FX #6)<br>" +
+                     "A-BY-37 (FX #9)/ A-BY-32 (FX #12)/ A-BY-27 (E #5)/ A-BY-38 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
