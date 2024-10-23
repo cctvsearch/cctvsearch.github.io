@@ -195,8 +195,8 @@ var GInfo = [
         address: "중앙로 129 고려빌딩 앞",
         rotation: 1,
         fixed: 4,
-        description: "광연결 안됨 (FX #1)/ P35,과천초 4R (FX #2)/ A-JA-3,36 (E #5)
-                      A-JA-34,35 A-BY-11 (E #6)",
+        description: "광연결 안됨 (FX #1)/ P35,과천초 4R (FX #2)/ A-JA-3,36 (E #5)<br>" +
+                     "A-JA-34,35 A-BY-11 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
