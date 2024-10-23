@@ -41,8 +41,9 @@ var GInfo = [
         address: "중앙동 25-7 || 향교말길 7-4",
         rotation: 1,
         fixed: 4,
-        description: "A-JA-12 (FX #2)/ A-JA-11 (FX #5)/ A-JA-21,22 (FX #6)/ A-JA-13 (FX #9)<br>" +
-                     "A-JA-10 (E #5)/ A-JA-6 (E #6)",
+        description: "A-JA-12 (FX #2) / A-JA-11 (FX #5)<br>" +
+                     "A-JA-21,22 (FX #6) / A-JA-13 (FX #9)<br>" +
+            "A-JA-10 (E #5) / A-JA-6 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -82,8 +83,10 @@ var GInfo = [
         address: "중앙동 33-13 1단지 옆",
         rotation: 1,
         fixed: 3,
-        description: "A-JA-17 (FX #1)/ A-JA-20 (FX #2)/ A-JA-26 (FX #5)/ A-JA-18,19 (FX #6)<br>" +
-                     "A-JA-15 (FX #9)/ A-JA-16 (FX #10)/ A-JA-24 (E #7)/ A-JA-23 (E #8)",
+        description: "A-JA-17 (FX #1) / A-JA-20 (FX #2)<br>" +
+            "A-JA-26 (FX #5)/ A-JA-18,19 (FX #6)<br>" +
+                     "A-JA-15 (FX #9) / A-JA-16 (FX #10)<br>+"
+            "A-JA-24 (E #7) / A-JA-23 (E #8)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -163,7 +166,8 @@ var GInfo = [
         address: "중앙동 67 과천초~1019 앞",
         rotation: 1,
         fixed: 3,
-        description: "광연결 안됨 (FX #1)/ P35,과천초 4R (FX #2)/ A-JA-29 (E #5)/ A-JA-30 (E #6)",
+        description: "광연결 안됨 (FX #1) / P35,과천초 4R (FX #2)<br>" +
+            "A-JA-29 (E #5) / A-JA-30 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -195,8 +199,8 @@ var GInfo = [
         address: "중앙로 129 고려빌딩 앞",
         rotation: 1,
         fixed: 4,
-        description: "광연결 안됨 (FX #1)/ P35,과천초 4R (FX #2)/ A-JA-3,36 (E #5)<br>" +
-                     "A-JA-34,35 A-BY-11 (E #6)",
+        description: "광연결 안됨 (FX #1)/ P35,과천초 4R (FX #2)<br>" +
+                     "A-JA-3,36 (E #5)/ A-JA-34,35 A-BY-11 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -228,8 +232,10 @@ var GInfo = [
         address: "중앙동 67 1007동~1002동사이",
         rotation: 1,
         fixed: 0,
-        description: "A-GC-56 (FX #1)/ A-GC-4,60 (FX #2)/ A-GC-61,62 (FX #5)/ A-GC-48 (FX #6)<br>" +
-                     "A-GC-59 (FX #9)/ A-GC-61,62 (FX #10)/ J60 (FX #13) / A-JA-41 (E #5)/ A=JA-40 (E #6)",
+        description: "A-GC-56 (FX #1) / A-GC-4,60 (FX #2)<br>" +
+                     "A-GC-61,62 (FX #5) / A-GC-48 (FX #6) / A-GC-59 (FX #9)<br>" +
+                     "A-GC-61,62 (FX #10) / J60 (FX #13)<br>" +
+            "A-JA-41 (E #5)/ A=JA-40 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
