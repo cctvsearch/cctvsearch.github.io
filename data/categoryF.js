@@ -174,11 +174,11 @@ var FInfo = [
                 image: "https://via.placeholder.com/150"
             },
             {
-                number: "A-GC-40",
+                number: "A-188",
                 address: "주암동 53",
                 rotation: 1,
                 fixed: 0,
-                description: "A-GC-38*",
+                description: "",
                 image: "https://via.placeholder.com/150"
             }
 
