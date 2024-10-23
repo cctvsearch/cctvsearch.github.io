@@ -85,7 +85,7 @@ var GInfo = [
         fixed: 3,
         description: "A-JA-17 (FX #1) / A-JA-20 (FX #2)<br>" +
             "A-JA-26 (FX #5)/ A-JA-18,19 (FX #6)<br>" +
-                     "A-JA-15 (FX #9) / A-JA-16 (FX #10)<br>+"
+                     "A-JA-15 (FX #9) / A-JA-16 (FX #10)<br>" +
             "A-JA-24 (E #7) / A-JA-23 (E #8)",
         image: "https://via.placeholder.com/150"
     },
