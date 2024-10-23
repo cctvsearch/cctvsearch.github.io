@@ -27,8 +27,8 @@ var EInfo = [
         address: "부림동 11-5 || 부림2길 76",
         rotation: 1,
         fixed: 1,
-        description: "A-BL-3 (FX #1)/ A-BL-1,5 (FX #5)/ A-BL-9,12,13 (FX #10)
-                      A-BL-7,8 (E #5)/ A-BL-3,4 (E #6)/ A-JA-31 (E #7)",
+        description: "A-BL-3 (FX #1)/ A-BL-1,5 (FX #5)/ A-BL-9,12,13 (FX #10)<br>" +
+                     "A-BL-7,8 (E #5)/ A-BL-3,4 (E #6)/ A-JA-31 (E #7)",
         image: "https://via.placeholder.com/150"
     },j
     {
@@ -193,15 +193,5 @@ var EInfo = [
     }
   
 ];
-
-
-
-
-// 마커를 생성하고 배열에 저장합니다.
-for (var i = 0; i < Epositions.length; i++) {
-    var position = new kakao.maps.LatLng(Epositions[i].lat, Epositions[i].lng);
-    var marker = addMarker(position, EInfo[i].number, EInfo[i].description, EInfo[i].image);
-    categoryAMarkers.push(marker);
-}
 
 
