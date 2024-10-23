@@ -30,7 +30,7 @@ var EInfo = [
         description: "A-BL-3 (FX #1)/ A-BL-1,5 (FX #5)/ A-BL-9,12,13 (FX #10)<br>" +
                      "A-BL-7,8 (E #5)/ A-BL-3,4 (E #6)/ A-JA-31 (E #7)",
         image: "https://via.placeholder.com/150"
-    },j
+    },
     {
         number: "A-BL-3",
         address: "부림동 14-14",
