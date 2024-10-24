@@ -143,8 +143,10 @@ var BInfo = [
                 address: "과천동 520-3 양지마을길 75 양지슈퍼앞",
                 rotation: 1,
                 fixed: 0,
-                description: "J80 (FX #2)/ A-GC-6,17 (FX #3)/ A-GC-18,19 (FX #4)/ A-GC-20,22 (FX #7)<br>" +
-                             "A-GC-5,7,21 (FX #11)/ A-GC-14,15,16 (FX #12)/ A-GC-29,41 P38 (E #5)<br>" +
+                description: "J80 (FX #2) / A-GC-6,17 (FX #3)<br>" +
+                              "A-GC-18,19 (FX #4) / A-GC-20,22 (FX #7)<br>" +
+                             "A-GC-5,7,21 (FX #11) / A-GC-14,15,16 (FX #12)<br>" +
+                             "A-GC-29,41 P38 (E #5)<br>" +
                              "A-GC-13,23,24 P33 (E #6)/ J90 (E #8)",
                 image: "https://via.placeholder.com/150"
             },
@@ -161,7 +163,8 @@ var BInfo = [
                 address: "과천동 535-66 관문지하보도 입구 본수원갈비쪽",
                 rotation: 1,
                 fixed: 1,
-                description: "A-GC-26 (FX #1)/ A-GC-2,28,1 (FX #2)/ P34 (FX #8)/ A-GC-45, A-JA-42 (E #6)",
+                description: "A-GC-26 (FX #1) / A-GC-2,28,1 (FX #2)<br>" +
+                             "P34 (FX #8) / A-GC-45, A-JA-42 (E #6)",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -249,8 +252,10 @@ var BInfo = [
                 address: "과천동 372",
                 rotation: 1,
                 fixed: 3,
-                description: "A-GC-30 (FX #1)/ A-GC-37 (FX #2)/ A-GC-3,34,39 (FX #5)/ A-GC-42 (FX #6)/ A-GC-33,35,36 (FX #9)<br>" +
-                             "A-GC-31 (FX #10)/ A-GC-40, P3 (FX #14)/ J100 (E #5)/ A-GC-32 (E #6)",
+                description: "A-GC-30 (FX #1) / A-GC-37 (FX #2)<br>" +
+                             "A-GC-3,34,39 (FX #5) / A-GC-42 (FX #6)<br>" + 
+                            "A-GC-33,35,36 (FX #9) / A-GC-31 (FX #10)<br>" +
+                            "A-GC-40, P3 (FX #14) / J100 (E #5)/ A-GC-32 (E #6)",
                 image: "https://via.placeholder.com/150"
             },
                         {
@@ -362,7 +367,7 @@ var BInfo = [
                 address: "과천동 189-22 경마공원역 삼거리",
                 rotation: 1,
                 fixed: 1,
-                description: "A-GC-53 (E #5)/ A-GC-54 (E #6)",
+                description: "A-GC-53 (E #5) / A-GC-54 (E #6)",
                 image: "https://via.placeholder.com/150"
             },
                         {
