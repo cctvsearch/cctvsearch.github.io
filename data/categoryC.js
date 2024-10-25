@@ -102,8 +102,9 @@ var CInfo = [
         address: "문원동 311",
         rotation: 1,
         fixed: 1,
-        description: "A-MW-13,18,19,20,21 (FX #1)/ A-MW-22 (FX #2)/ A-MW-17,55 (FX #5)/ A-MW-6,15,16 (FX #6)<br>" +
-                     "A-MW-23 (FX #10)/ A-MW-12 (E #5)/ A-MW-18,19,20,21 (E #6)",
+        description: "A-MW-13,18,19,20,21 (FX #1) / A-MW-22 (FX #2)<br>" +
+                     "A-MW-17,55 (FX #5) / A-MW-6,15,16 (FX #6)<br>" +
+                     "A-MW-23 (FX #10) / A-MW-12 (E #5) / A-MW-18,19,20,21 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -311,8 +312,10 @@ var CInfo = [
         address: "문원동 115-113",
         rotation: 1,
         fixed: 1,
-        description: "A-MW-1,38,43 (FX #1)/ A-MW-42 (FX #2)/ A-MW-51 (FX #5)/ A-MW-46 (FX #6)<br>" +
-                     "A-MW-7,45 (FX #9)/ A-MW-44 (FX #10)/ A-MW-2,4,41 (FX #14)/ A-MW-37 (E #5)/ A-MW-39 (E #6)",
+        description: "A-MW-1,38,43 (FX #1) / A-MW-42 (FX #2)<br>" +
+                     "A-MW-51 (FX #5) / A-MW-46 (FX #6)<br>" +
+                     "A-MW-7,45 (FX #9) / A-MW-44 (FX #10)<br>" +
+                     "A-MW-2,4,41 (FX #14) / A-MW-37 (E #5)/ A-MW-39 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -376,7 +379,8 @@ var CInfo = [
         address: "문원동 115-363",
         rotation: 1,
         fixed: 5,
-        description: "A-MW-50 (FX #2)/ A-MW-47 (E #6)/ A-MW-49,54 (E #7)",
+        description: "A-MW-50 (FX #2) / A-MW-47 (E #6)<br>" +
+                     "A-MW-49,54 (E #7)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -416,7 +420,7 @@ var CInfo = [
         address: "막계동 324-22",
         rotation: 1,
         fixed: 0,
-        description: "A-MW-29 (E #5)/ A-MW-21 (E #6)",
+        description: "A-MW-29 (E #5) / A-MW-21 (E #6)",
         image: "https://via.placeholder.com/150"
     }
 ];
