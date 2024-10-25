@@ -41,9 +41,9 @@ var AInfo = [
         address: "갈현동 산121 12단",
         rotation: 1,
         fixed: 2,
-        description: "A-GH-3 (FX #1) / A-GH-7 (FX #2)" <br> + 
-                      J40 중앙고 (FX #5) / A-GH-6 (FX #6)"<br> + 
-                      A-GH-8 (E #5)/ A-JA-6 (E #6)",
+        description: "A-GH-3 (FX #1) / A-GH-7 (FX #2)<br>" + 
+                     "J40 중앙고 (FX #5) / A-GH-6 (FX #6)<br>" + 
+                     "A-GH-8 (E #5)/ A-JA-6 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
