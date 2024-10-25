@@ -27,8 +27,9 @@ var EInfo = [
         address: "부림동 11-5 || 부림2길 76",
         rotation: 1,
         fixed: 1,
-        description: "A-BL-3 (FX #1)/ A-BL-1,5 (FX #5)/ A-BL-9,12,13 (FX #10)<br>" +
-                     "A-BL-7,8 (E #5)/ A-BL-3,4 (E #6)/ A-JA-31 (E #7)",
+        description: "A-BL-3 (FX #1) / A-BL-1,5 (FX #5)<br>" +
+                     "A-BL-9,12,13 (FX #10) / A-BL-7,8 (E #5)<br>" +
+                     "A-BL-3,4 (E #6) / A-JA-31 (E #7)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -36,7 +37,7 @@ var EInfo = [
         address: "부림동 14-14",
         rotation: 1,
         fixed: 5,
-        description: "A-BL-2* (FX #1)/ A-BL- 2*,4 (E #6)",
+        description: "A-BL-2* (FX #1) / A-BL- 2*,4 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -100,7 +101,7 @@ var EInfo = [
         address: "부림동 909동~상가사이",
         rotation: 1,
         fixed: 0,
-        description: "A-BL-10 (E #5)/ A-BL-14 (E #6) ",
+        description: "A-BL-10 (E #5) / A-BL-14 (E #6) ",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -140,7 +141,7 @@ var EInfo = [
         address: "부림동 41 802동 놀이터안",
         rotation: 1,
         fixed: 0,
-        description: "A-BL-18 (FX #2)/ A-BL-15 (E #5)/ A-BL-17 (E #6)",
+        description: "A-BL-18 (FX #2) / A-BL-15 (E #5) / A-BL-17 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
