@@ -84,7 +84,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-17 (FX #1) / A-JA-20 (FX #2)<br>" +
-            "A-JA-26 (FX #5)/ A-JA-18,19 (FX #6)<br>" +
+            "A-JA-26 (FX #5) / A-JA-18,19 (FX #6)<br>" +
                      "A-JA-15 (FX #9) / A-JA-16 (FX #10)<br>" +
             "A-JA-24 (E #7) / A-JA-23 (E #8)",
         image: "https://via.placeholder.com/150"
@@ -150,7 +150,7 @@ var GInfo = [
         address: "중앙동 71 1105동~1106동 사이",
         rotation: 1,
         fixed: 1,
-        description: "A-JA-27 (E #6)/ A-JA-25 (E #9)",
+        description: "A-JA-27 (E #6) / A-JA-25 (E #9)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -199,8 +199,8 @@ var GInfo = [
         address: "중앙로 129 고려빌딩 앞",
         rotation: 1,
         fixed: 4,
-        description: "광연결 안됨 (FX #1)/ P35,과천초 4R (FX #2)<br>" +
-                     "A-JA-3,36 (E #5)/ A-JA-34,35 A-BY-11 (E #6)",
+        description: "광연결 안됨 (FX #1) / P35,과천초 4R (FX #2)<br>" +
+                     "A-JA-3,36 (E #5) / A-JA-34,35 A-BY-11 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
@@ -224,7 +224,7 @@ var GInfo = [
         address: "관문로 136 중앙동 주민센터 앞",
         rotation: 0,
         fixed: 1,
-        description: "A-GC-53 (E #5)/ A-GC-53 (E #6)",
+        description: "A-GC-53 (E #5) / A-GC-53 (E #6)",
         image: "https://via.placeholder.com/150"
     },
     {
