@@ -60,7 +60,8 @@ var DInfo = [
         address: "별양동 2-2 중앙공원 입구 상가 앞",
         rotation: 1,
         fixed: 6,
-        description: "A-BY-9 (FX #4)/ A-BY-12 (E #5)/ A-BY-10,39 (E #8)",
+        description: "A-BY-9 (FX #4) / A-BY-12 (E #5)<br>" +
+                    "A-BY-10,39 (E #8)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -84,8 +85,9 @@ var DInfo = [
         address: "별양동 청계초 진입로 입구",
         rotation: 1,
         fixed: 2,
-        description: "A-BY-4 (FX #1)/ A-BY-3 (FX #2)/ A-BY-6 (FX #5)/ A-BY-5 (FX #6)<br>" +
-                     "A-BY-2 (E #5)/ A-BY-22 (E #6)/ A-BY-14 (E #10)",
+        description: "A-BY-4 (FX #1) / A-BY-3 (FX #2)<br>" +
+                     "A-BY-6 (FX #5) / A-BY-5 (FX #6)<br>" +
+                     "A-BY-2 (E #5) / A-BY-22 (E #6) / A-BY-14 (E #10)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -93,7 +95,8 @@ var DInfo = [
         address: "별양동 12 중앙공원 과천역 5번출구 앞",
         rotation: 1,
         fixed: 0,
-        description: "A-BY-20 (FX #1)/ A-BY-19 (FX #2)/ A-BY-18 (E #5)/ A-BY-13 (E #6)",
+        description: "A-BY-20 (FX #1) / A-BY-19 (FX #2)<br>" +
+                     "A-BY-18 (E #5) / A-BY-13 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -173,7 +176,8 @@ var DInfo = [
         address: "별양동 30",
         rotation: 1,
         fixed: 3,
-        description: "A-BY-29 (FX #1)/ A-177 (FX #2)/ A-178 (FX #5)/ A-BY-21,24 (FX #6)/ A-BY-26 (E #6)",
+        description: "A-BY-29 (FX #1) / A-177 (FX #2)<br>" +
+                     "A-178 (FX #5) / A-BY-21,24 (FX #6) / A-BY-26 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
@@ -189,8 +193,10 @@ var DInfo = [
         address: "별양동 18-7",
         rotation: 1,
         fixed: 5,
-        description: "A-BY-36 (FX #1)/ A-BY-35,34 (FX #2)/ A-BY-31 (FX #5)/ A-BY-33 (FX #6)<br>" +
-                     "A-BY-37 (FX #9)/ A-BY-32 (FX #12)/ A-BY-27 (E #5)/ A-BY-38 (E #6)",
+        description: "A-BY-36 (FX #1) / A-BY-35,34 (FX #2)<br>" +
+                     "A-BY-31 (FX #5) / A-BY-33 (FX #6)<br>" +
+                     "A-BY-37 (FX #9) / A-BY-32 (FX #12)<br>" +
+                     "A-BY-27 (E #5) / A-BY-38 (E #6)",
         image: "https://via.placeholder.com/150"
     },
         {
