@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaka10</title>
+    <title>Kaka9</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Kakao Maps SDK 로드 -->
+    <!-- Kakao Maps SDK 로드 스크립트 -->
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c853f1d10da9175222476044cffe3531&libraries=services"></script>
-    
-    <!-- Firebase 모듈 초기화 -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
-    authDomain: "cctvseach.firebaseapp.com",
-    projectId: "cctvseach",
-    storageBucket: "cctvseach.appspot.com",
-    messagingSenderId: "189414707523",
-    appId: "1:189414707523:web:7db058e78563df9060dff6",
-    measurementId: "G-6YP5P09JHX"
-  };
+    <!-- Firebase SDK 로드 -->
+    <script type="module">
+        // Firebase 초기화 코드 (Firebase에서 제공된 코드 사용)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+        // Firebase 구성 정보
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+            authDomain: "cctvseach.firebaseapp.com",
+            projectId: "cctvseach",
+            storageBucket: "cctvseach.appspot.com",
+            messagingSenderId: "189414707523",
+            appId: "1:189414707523:web:7db058e78563df9060dff6",
+            measurementId: "G-6YP5P09JHX"
+        };
 
-  // Firestore 함수를 window 객체에 할당하여 script.js에서 접근 가능하게 함
-  window.db = db;
-  window.collection = collection;
-  window.getDocs = getDocs;
-  window.addDoc = addDoc;
-  window.onSnapshot = onSnapshot;
-</script>
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
 
+        // Firestore와 관련된 함수들을 전역으로 설정
+        window.db = db;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.onSnapshot = onSnapshot;
+    </script>
 </head>
 <body>
     <div id="mapWrapper">
@@ -52,6 +54,10 @@
         <button id="roadviewToggle">로드뷰</button>
         <div id="currentPosButton"></div>
     </div>
+
+    <!-- 실시간 마커 추가 버튼 -->
+    <button id="addMarkerButton" style="position: absolute; top: 150px; right: 10px;">마커 추가</button>
+
     <!-- 카테고리별 JavaScript 파일 로드 -->
     <script src="data/categoryA.js"></script>
     <script src="data/categoryB.js"></script>
