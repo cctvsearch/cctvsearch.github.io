@@ -475,11 +475,11 @@ window.addEventListener('resize', updateButtonText);
 
 // 기존 코드가 끝나는 부분
 
+// 기존의 collection, getDocs 등 Firestore 함수들을 window 객체에서 가져오도록 수정
+const markersCollection = window.collection(window.db, "markers");
+
 // Firestore 실시간 업데이트 리스너 설정
 function listenForMarkerUpdates() {
-    const markersCollection = collection(db, "markers");
-
-    // Firestore에서 실시간으로 마커 데이터를 수신합니다
     onSnapshot(markersCollection, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
             const data = change.doc.data();
@@ -499,6 +499,7 @@ function listenForMarkerUpdates() {
         });
     });
 }
+
 
 // Firestore에 새로운 마커 추가하기
 async function addMarkerToFirestore(lat, lng, info) {
