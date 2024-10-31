@@ -472,3 +472,36 @@ currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 
 window.addEventListener('load', updateButtonText);
 // 화면 크기 조정 시 버튼 텍스트 업데이트
 window.addEventListener('resize', updateButtonText);
+
+
+// Firestore에서 마커 데이터를 불러오기
+async function loadMarkers() {
+    const querySnapshot = await getDocs(collection(window.db, "markers"));
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+        
+        const marker = new kakao.maps.Marker({
+            position: markerPosition,
+            map: map
+        });
+    });
+}
+
+// Firestore에 마커 추가하기
+async function addMarker(lat, lng, info) {
+    try {
+        await addDoc(collection(window.db, "markers"), {
+            latitude: lat,
+            longitude: lng,
+            info: info
+        });
+        console.log("Marker added successfully!");
+    } catch (error) {
+        console.error("Error adding marker: ", error);
+    }
+}
+
+// 페이지 로드 시 Firestore에서 마커 불러오기
+window.onload = loadMarkers;
+
