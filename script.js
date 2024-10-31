@@ -518,3 +518,42 @@ function listenForMarkerUpdates(callback) {
         });
     });
 }
+
+
+document.getElementById('addMarkerButton').addEventListener('click', function() {
+    // 마커 추가 폼을 표시
+    document.getElementById('addMarkerForm').style.display = 'block';
+});
+
+document.getElementById('submitMarkerButton').addEventListener('click', async function() {
+    const lat = parseFloat(document.getElementById('latitudeInput').value);
+    const lng = parseFloat(document.getElementById('longitudeInput').value);
+    const number = document.getElementById('numberInput').value;
+    const address = document.getElementById('addressInput').value;
+    const rotation = parseInt(document.getElementById('rotationInput').value);
+    const fixed = parseInt(document.getElementById('fixedInput').value);
+    const description = document.getElementById('descriptionInput').value;
+    const category = document.getElementById('categoryInput').value;
+    const file = document.getElementById('fileInput').files[0];
+    
+    // 이미지 업로드
+    let imageUrl = "";
+    if (file) {
+        imageUrl = await uploadImageToStorage(file);
+    }
+    
+    // Firestore에 마커 데이터 추가
+    addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl, category);
+    
+    // 마커 추가 후 폼 숨기기 및 초기화
+    document.getElementById('addMarkerForm').style.display = 'none';
+    document.getElementById('latitudeInput').value = '';
+    document.getElementById('longitudeInput').value = '';
+    document.getElementById('numberInput').value = '';
+    document.getElementById('addressInput').value = '';
+    document.getElementById('rotationInput').value = '';
+    document.getElementById('fixedInput').value = '';
+    document.getElementById('descriptionInput').value = '';
+    document.getElementById('fileInput').value = '';
+});
+
