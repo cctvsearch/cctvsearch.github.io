@@ -520,40 +520,50 @@ function listenForMarkerUpdates(callback) {
 }
 
 
-document.getElementById('addMarkerButton').addEventListener('click', function() {
-    // 마커 추가 폼을 표시
-    document.getElementById('addMarkerForm').style.display = 'block';
+document.addEventListener('DOMContentLoaded', function() {
+    // 마커 추가 버튼 클릭 시 폼 표시
+    document.getElementById('addMarkerButton').addEventListener('click', function() {
+        document.getElementById('addMarkerForm').style.display = 'block';
+    });
+
+    // submitMarkerButton 클릭 시 Firestore에 데이터 저장
+    document.getElementById('submitMarkerButton').addEventListener('click', async function() {
+        const lat = parseFloat(document.getElementById('latitudeInput').value);
+        const lng = parseFloat(document.getElementById('longitudeInput').value);
+        const number = document.getElementById('numberInput').value;
+        const address = document.getElementById('addressInput').value;
+        const rotation = parseInt(document.getElementById('rotationInput').value);
+        const fixed = parseInt(document.getElementById('fixedInput').value);
+        const description = document.getElementById('descriptionInput').value;
+        const category = document.getElementById('categoryInput').value;
+        const file = document.getElementById('fileInput').files[0];
+
+        // 이미지 업로드
+        let imageUrl = "";
+        if (file) {
+            imageUrl = await uploadImageToStorage(file);
+        }
+
+        // Firestore에 마커 데이터 추가
+        try {
+            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl, category);
+            alert("마커가 성공적으로 추가되었습니다.");
+            
+            // 폼 숨기기 및 초기화
+            document.getElementById('addMarkerForm').style.display = 'none';
+            document.getElementById('latitudeInput').value = '';
+            document.getElementById('longitudeInput').value = '';
+            document.getElementById('numberInput').value = '';
+            document.getElementById('addressInput').value = '';
+            document.getElementById('rotationInput').value = '';
+            document.getElementById('fixedInput').value = '';
+            document.getElementById('descriptionInput').value = '';
+            document.getElementById('fileInput').value = '';
+        } catch (error) {
+            console.error("마커 추가 중 오류 발생:", error);
+            alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+    });
 });
 
-document.getElementById('submitMarkerButton').addEventListener('click', async function() {
-    const lat = parseFloat(document.getElementById('latitudeInput').value);
-    const lng = parseFloat(document.getElementById('longitudeInput').value);
-    const number = document.getElementById('numberInput').value;
-    const address = document.getElementById('addressInput').value;
-    const rotation = parseInt(document.getElementById('rotationInput').value);
-    const fixed = parseInt(document.getElementById('fixedInput').value);
-    const description = document.getElementById('descriptionInput').value;
-    const category = document.getElementById('categoryInput').value;
-    const file = document.getElementById('fileInput').files[0];
-    
-    // 이미지 업로드
-    let imageUrl = "";
-    if (file) {
-        imageUrl = await uploadImageToStorage(file);
-    }
-    
-    // Firestore에 마커 데이터 추가
-    addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl, category);
-    
-    // 마커 추가 후 폼 숨기기 및 초기화
-    document.getElementById('addMarkerForm').style.display = 'none';
-    document.getElementById('latitudeInput').value = '';
-    document.getElementById('longitudeInput').value = '';
-    document.getElementById('numberInput').value = '';
-    document.getElementById('addressInput').value = '';
-    document.getElementById('rotationInput').value = '';
-    document.getElementById('fixedInput').value = '';
-    document.getElementById('descriptionInput').value = '';
-    document.getElementById('fileInput').value = '';
-});
 
