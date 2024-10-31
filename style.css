@@ -310,5 +310,12 @@ html, body {
         width: 50px; /* 모바일에서는 버튼 크기를 줄입니다 */
         height: 40px; /* 모바일에서는 버튼 크기를 줄입니다 */
     }
+    #addMarkerButton {
+        top: 130px; /* 로드뷰 토글 버튼 위치 조정 */
+        background-color: #dc3545;
+        color: #fff;
+        border-radius: 5px; /* 버튼 모서리 둥글게 */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+    }
 }
     
