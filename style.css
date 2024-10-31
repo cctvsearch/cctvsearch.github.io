@@ -226,6 +226,61 @@ html, body {
     background-color: #c82333; /* Hover effect */
 }
 
+#addMarkerForm {
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f9f9f9;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    z-index: 100;
+    font-family: Arial, sans-serif;
+}
+
+#addMarkerForm h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#addMarkerForm label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+#addMarkerForm input[type="text"],
+#addMarkerForm input[type="number"],
+#addMarkerForm input[type="file"],
+#addMarkerForm select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#submitMarkerButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#submitMarkerButton:hover {
+    background-color: #45a049;
+}
+
 
 /* 모바일 환경에서 적용할 스타일 */
 @media screen and (max-width: 728px) {
