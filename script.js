@@ -73,7 +73,7 @@ function createMarkersAndOverlays(category) {
     minimapMarkers = [];
 
     // 카테고리별 마커 이미지 URL 및 사이즈 정의
-    var markerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
+    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
     var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
 
     if (category === '회전형') {
@@ -152,7 +152,7 @@ function closeCustomOverlay() {
 
         if (lastClickedMarker) {
             // 마지막 클릭된 마커 이미지 원래대로 복구
-            var defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+            var defaultImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
             lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
             lastClickedMarker = null;
         }
@@ -473,97 +473,48 @@ window.addEventListener('load', updateButtonText);
 // 화면 크기 조정 시 버튼 텍스트 업데이트
 window.addEventListener('resize', updateButtonText);
 
-// 기존 코드가 끝나는 부분
-
-// 기존의 collection, getDocs 등 Firestore 함수들을 window 객체에서 가져오도록 수정
-const markersCollection = window.collection(window.db, "markers");
-
-// Firestore 실시간 업데이트 리스너 설정
-function listenForMarkerUpdates() {
-    onSnapshot(markersCollection, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            const data = change.doc.data();
-            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
-
-            // Firestore에서 추가된 마커 데이터로 Kakao 지도에 마커를 표시
-            const marker = new kakao.maps.Marker({
-                position: markerPosition,
-                map: map
-            });
-            markers.push(marker);
-
-            // 클릭한 마커에 오버레이 표시
-            kakao.maps.event.addListener(marker, 'click', () => {
-                showCustomOverlay(data, markerPosition);
-            });
-        });
-    });
-}
 
 
-// Firestore에 새로운 마커 추가하기
-async function addMarkerToFirestore(lat, lng, info) {
+// Firestore에 새 마커 추가하는 함수
+async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl) {
     try {
-        await addDoc(collection(db, "markers"), {
+        await window.addDoc(window.collection(window.db, "markers"), {
             latitude: lat,
             longitude: lng,
-            info: info
+            number: number,
+            address: address,
+            rotation: rotation,
+            fixed: fixed,
+            description: description,
+            image: imageUrl
         });
-        console.log("Marker added to Firestore successfully!");
+        alert("마커가 성공적으로 추가되었습니다.");
     } catch (error) {
-        console.error("Error adding marker to Firestore: ", error);
+        console.error("마커 추가 중 오류 발생:", error);
     }
 }
 
-// 지도를 클릭하여 새 마커와 오버레이 추가
-function onMapClick(mouseEvent) {
-    const latlng = mouseEvent.latLng;
-    const info = prompt("마커에 표시할 정보를 입력하세요:");
-
-    if (info) {
-        addMarkerToFirestore(latlng.getLat(), latlng.getLng(), info);
-        const marker = new kakao.maps.Marker({
-            position: latlng,
-            map: map
-        });
-        markers.push(marker);
-
-        const overlayContent = `<div class="customOverlay"><p>${info}</p></div>`;
-        const customOverlay = new kakao.maps.CustomOverlay({
-            content: overlayContent,
-            position: latlng,
-            map: map
-        });
+// Firebase Storage에 이미지 파일 업로드
+async function uploadImageToStorage(file) {
+    try {
+        const storageRef = window.ref(window.storage, 'images/' + file.name);
+        await window.uploadBytes(storageRef, file);
+        const downloadURL = await window.getDownloadURL(storageRef);
+        return downloadURL;
+    } catch (error) {
+        console.error("이미지 업로드 중 오류 발생:", error);
     }
 }
 
-// 커스텀 오버레이 표시 함수
-function showCustomOverlay(data, position) {
-    if (currentOverlay) currentOverlay.setMap(null);  // 이전 오버레이 제거
-    const overlayContent = `<div class="customOverlay">
-        <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
-        <p>관리번호: ${data.number}</p>
-        <p>주소: ${data.address}</p>
-        <p>상세설명: ${data.description}</p>
-    </div>`;
-    currentOverlay = new kakao.maps.CustomOverlay({
-        content: overlayContent,
-        position: position,
-        map: map
+// Firestore에서 실시간으로 마커 데이터를 수신하는 함수
+function listenForMarkerUpdates(callback) {
+    const markersCollection = window.collection(window.db, "markers");
+    window.onSnapshot(markersCollection, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const data = change.doc.data();
+                callback(data); // 데이터가 추가될 때 콜백 함수를 통해 처리
+            }
+        });
     });
 }
-
-// 커스텀 오버레이 닫기
-function closeCustomOverlay() {
-    if (currentOverlay) {
-        currentOverlay.setMap(null);
-        currentOverlay = null;
-    }
-}
-
-// 지도 클릭 이벤트 리스너 설정
-kakao.maps.event.addListener(map, 'click', onMapClick);
-
-// Firestore 실시간 리스너 실행
-listenForMarkerUpdates();
-
