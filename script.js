@@ -158,6 +158,16 @@ function closeCustomOverlay() {
         }
     }
 }
+function updateOverlaySize(overlayElement) {
+    const img = overlayElement.querySelector("img");
+
+    if (img) {
+        img.addEventListener("load", function() {
+            overlayElement.style.width = "auto";  // 이미지 로드 후 오버레이 크기 조정
+        });
+    }
+}
+
 function showCustomOverlay(position, index) {
     closeCustomOverlay();
 
@@ -167,7 +177,7 @@ function showCustomOverlay(position, index) {
         '    <div class="title">' + position.category + '</div>' +
         '    <div class="desc">' +
         '        <div class="desc-content">' +
-        '            <img src="' + allInfo[index].image + '" width="50" height="50">' +
+        '            <img src="' + allInfo[index].image + '" width="50" height="50">' + // 이미지 크기 수정
         '            <div>' +
         '                <p>관리번호 : ' + allInfo[index].number + '</p>' +
         '                <p>주소 : ' + allInfo[index].address + '</p>' +
@@ -185,7 +195,11 @@ function showCustomOverlay(position, index) {
         position: new kakao.maps.LatLng(position.lat, position.lng),
         yAnchor: 1.1
     });
+
+    // 이미지 로드 후 오버레이 크기를 업데이트
+    updateOverlaySize(currentOverlay.getContent());
 }
+
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
