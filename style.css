@@ -203,6 +203,30 @@ html, body {
 }
 
 
+#addMarkerButton {
+    position: absolute;
+    right: 10px;
+    top: 130px; /* Place below the roadviewToggle button */
+    width: 70px; /* Matching width */
+    height: 30px; /* Matching height */
+    padding: 10px 15px;
+    font-size: 12px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dc3545; /* Differentiate with a new color */
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+#addMarkerButton:hover {
+    background-color: #c82333; /* Hover effect */
+}
+
+
 /* 모바일 환경에서 적용할 스타일 */
 @media screen and (max-width: 728px) {
     #categoryDropdownContainer {
@@ -288,30 +312,3 @@ html, body {
     }
 }
     
-    }
-}
-
-
-
-#addMarkerButton {
-    position: absolute;
-    right: 10px;
-    top: 130px; /* Place below the roadviewToggle button */
-    width: 70px; /* Matching width */
-    height: 30px; /* Matching height */
-    padding: 10px 15px;
-    font-size: 12px;
-    line-height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #dc3545; /* Differentiate with a new color */
-    color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-#addMarkerButton:hover {
-    background-color: #c82333; /* Hover effect */
-}
