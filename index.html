@@ -5,8 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaka9</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Kakao Maps SDK 로드 스크립트 -->
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c853f1d10da9175222476044cffe3531&libraries=services"></script>
+    
+    <!-- Kakao Maps SDK 로드 -->
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_API_KEY&libraries=services"></script>
+    
+    <!-- Firebase 모듈 초기화 -->
+    <script type="module">
+      // Firebase 모듈 가져오기
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+      import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+      // Firebase 설정
+      const firebaseConfig = {
+        apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+        authDomain: "cctvseach.firebaseapp.com",
+        projectId: "cctvseach",
+        storageBucket: "cctvseach.appspot.com",
+        messagingSenderId: "189414707523",
+        appId: "1:189414707523:web:7db058e78563df9060dff6",
+        measurementId: "G-6YP5P09JHX"
+      };
+
+      // Firebase 초기화
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Firestore 데이터베이스 객체를 전역으로 설정하여 다른 스크립트에서 접근 가능하게 함
+      window.db = db;
+    </script>
 </head>
 <body>
     <div id="mapWrapper">
