@@ -10,7 +10,7 @@
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c853f1d10da9175222476044cffe3531&libraries=services"></script>
     
     <!-- Firebase 모듈 초기화 -->
-  <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getFirestore, collection, getDocs, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
@@ -26,8 +26,15 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  // Firestore 함수를 window 객체에 할당하여 script.js에서 접근 가능하게 함
   window.db = db;
+  window.collection = collection;
+  window.getDocs = getDocs;
+  window.addDoc = addDoc;
+  window.onSnapshot = onSnapshot;
 </script>
+
 </head>
 <body>
     <div id="mapWrapper">
