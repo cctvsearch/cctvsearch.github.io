@@ -473,35 +473,96 @@ window.addEventListener('load', updateButtonText);
 // 화면 크기 조정 시 버튼 텍스트 업데이트
 window.addEventListener('resize', updateButtonText);
 
+// 기존 코드가 끝나는 부분
 
-// Firestore에서 마커 데이터를 불러오기
-async function loadMarkers() {
-    const querySnapshot = await getDocs(collection(window.db, "markers"));
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
-        
-        const marker = new kakao.maps.Marker({
-            position: markerPosition,
-            map: map
+// Firestore 실시간 업데이트 리스너 설정
+function listenForMarkerUpdates() {
+    const markersCollection = collection(db, "markers");
+
+    // Firestore에서 실시간으로 마커 데이터를 수신합니다
+    onSnapshot(markersCollection, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            const data = change.doc.data();
+            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+
+            // Firestore에서 추가된 마커 데이터로 Kakao 지도에 마커를 표시
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                map: map
+            });
+            markers.push(marker);
+
+            // 클릭한 마커에 오버레이 표시
+            kakao.maps.event.addListener(marker, 'click', () => {
+                showCustomOverlay(data, markerPosition);
+            });
         });
     });
 }
 
-// Firestore에 마커 추가하기
-async function addMarker(lat, lng, info) {
+// Firestore에 새로운 마커 추가하기
+async function addMarkerToFirestore(lat, lng, info) {
     try {
-        await addDoc(collection(window.db, "markers"), {
+        await addDoc(collection(db, "markers"), {
             latitude: lat,
             longitude: lng,
             info: info
         });
-        console.log("Marker added successfully!");
+        console.log("Marker added to Firestore successfully!");
     } catch (error) {
-        console.error("Error adding marker: ", error);
+        console.error("Error adding marker to Firestore: ", error);
     }
 }
 
-// 페이지 로드 시 Firestore에서 마커 불러오기
-window.onload = loadMarkers;
+// 지도를 클릭하여 새 마커와 오버레이 추가
+function onMapClick(mouseEvent) {
+    const latlng = mouseEvent.latLng;
+    const info = prompt("마커에 표시할 정보를 입력하세요:");
+
+    if (info) {
+        addMarkerToFirestore(latlng.getLat(), latlng.getLng(), info);
+        const marker = new kakao.maps.Marker({
+            position: latlng,
+            map: map
+        });
+        markers.push(marker);
+
+        const overlayContent = `<div class="customOverlay"><p>${info}</p></div>`;
+        const customOverlay = new kakao.maps.CustomOverlay({
+            content: overlayContent,
+            position: latlng,
+            map: map
+        });
+    }
+}
+
+// 커스텀 오버레이 표시 함수
+function showCustomOverlay(data, position) {
+    if (currentOverlay) currentOverlay.setMap(null);  // 이전 오버레이 제거
+    const overlayContent = `<div class="customOverlay">
+        <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+        <p>관리번호: ${data.number}</p>
+        <p>주소: ${data.address}</p>
+        <p>상세설명: ${data.description}</p>
+    </div>`;
+    currentOverlay = new kakao.maps.CustomOverlay({
+        content: overlayContent,
+        position: position,
+        map: map
+    });
+}
+
+// 커스텀 오버레이 닫기
+function closeCustomOverlay() {
+    if (currentOverlay) {
+        currentOverlay.setMap(null);
+        currentOverlay = null;
+    }
+}
+
+// 지도 클릭 이벤트 리스너 설정
+kakao.maps.event.addListener(map, 'click', onMapClick);
+
+// Firestore 실시간 리스너 실행
+listenForMarkerUpdates();
 
