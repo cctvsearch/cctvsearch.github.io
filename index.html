@@ -62,6 +62,34 @@
     <!-- 파일 선택 입력 추가 -->
     <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
+    <div id="addMarkerForm" style="display: none; position: absolute; top: 10%; left: 50%; transform: translateX(-50%); background: #fff; padding: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); border-radius: 8px; z-index: 100;">
+    <label>위도: <input type="text" id="latitudeInput"></label><br>
+    <label>경도: <input type="text" id="longitudeInput"></label><br>
+    <label>number: <input type="text" id="numberInput"></label><br>
+    <label>address: <input type="text" id="addressInput"></label><br>
+    <label>rotation: <input type="number" id="rotationInput"></label><br>
+    <label>fixed: <input type="number" id="fixedInput"></label><br>
+    <label>description: <input type="text" id="descriptionInput"></label><br>
+    <label>image: <input type="file" id="fileInput" accept="image/*"></label><br>
+    <label>category: 
+        <select id="categoryInput">
+            <option value="갈현동">갈현동</option>
+            <option value="과천동">과천동</option>
+            <option value="문원동">문원동</option>
+            <option value="별양동">별양동</option>
+            <option value="부림동">부림동</option>
+            <option value="주암동">주암동</option>
+            <option value="중앙동">중앙동</option>
+            <option value="기타">기타</option>
+            <option value="회전형">회전형</option>
+            <option value="고정형">고정형</option>
+            <option value="전부">전부</option>
+        </select>
+    </label><br>
+    <button id="submitMarkerButton">마커 추가</button>
+</div>
+
+
     <!-- 카테고리별 JavaScript 파일 로드 -->
     <script src="data/categoryA.js"></script>
     <script src="data/categoryB.js"></script>
