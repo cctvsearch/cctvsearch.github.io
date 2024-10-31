@@ -540,6 +540,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('addMarkerForm').style.display = 'block';
     });
 
+    // 닫기 버튼 클릭 시 폼 숨기기
+    document.getElementById('closeMarkerFormButton').addEventListener('click', function() {
+        document.getElementById('addMarkerForm').style.display = 'none';
+    });
+
     // submitMarkerButton 클릭 시 Firestore에 데이터 저장
     document.getElementById('submitMarkerButton').addEventListener('click', async function() {
         const lat = parseFloat(document.getElementById('latitudeInput').value);
@@ -552,7 +557,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const category = document.getElementById('categoryInput').value;
         const file = document.getElementById('fileInput').files[0];
 
-        // 이미지 업로드
         let imageUrl = "";
         if (file) {
             imageUrl = await uploadImageToStorage(file);
@@ -562,7 +566,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl, category);
             alert("마커가 성공적으로 추가되었습니다.");
-            
+
             // 폼 숨기기 및 초기화
             document.getElementById('addMarkerForm').style.display = 'none';
             document.getElementById('latitudeInput').value = '';
@@ -579,5 +583,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
 
 
