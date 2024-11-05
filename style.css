@@ -318,7 +318,7 @@ html, body {
     }
 
     #newSearchForm input[type="text"] {
-        width: 100%; /* 입력창 너비 설정 */
+        width: 90%; /* 입력창 너비 설정 */
         font-size: 12px; /* 입력창 폰트 크기 조정 */
         margin-bottom: 5px;
     }
