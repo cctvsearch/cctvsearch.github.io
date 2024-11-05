@@ -402,18 +402,27 @@ function toggleRoadview() {
     if (isRoadviewEnabled) {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
         roadviewContainer.style.display = 'block';
-        minimapContainer.style.display = 'block'; // 추가된 코드
+        minimapContainer.style.display = 'block';
+        
         setTimeout(function() {
-            minimap.relayout();  // minimap 강제 리프레시
-            minimap.setCenter(map.getCenter()); // minimap 중심 재설정
+            kakao.maps.event.trigger(roadview, 'resize'); // 로드뷰 강제 갱신
+            minimap.relayout();  // 미니맵 강제 리프레시
+            minimap.setCenter(map.getCenter());
         }, 0);
+
+        // 카테고리 드롭다운 강제 갱신
+        document.getElementById('categoryDropdownContainer').style.display = 'block';
     } else {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);
         roadviewContainer.style.display = 'none';
-        minimapContainer.style.display = 'none'; // 추가된 코드
+        minimapContainer.style.display = 'none';
         mapContainer.style.display = 'block';
+
+        // 카테고리 드롭다운 숨기기
+        document.getElementById('categoryDropdownContainer').style.display = 'none';
     }
 }
+
 
 var roadviewToggleBtn = document.getElementById('roadviewToggle');
 roadviewToggleBtn.addEventListener('click', function() {
