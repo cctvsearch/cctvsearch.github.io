@@ -309,7 +309,7 @@ html, body {
 
     #newSearchForm {
         width: 90%; /* 검색창 너비 조정 */
-        max-width: 300px; /* 최대 너비 설정 */
+        max-width: 230px; /* 최대 너비 설정 */
         top: auto;
         bottom: 8%; /* 화면 중앙 아래로 위치 조정 */
         left: 50%; /* 수평 중앙 정렬 */
