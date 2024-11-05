@@ -329,7 +329,7 @@ html, body {
         font-size: 12px; /* 버튼 폰트 크기 조정 */
     }
 
-    #latLngButton, #roadviewToggle {
+    #latLngButton, #roadviewToggle, #addMarkerButton {
         width: 60px; /* 버튼 너비 조정 */
         height: 30px; /* 버튼 높이 조정 */
         padding: 10px; /* 버튼 패딩 조정 */
@@ -360,6 +360,13 @@ html, body {
         border-radius: 5px; /* 버튼 모서리 둥글게 */
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
     }
+        #addMarkerButton {
+        top: 130px; /* 로드뷰 토글 버튼 위치 조정 */
+        background-color: #dc3545;
+        color: #fff;
+        border-radius: 5px; /* 버튼 모서리 둥글게 */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+    }
     
   #currentPosButton {
         top: 8%; /* 모바일에서는 버튼을 더 낮게 위치시킵니다 */
@@ -367,12 +374,6 @@ html, body {
         width: 50px; /* 모바일에서는 버튼 크기를 줄입니다 */
         height: 40px; /* 모바일에서는 버튼 크기를 줄입니다 */
     }
-    #addMarkerButton {
-        top: 130px; /* 로드뷰 토글 버튼 위치 조정 */
-        background-color: #dc3545;
-        color: #fff;
-        border-radius: 5px; /* 버튼 모서리 둥글게 */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
-    }
+
 }
     
