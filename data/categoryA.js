@@ -26,7 +26,7 @@ var AInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-GH-6*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-GH-4", // 새로운 관리번호 추가
@@ -34,7 +34,7 @@ var AInfo = [
         rotation: 1,
         fixed: 4,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-6",
@@ -44,7 +44,7 @@ var AInfo = [
         description: "A-GH-3 (FX #1) / A-GH-7 (FX #2)<br>" + 
                      "J40 중앙고 (FX #5) / A-GH-6 (FX #6)<br>" + 
                      "A-GH-8 (E #5)/ A-JA-6 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-8",
@@ -52,7 +52,7 @@ var AInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-GH-6*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-9",
@@ -60,7 +60,7 @@ var AInfo = [
         rotation: 1,
         fixed: 3,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-10",
@@ -68,7 +68,7 @@ var AInfo = [
         rotation: 1,
         fixed: 5,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-11",
@@ -76,7 +76,7 @@ var AInfo = [
         rotation: 1,
         fixed: 1,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-12",
@@ -84,7 +84,7 @@ var AInfo = [
         rotation: 1,
         fixed: 0,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-13",
@@ -92,7 +92,7 @@ var AInfo = [
         rotation: 1,
         fixed: 4,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-14",
@@ -100,7 +100,7 @@ var AInfo = [
         rotation: 1,
         fixed: 2,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-15",
@@ -108,7 +108,7 @@ var AInfo = [
         rotation: 1,
         fixed: 1,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-16",
@@ -116,7 +116,7 @@ var AInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-GH-22 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-17",
@@ -124,7 +124,7 @@ var AInfo = [
         rotation: 1,
         fixed: 2,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-18",
@@ -132,7 +132,7 @@ var AInfo = [
         rotation: 1,
         fixed: 2,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-19",
@@ -140,7 +140,7 @@ var AInfo = [
         rotation: 0,
         fixed: 2,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-20",
@@ -148,7 +148,7 @@ var AInfo = [
         rotation: 1,
         fixed: 1,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-GH-21",
@@ -156,7 +156,7 @@ var AInfo = [
         rotation: 1,
         fixed: 2,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "SPD-028",
@@ -164,6 +164,6 @@ var AInfo = [
         rotation: 1,
         fixed: 3,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     }
 ];
