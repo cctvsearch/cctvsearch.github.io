@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Firestore에 마커 데이터 추가
         try {
-            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description);
+            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
             alert("마커가 성공적으로 추가되었습니다.");
 
             // 폼 숨기기 및 초기화
