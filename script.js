@@ -186,9 +186,6 @@ function showCustomOverlay(position, index) {
         position: new kakao.maps.LatLng(position.lat, position.lng),
         yAnchor: 1.1
     });
-
-    const overlayElement = currentOverlay.getContent();
-    updateOverlaySize(overlayElement); // DOM 요소 전달
 }
 
 var categoryDropdown = document.getElementById('categoryDropdown');
