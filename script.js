@@ -554,16 +554,20 @@ function listenForMarkerUpdates() {
     });
 }
 
-// DOM 로드 후 이벤트 리스너 설정
-document.addEventListener('DOMContentLoaded', function() {
-    // Kakao 지도 초기화
-    const mapOption = {
-        center: new kakao.maps.LatLng(37.566535, 126.9779692),
-        level: 5
-    };
-    const map = new kakao.maps.Map(document.getElementById('map'), mapOption);
+// Kakao 지도 객체 전역 변수 선언
+let map; 
 
-    // 기존 데이터 표시 (이전 시스템의 데이터 로드 로직 유지)
+document.addEventListener('DOMContentLoaded', function() {
+    // 지도 초기화, 중복 실행 방지
+    if (!map) {
+        const mapOption = {
+            center: new kakao.maps.LatLng(37.566535, 126.9779692),
+            level: 5
+        };
+        map = new kakao.maps.Map(document.getElementById('map'), mapOption);
+    }
+
+    // 기존 데이터 표시
     createMarkersAndOverlays('전부');
 
     // Firestore 실시간 업데이트 수신
@@ -609,5 +613,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-
