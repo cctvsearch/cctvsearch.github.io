@@ -564,7 +564,7 @@ window.onSnapshot(markersCollection, (snapshot) => {
         }
     });
 });
-
+}
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -615,4 +615,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-}
+
