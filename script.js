@@ -494,78 +494,41 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
     }
 }
 
-// Firestore에서 실시간으로 마커 데이터를 수신하는 함수
-function listenForMarkerUpdates() {
-    const markersCollection = window.collection(window.db, "markers");
-
-    // Firestore에서 데이터 수신
-    window.onSnapshot(markersCollection, (snapshot) => {
-        firebaseMarkers.forEach(marker => marker.setMap(null)); // 기존 Firebase 마커 제거
-        firebaseMarkers = []; // 배열 초기화
-
-        snapshot.forEach(doc => {
-            const data = doc.data();
-
-            // Firestore 데이터 확인
-            console.log("Firestore 데이터:", data);
-
-            // 선택된 카테고리와 비교하여 필터링
-            if (selectedCategory !== '전부' && data.category !== selectedCategory) {
-                return; // 선택된 카테고리에 맞지 않는 경우 건너뛰기
-            }
-
-            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
-            const markerImage = new kakao.maps.MarkerImage(
-                "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
-                new kakao.maps.Size(30, 40)
-            );
-
-            const marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage,
-                map: map
-            });
-
-            // 마커 클릭 이벤트 추가
-            kakao.maps.event.addListener(marker, 'click', () => {
-                closeCustomOverlay(); // 기존 오버레이 닫기
-                console.log("마커 클릭 데이터:", data); // 클릭 시 전달 데이터 확인
-                showCustomOverlay({
-                    lat: data.latitude,
-                    lng: data.longitude,
-                    category: data.category || "알 수 없음"
-                }, {
-                    number: data.number || "알 수 없음",
-                    address: data.address || "주소 없음",
-                    rotation: data.rotation || 0,
-                    fixed: data.fixed || 0,
-                    description: data.description || "설명 없음"
-                });
-            });
-
-            firebaseMarkers.push(marker); // Firebase 마커 저장
+// Firestore에 새 마커 추가하는 함수
+async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category) {
+    try {
+        await window.addDoc(window.collection(window.db, "markers"), {
+            latitude: lat,
+            longitude: lng,
+            number: number,
+            address: address,
+            rotation: rotation,
+            fixed: fixed,
+            description: description,
+            category: category
         });
-    });
+        alert("마커가 성공적으로 추가되었습니다.");
+    } catch (error) {
+        console.error("마커 추가 중 오류 발생:", error);
+    }
 }
 
-// 커스텀 오버레이를 표시하는 함수
-function showCustomOverlay(position = {}, info = {}) {
-    closeCustomOverlay(); // 기존 오버레이 닫기
-
-    console.log("커스텀 오버레이 데이터:", position, info); // 전달 데이터 확인
+// Firebase 데이터를 기반으로 커스텀 오버레이를 생성하는 함수
+function showCustomOverlayForFirestore(position, data) {
+    closeCustomOverlay();
 
     const overlayContent = `
         <div class="customOverlay">
             <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
-            <div class="title">${position.category || '알 수 없음'}</div>
+            <div class="title">${data.category || '카테고리 없음'}</div>
             <div class="desc">
                 <div class="desc-content">
                     <div>
-                        <p><strong>관리번호:</strong> ${info.number || '알 수 없음'}</p>
-                        <p><strong>주소:</strong> ${info.address || '주소 없음'}</p>
-                        <p><strong>회전형:</strong> ${info.rotation || 0}</p>
-                        <p><strong>고정형:</strong> ${info.fixed || 0}</p>
-                        <p><strong>상세설명:</strong> ${info.description || '설명 없음'}</p>
+                        <p><strong>관리번호:</strong> ${data.number || '알 수 없음'}</p>
+                        <p><strong>주소:</strong> ${data.address || '주소 없음'}</p>
+                        <p><strong>회전형:</strong> ${data.rotation || 0}</p>
+                        <p><strong>고정형:</strong> ${data.fixed || 0}</p>
+                        <p><strong>상세설명:</strong> ${data.description || '설명 없음'}</p>
                     </div>
                 </div>
             </div>
@@ -580,78 +543,7 @@ function showCustomOverlay(position = {}, info = {}) {
     });
 }
 
-// 커스텀 오버레이를 닫는 함수
-function closeCustomOverlay() {
-    if (currentOverlay && typeof currentOverlay.setMap === "function") {
-        currentOverlay.setMap(null);
-        currentOverlay = null;
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    // 지도 초기화, 중복 실행 방지
-    if (!map) {
-        const mapOption = {
-            center: new kakao.maps.LatLng(37.566535, 126.9779692),
-            level: 5
-        };
-        map = new kakao.maps.Map(document.getElementById('map'), mapOption);
-    }
-
-    // 기존 데이터 표시
-    createMarkersAndOverlays('전부');
-
-    // Firestore 실시간 업데이트 수신
-    listenForMarkerUpdates();
-
-    // 마커 추가 버튼 클릭 시 폼 표시
-    document.getElementById('addMarkerButton').addEventListener('click', function() {
-        document.getElementById('addMarkerForm').style.display = 'block';
-    });
-
-    // 닫기 버튼 클릭 시 폼 숨기기
-    document.getElementById('closeMarkerFormButton').addEventListener('click', function() {
-        document.getElementById('addMarkerForm').style.display = 'none';
-    });
-
-    // submitMarkerButton 클릭 시 Firestore에 데이터 저장
-    document.getElementById('submitMarkerButton').addEventListener('click', async function() {
-    const lat = parseFloat(document.getElementById('latitudeInput').value);
-    const lng = parseFloat(document.getElementById('longitudeInput').value);
-    const number = document.getElementById('numberInput').value;
-    const address = document.getElementById('addressInput').value;
-    const rotation = parseInt(document.getElementById('rotationInput').value);
-    const fixed = parseInt(document.getElementById('fixedInput').value);
-    const description = document.getElementById('descriptionInput').value;
-    const category = document.getElementById('categoryInput').value; // 카테고리 값 읽기 추가
-
-    // Firestore에 마커 데이터 추가
-    try {
-        await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category); // 카테고리 전달
-        alert("마커가 성공적으로 추가되었습니다.");
-
-        // 폼 숨기기 및 초기화
-        document.getElementById('addMarkerForm').style.display = 'none';
-        document.getElementById('latitudeInput').value = '';
-        document.getElementById('longitudeInput').value = '';
-        document.getElementById('numberInput').value = '';
-        document.getElementById('addressInput').value = '';
-        document.getElementById('rotationInput').value = '';
-        document.getElementById('fixedInput').value = '';
-        document.getElementById('descriptionInput').value = '';
-        document.getElementById('categoryInput').value = '갈현동'; // 기본값으로 초기화
-    } catch (error) {
-        console.error("마커 추가 중 오류 발생:", error);
-        alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    }
-});
-});
-
-// Firebase 데이터와 로컬 데이터의 카테고리 필터링을 통합
-
-var selectedCategory = '전부'; // 기본값
-var firebaseMarkers = []; // Firebase에서 생성된 마커 저장 배열
-
+// Firestore에서 실시간으로 마커 데이터를 수신하는 함수
 function listenForMarkerUpdates() {
     const markersCollection = window.collection(window.db, "markers");
 
@@ -679,21 +571,68 @@ function listenForMarkerUpdates() {
                 map: map
             });
 
+            // Firebase 데이터용 커스텀 오버레이 생성
+            kakao.maps.event.addListener(marker, 'click', () => {
+                closeCustomOverlay(); // 기존 오버레이 닫기
+                showCustomOverlayForFirestore({
+                    lat: data.latitude,
+                    lng: data.longitude
+                }, data);
+            });
+
             firebaseMarkers.push(marker); // Firebase 마커 저장
         });
     });
 }
 
-// 드롭다운 이벤트 리스너
+// 기존 로컬 데이터의 커스텀 오버레이를 생성하는 함수
+function showCustomOverlay(position, index) {
+    closeCustomOverlay();
+
+    const overlayContent = `
+        <div class="customOverlay">
+            <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+            <div class="title">${position.category}</div>
+            <div class="desc">
+                <div class="desc-content">
+                    <div>
+                        <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
+                        <p><strong>주소:</strong> ${allInfo[index].address}</p>
+                        <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
+                        <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
+                        <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    currentOverlay = new kakao.maps.CustomOverlay({
+        content: overlayContent,
+        map: map,
+        position: new kakao.maps.LatLng(position.lat, position.lng),
+        yAnchor: 1.1
+    });
+}
+
+// 기존 로컬 데이터와 Firestore 데이터를 카테고리에 따라 필터링
 document.getElementById('categoryDropdown').addEventListener('change', function() {
     selectedCategory = this.value;
 
-    // 로컬 데이터와 Firebase 데이터 모두 필터링
+    // 로컬 데이터와 Firestore 데이터 모두 필터링
     createMarkersAndOverlays(selectedCategory);
     listenForMarkerUpdates();
 });
 
-// 페이지 로드 시 초기화
+// 커스텀 오버레이를 닫는 함수
+function closeCustomOverlay() {
+    if (currentOverlay && typeof currentOverlay.setMap === "function") {
+        currentOverlay.setMap(null);
+        currentOverlay = null;
+    }
+}
+
+// Firestore 및 로컬 데이터를 초기화하는 함수
 document.addEventListener('DOMContentLoaded', function() {
     selectedCategory = '전부'; // 기본 카테고리 설정
     createMarkersAndOverlays(selectedCategory);
