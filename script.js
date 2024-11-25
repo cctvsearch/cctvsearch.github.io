@@ -533,17 +533,26 @@ function listenForMarkerUpdates() {
 
                 // 커스텀 오버레이 추가
                 const overlayContent = `
-                    <div class="custom-overlay">
-                        <p><strong>관리번호:</strong> ${data.number}</p>
-                        <p><strong>주소:</strong> ${data.address}</p>
-                        <p><strong>회전형:</strong> ${data.rotation}</p>
-                        <p><strong>고정형:</strong> ${data.fixed}</p>
-                        <p><strong>상세설명:</strong> ${data.description}</p>
+                    <div class="customOverlay">
+                        <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+                        <div class="title">${data.category}</div> <!-- Title을 category로 설정 -->
+                        <div class="desc">
+                            <div class="desc-content">
+                                <div>
+                                    <p><strong>관리번호:</strong> ${data.number}</p>
+                                    <p><strong>주소:</strong> ${data.address}</p>
+                                    <p><strong>회전형:</strong> ${data.rotation}</p>
+                                    <p><strong>고정형:</strong> ${data.fixed}</p>
+                                    <p><strong>상세설명:</strong> ${data.description}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 const overlay = new kakao.maps.CustomOverlay({
                     position: markerPosition,
                     content: overlayContent,
+                    yAnchor: 1.1
                 });
 
                 // 클릭 시 오버레이 표시
