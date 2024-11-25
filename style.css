@@ -74,12 +74,6 @@ html, body {
     display: flex;
 }
 
-.customOverlay .desc-content img {
-    width: 150px;
-    height: 150px;
-    margin-right: 10px;
-}
-
 .customOverlay .desc-content div {
     flex: 1;
 }
