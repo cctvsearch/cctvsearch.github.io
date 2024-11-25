@@ -9,7 +9,17 @@ var mapOption = {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
     level: 5
 };
-var map = new kakao.maps.Map(mapContainer, mapOption);
+let map; // 글로벌 스코프에서 map 변수 선언
+
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM이 완전히 로드된 후 map 초기화
+    const mapOption = {
+        center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
+        level: 5
+    };
+    map = new kakao.maps.Map(mapContainer, mapOption);
+});
+
 var geocoder = new kakao.maps.services.Geocoder();
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
