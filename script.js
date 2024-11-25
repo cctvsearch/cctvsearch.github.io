@@ -177,7 +177,6 @@ function showCustomOverlay(position, index) {
         '    <div class="title">' + position.category + '</div>' +
         '    <div class="desc">' +
         '        <div class="desc-content">' +
-        '            <img src="' + allInfo[index].image + '" width="50" height="50">' + // 이미지 크기 수정
         '            <div>' +
         '                <p>관리번호 : ' + allInfo[index].number + '</p>' +
         '                <p>주소 : ' + allInfo[index].address + '</p>' +
@@ -589,7 +588,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const fixed = parseInt(document.getElementById('fixedInput').value);
         const description = document.getElementById('descriptionInput').value;
         const category = document.getElementById('categoryInput').value;
-        const file = document.getElementById('fileInput').files[0];
 
         let imageUrl = "";
         if (file) {
