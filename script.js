@@ -134,7 +134,7 @@ function createMarkersAndOverlays(category) {
 
 function handleMarkerClick(clickedMarker, defaultImageUrl) {
     // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
-    if (lastClickedMarker) {
+    if (lastClickedMarker && lastClickedMarker !== clickedMarker) {
         lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
     }
 
@@ -144,6 +144,7 @@ function handleMarkerClick(clickedMarker, defaultImageUrl) {
     // 마지막으로 클릭된 마커를 현재 마커로 설정
     lastClickedMarker = clickedMarker;
 }
+
 
 // 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
