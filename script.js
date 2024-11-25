@@ -489,17 +489,17 @@ window.addEventListener('resize', updateButtonText);
 
 
 // Firestore에 새 마커 추가하는 함수
-async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl) {
+async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description) {
     try {
-        await window.addDoc(window.collection(window.db, "markers"), {
-            latitude: lat,
-            longitude: lng,
-            number: number,
-            address: address,
-            rotation: rotation,
-            fixed: fixed,
-            description: description,
-            image: imageUrl
+    await window.addDoc(window.collection(window.db, "markers"), {
+        latitude: lat,
+        longitude: lng,
+        number: number,
+        address: address,
+        rotation: rotation,
+        fixed: fixed,
+        description: description,
+        
         });
         alert("마커가 성공적으로 추가되었습니다.");
     } catch (error) {
@@ -588,15 +588,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const fixed = parseInt(document.getElementById('fixedInput').value);
         const description = document.getElementById('descriptionInput').value;
         const category = document.getElementById('categoryInput').value;
-
-        let imageUrl = "";
-        if (file) {
-            imageUrl = await uploadImageToStorage(file);
         }
 
         // Firestore에 마커 데이터 추가
         try {
-            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, imageUrl, category);
+            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
             alert("마커가 성공적으로 추가되었습니다.");
 
             // 폼 숨기기 및 초기화
