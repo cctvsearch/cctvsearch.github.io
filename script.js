@@ -588,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const fixed = parseInt(document.getElementById('fixedInput').value);
         const description = document.getElementById('descriptionInput').value;
         const category = document.getElementById('categoryInput').value;
-        }
+        
 
         // Firestore에 마커 데이터 추가
         try {
@@ -611,4 +611,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
 
