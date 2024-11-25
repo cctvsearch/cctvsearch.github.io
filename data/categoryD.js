@@ -37,7 +37,7 @@ var DInfo = [
         rotation: 1,
         fixed: 5,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BY-9",
@@ -45,7 +45,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BY-12*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-10",
@@ -53,7 +53,7 @@ var DInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-BY-12*,39",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-12",
@@ -62,7 +62,7 @@ var DInfo = [
         fixed: 6,
         description: "A-BY-9 (FX #4) / A-BY-12 (E #5)<br>" +
                     "A-BY-10,39 (E #8)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-13",
@@ -70,7 +70,7 @@ var DInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-BY-17*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-14",
@@ -78,7 +78,7 @@ var DInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-BY-15*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-15",
@@ -88,7 +88,7 @@ var DInfo = [
         description: "A-BY-4 (FX #1) / A-BY-3 (FX #2)<br>" +
                      "A-BY-6 (FX #5) / A-BY-5 (FX #6)<br>" +
                      "A-BY-2 (E #5) / A-BY-22 (E #6) / A-BY-14 (E #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-17",
@@ -97,7 +97,7 @@ var DInfo = [
         fixed: 0,
         description: "A-BY-20 (FX #1) / A-BY-19 (FX #2)<br>" +
                      "A-BY-18 (E #5) / A-BY-13 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-18",
@@ -105,7 +105,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BY-17*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-19",
@@ -113,7 +113,7 @@ var DInfo = [
         rotation: 1,
         fixed: 6,
         description: "A-BY-17*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-20",
@@ -121,7 +121,7 @@ var DInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BY-17*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-21",
@@ -129,7 +129,7 @@ var DInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-BY-28*,24",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-23",
@@ -137,7 +137,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-24",
@@ -145,7 +145,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BY-28*,21",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-25",
@@ -153,7 +153,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-26",
@@ -161,7 +161,7 @@ var DInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BY-28*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-27",
@@ -169,7 +169,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-28",
@@ -178,7 +178,7 @@ var DInfo = [
         fixed: 3,
         description: "A-BY-29 (FX #1) / A-177 (FX #2)<br>" +
                      "A-178 (FX #5) / A-BY-21,24 (FX #6) / A-BY-26 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-29",
@@ -186,7 +186,7 @@ var DInfo = [
         rotation: 1,
         fixed: 5,
         description: "A-BY-28* / A-GC-84 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-30",
@@ -197,7 +197,7 @@ var DInfo = [
                      "A-BY-31 (FX #5) / A-BY-33 (FX #6)<br>" +
                      "A-BY-37 (FX #9) / A-BY-32 (FX #12)<br>" +
                      "A-BY-27 (E #5) / A-BY-38 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-31",
@@ -205,7 +205,7 @@ var DInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-32",
@@ -213,7 +213,7 @@ var DInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-33",
@@ -221,7 +221,7 @@ var DInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-34",
@@ -229,7 +229,7 @@ var DInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BY-30*,35",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-35",
@@ -237,7 +237,7 @@ var DInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BY-30*,34",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-36",
@@ -245,7 +245,7 @@ var DInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-37",
@@ -253,7 +253,7 @@ var DInfo = [
         rotation: 0,
         fixed: 3,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-BY-38",
@@ -261,7 +261,7 @@ var DInfo = [
         rotation: 0,
         fixed: 2,
         description: "A-BY-30*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-177",
@@ -269,7 +269,7 @@ var DInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BY-28*",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
         number: "A-178",
@@ -277,7 +277,7 @@ var DInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BY-28*",
-        image: "https://via.placeholder.com/150"
+        
     }
 
 
