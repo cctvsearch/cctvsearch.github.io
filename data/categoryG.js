@@ -34,7 +34,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-9",
@@ -44,7 +44,7 @@ var GInfo = [
         description: "A-JA-12 (FX #2) / A-JA-11 (FX #5)<br>" +
                      "A-JA-21,22 (FX #6) / A-JA-13 (FX #9)<br>" +
             "A-JA-10 (E #5) / A-JA-6 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-10",
@@ -52,7 +52,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-9*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-11",
@@ -60,7 +60,7 @@ var GInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-JA-9*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-12",
@@ -68,7 +68,7 @@ var GInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-JA-9*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-13",
@@ -76,7 +76,7 @@ var GInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-JA-9* / A-GC-85 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-14",
@@ -87,7 +87,7 @@ var GInfo = [
             "A-JA-26 (FX #5) / A-JA-18,19 (FX #6)<br>" +
                      "A-JA-15 (FX #9) / A-JA-16 (FX #10)<br>" +
             "A-JA-24 (E #7) / A-JA-23 (E #8)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-16",
@@ -95,7 +95,7 @@ var GInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-JA-14*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-17",
@@ -103,7 +103,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-14*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-18",
@@ -111,7 +111,7 @@ var GInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-JA-14*,19",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-20",
@@ -119,7 +119,7 @@ var GInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-JA-14*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-21",
@@ -127,7 +127,7 @@ var GInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-JA-9* / A-JA-44 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-23",
@@ -135,7 +135,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-14*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-24",
@@ -143,7 +143,7 @@ var GInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-JA-14*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-25",
@@ -151,7 +151,7 @@ var GInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-JA-27 (E #6) / A-JA-25 (E #9)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-27",
@@ -159,7 +159,7 @@ var GInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-JA-25*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-28",
@@ -168,7 +168,7 @@ var GInfo = [
         fixed: 3,
         description: "광연결 안됨 (FX #1) / P35,과천초 4R (FX #2)<br>" +
             "A-JA-29 (E #5) / A-JA-30 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-29",
@@ -176,7 +176,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-28*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-30",
@@ -184,7 +184,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-28* / A-JA-46 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-31",
@@ -192,7 +192,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BL-2*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-33",
@@ -201,7 +201,7 @@ var GInfo = [
         fixed: 4,
         description: "광연결 안됨 (FX #1) / P35,과천초 4R (FX #2)<br>" +
                      "A-JA-3,36 (E #5) / A-JA-34,35 A-BY-11 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-35",
@@ -209,7 +209,7 @@ var GInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-JA-33*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-36",
@@ -217,7 +217,7 @@ var GInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-JA-33*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-38",
@@ -225,7 +225,7 @@ var GInfo = [
         rotation: 0,
         fixed: 1,
         description: "A-GC-53 (E #5) / A-GC-53 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-39",
@@ -236,7 +236,7 @@ var GInfo = [
                      "A-GC-61,62 (FX #5) / A-GC-48 (FX #6) / A-GC-59 (FX #9)<br>" +
                      "A-GC-61,62 (FX #10) / J60 (FX #13)<br>" +
             "A-JA-41 (E #5)/ A=JA-40 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-40",
@@ -244,7 +244,7 @@ var GInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-JA-39* / A-BL-39*",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-JA-41",
@@ -252,6 +252,6 @@ var GInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-JA-39* / A-BL-39*",
-        image: "https://via.placeholder.com/150"
+        
     }
 ];
