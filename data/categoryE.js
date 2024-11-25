@@ -30,7 +30,7 @@ var EInfo = [
         description: "A-BL-3 (FX #1) / A-BL-1,5 (FX #5)<br>" +
                      "A-BL-9,12,13 (FX #10) / A-BL-7,8 (E #5)<br>" +
                      "A-BL-3,4 (E #6) / A-JA-31 (E #7)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-3",
@@ -38,7 +38,7 @@ var EInfo = [
         rotation: 1,
         fixed: 5,
         description: "A-BL-2* (FX #1) / A-BL- 2*,4 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-4",
@@ -46,7 +46,7 @@ var EInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-BL-2*,3 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-5",
@@ -54,7 +54,7 @@ var EInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-BL-2*,1 (FX #5)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-6",
@@ -62,7 +62,7 @@ var EInfo = [
         rotation: 1,
         fixed: 4,
         description: "광연결없음 / A-BL-23 (FX #10* ↔ FX #9)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-7",
@@ -70,7 +70,7 @@ var EInfo = [
         rotation: 1,
         fixed: 8,
         description: "A-BL-2*,8 (E #5)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-8",
@@ -78,7 +78,7 @@ var EInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-BL-2*,7 (E #5)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-9",
@@ -86,7 +86,7 @@ var EInfo = [
         rotation: 1,
         fixed: 5,
         description: "A-BL-2*,12,13 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-10",
@@ -94,7 +94,7 @@ var EInfo = [
         rotation: 1,
         fixed: 2,
         description: "A-BL-11* (E #5)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-11",
@@ -102,7 +102,7 @@ var EInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BL-10 (E #5) / A-BL-14 (E #6) ",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-12",
@@ -110,7 +110,7 @@ var EInfo = [
         rotation: 1,
         fixed: 5,
         description: "A-BL-2*,9,13 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-13",
@@ -118,7 +118,7 @@ var EInfo = [
         rotation: 1,
         fixed: 1,
         description: "A-BL-2*,9,12 (FX #10)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-14",
@@ -126,7 +126,7 @@ var EInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BL-11* (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-15",
@@ -134,7 +134,7 @@ var EInfo = [
         rotation: 1,
         fixed: 3,
         description: "A-BL-16* (E #5)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-16",
@@ -142,7 +142,7 @@ var EInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BL-18 (FX #2) / A-BL-15 (E #5) / A-BL-17 (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-17",
@@ -150,7 +150,7 @@ var EInfo = [
         rotation: 1,
         fixed: 4,
         description: "A-BL-16* (E #6)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-18",
@@ -158,7 +158,7 @@ var EInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-BL-16* (FX #2)",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-19",
@@ -166,7 +166,7 @@ var EInfo = [
         rotation: 1,
         fixed: 0,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-20",
@@ -174,7 +174,7 @@ var EInfo = [
         rotation: 1,
         fixed: 0,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-21",
@@ -182,7 +182,7 @@ var EInfo = [
         rotation: 1,
         fixed: 3,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-BL-22",
@@ -190,7 +190,7 @@ var EInfo = [
         rotation: 1,
         fixed: 2,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     }
   
 ];
