@@ -8,6 +8,6 @@ var HInfo = [
         rotation: 1,
         fixed: 0,
         description: "기타 어린이집 앞",
-        image: "https://via.placeholder.com/150"
+        
     }
 ];
