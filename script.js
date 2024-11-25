@@ -74,7 +74,7 @@ function createMarkersAndOverlays(category) {
     minimapMarkers = [];
 
     // 카테고리별 마커 이미지 URL 및 사이즈 정의
-    var markerImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
+    var markerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
     var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
 
     if (category === '회전형') {
@@ -153,7 +153,7 @@ function closeCustomOverlay() {
 
         if (lastClickedMarker) {
             // 마지막 클릭된 마커 이미지 원래대로 복구
-            var defaultImageUrl = 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+            var defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
             lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
             lastClickedMarker = null;
         }
@@ -520,7 +520,7 @@ function listenForMarkerUpdates() {
 
                 // 마커 이미지
                 const markerImage = new kakao.maps.MarkerImage(
-                    "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+                    "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
                     new kakao.maps.Size(30, 40)
                 );
 
