@@ -55,7 +55,6 @@ var tempOverlay = null;
 createMarkersAndOverlays('전부');
 
 function createMarkersAndOverlays(category) {
-    closeCustomOverlay();
 
     // 기존 마커 제거
     markers.forEach(function(marker) {
