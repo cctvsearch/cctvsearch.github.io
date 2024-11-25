@@ -27,7 +27,7 @@ var FInfo = [
         rotation: 1,
         fixed: 6,
         description: "",
-        image: "https://via.placeholder.com/150"
+        
     },
         {
                 number: "A-GC-63 || A-192",
@@ -35,7 +35,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-64 || A-120",
@@ -43,7 +43,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-65 || A-164",
@@ -51,7 +51,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-66 || A-122",
@@ -59,7 +59,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-67 || A-121",
@@ -67,7 +67,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-68 || A-222",
@@ -75,7 +75,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-69 || A-193",
@@ -83,7 +83,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-70 || A-125",
@@ -91,7 +91,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-71 || A-88",
@@ -99,7 +99,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-72 || A-73",
@@ -107,7 +107,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-73 || A-26",
@@ -115,7 +115,7 @@ var FInfo = [
                 rotation:1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-74 || A-42",
@@ -123,7 +123,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-75 || A-163",
@@ -131,7 +131,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-40",
@@ -139,7 +139,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-41",
@@ -147,7 +147,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-61",
@@ -155,7 +155,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-123",
@@ -163,7 +163,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-124",
@@ -171,7 +171,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
             {
                 number: "A-188",
@@ -179,7 +179,7 @@ var FInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             }
 
 ];
