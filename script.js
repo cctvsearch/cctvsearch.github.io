@@ -115,12 +115,10 @@ function createMarkersAndOverlays(category) {
 
             // 마커 클릭 이벤트 추가
             kakao.maps.event.addListener(marker, 'click', function() {
-                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
 
             kakao.maps.event.addListener(marker, 'touchstart', function() {
-                handleMarkerClick(marker, markerImageUrl);
                 showCustomOverlay(position, index);
             });
         }
