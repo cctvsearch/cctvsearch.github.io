@@ -1,3 +1,6 @@
+// Kakao 지도 객체 전역 변수 선언
+let map; 
+
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
@@ -553,9 +556,6 @@ function listenForMarkerUpdates() {
         });
     });
 }
-
-// Kakao 지도 객체 전역 변수 선언
-let map; 
 
 document.addEventListener('DOMContentLoaded', function() {
     // 지도 초기화, 중복 실행 방지
