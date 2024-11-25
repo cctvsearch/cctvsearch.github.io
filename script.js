@@ -147,47 +147,38 @@ function handleMarkerClick(clickedMarker, defaultImageUrl) {
 
 // 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
-    if (currentOverlay) {
+    if (currentOverlay && typeof currentOverlay.setMap === "function") {
         currentOverlay.setMap(null);
         currentOverlay = null;
-
-        if (lastClickedMarker) {
-            // 마지막 클릭된 마커 이미지 원래대로 복구
-            var defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-            lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
-            lastClickedMarker = null;
-        }
     }
-}
-function updateOverlaySize(overlayElement) {
-    const img = overlayElement.querySelector("img");
 
-    if (img) {
-        img.addEventListener("load", function() {
-            overlayElement.style.width = "auto";  // 이미지 로드 후 오버레이 크기 조정
-        });
+    if (lastClickedMarker && typeof lastClickedMarker.setImage === "function") {
+        const defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+        lastClickedMarker = null; // 초기화
     }
 }
 
 function showCustomOverlay(position, index) {
-    closeCustomOverlay();
+    closeCustomOverlay(); // 기존 오버레이 닫기
 
-    var overlayContent =
-        '<div class="customOverlay">' +
-        '    <span class="closeBtn" onclick="closeCustomOverlay()">×</span>' +
-        '    <div class="title">' + position.category + '</div>' +
-        '    <div class="desc">' +
-        '        <div class="desc-content">' +
-        '            <div>' +
-        '                <p>관리번호 : ' + allInfo[index].number + '</p>' +
-        '                <p>주소 : ' + allInfo[index].address + '</p>' +
-        '                <p>회전형 : ' + allInfo[index].rotation + '</p>' +
-        '                <p>고정형 : ' + allInfo[index].fixed + '</p>' +
-        '                <p>상세설명 : ' + allInfo[index].description + '</p>' +
-        '            </div>' +
-        '        </div>' +
-        '    </div>' +
-        '</div>';
+    const overlayContent = `
+        <div class="customOverlay">
+            <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+            <div class="title">${position.category}</div>
+            <div class="desc">
+                <div class="desc-content">
+                    <div>
+                        <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
+                        <p><strong>주소:</strong> ${allInfo[index].address}</p>
+                        <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
+                        <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
+                        <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 
     currentOverlay = new kakao.maps.CustomOverlay({
         content: overlayContent,
@@ -196,10 +187,9 @@ function showCustomOverlay(position, index) {
         yAnchor: 1.1
     });
 
-    // 이미지 로드 후 오버레이 크기를 업데이트
-    updateOverlaySize(currentOverlay.getContent());
+    const overlayElement = currentOverlay.getContent();
+    updateOverlaySize(overlayElement); // DOM 요소 전달
 }
-
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
