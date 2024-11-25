@@ -128,20 +128,6 @@ function createMarkersAndOverlays(category) {
     });
 }
 
-// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
-function closeCustomOverlay() {
-    if (currentOverlay && typeof currentOverlay.setMap === "function") {
-        currentOverlay.setMap(null);
-        currentOverlay = null;
-    }
-
-    if (lastClickedMarker && typeof lastClickedMarker.setImage === "function") {
-        const defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
-        lastClickedMarker = null; // 초기화
-    }
-}
-
 function showCustomOverlay(position, index) {
     closeCustomOverlay(); // 기존 오버레이 닫기
 
