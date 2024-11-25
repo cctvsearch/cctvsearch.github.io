@@ -618,3 +618,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Firebase 데이터와 로컬 데이터의 카테고리 필터링을 통합
+
+var selectedCategory = '전부'; // 기본값
+var firebaseMarkers = []; // Firebase에서 생성된 마커 저장 배열
+
+function listenForMarkerUpdates() {
+    const markersCollection = window.collection(window.db, "markers");
+
+    window.onSnapshot(markersCollection, (snapshot) => {
+        firebaseMarkers.forEach(marker => marker.setMap(null)); // 기존 Firebase 마커 제거
+        firebaseMarkers = []; // 배열 초기화
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+
+            // 선택된 카테고리와 비교하여 필터링
+            if (selectedCategory !== '전부' && data.category !== selectedCategory) {
+                return; // 선택된 카테고리에 맞지 않는 경우 건너뛰기
+            }
+
+            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+            const markerImage = new kakao.maps.MarkerImage(
+                "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+                new kakao.maps.Size(30, 40)
+            );
+
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage,
+                map: map
+            });
+
+            firebaseMarkers.push(marker); // Firebase 마커 저장
+        });
+    });
+}
+
+// 드롭다운 이벤트 리스너
+document.getElementById('categoryDropdown').addEventListener('change', function() {
+    selectedCategory = this.value;
+
+    // 로컬 데이터와 Firebase 데이터 모두 필터링
+    createMarkersAndOverlays(selectedCategory);
+    listenForMarkerUpdates();
+});
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    selectedCategory = '전부'; // 기본 카테고리 설정
+    createMarkersAndOverlays(selectedCategory);
+    listenForMarkerUpdates();
+});
+
