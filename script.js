@@ -588,35 +588,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // submitMarkerButton 클릭 시 Firestore에 데이터 저장
     document.getElementById('submitMarkerButton').addEventListener('click', async function() {
-        const lat = parseFloat(document.getElementById('latitudeInput').value);
-        const lng = parseFloat(document.getElementById('longitudeInput').value);
-        const number = document.getElementById('numberInput').value;
-        const address = document.getElementById('addressInput').value;
-        const rotation = parseInt(document.getElementById('rotationInput').value);
-        const fixed = parseInt(document.getElementById('fixedInput').value);
-        const description = document.getElementById('descriptionInput').value;
-        const category = document.getElementById('categoryInput').value;
+    const lat = parseFloat(document.getElementById('latitudeInput').value);
+    const lng = parseFloat(document.getElementById('longitudeInput').value);
+    const number = document.getElementById('numberInput').value;
+    const address = document.getElementById('addressInput').value;
+    const rotation = parseInt(document.getElementById('rotationInput').value);
+    const fixed = parseInt(document.getElementById('fixedInput').value);
+    const description = document.getElementById('descriptionInput').value;
+    const category = document.getElementById('categoryInput').value; // 카테고리 값 읽기 추가
 
-        // Firestore에 마커 데이터 추가
-        try {
-            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
-            alert("마커가 성공적으로 추가되었습니다.");
+    // Firestore에 마커 데이터 추가
+    try {
+        await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category); // 카테고리 전달
+        alert("마커가 성공적으로 추가되었습니다.");
 
-            // 폼 숨기기 및 초기화
-            document.getElementById('addMarkerForm').style.display = 'none';
-            document.getElementById('latitudeInput').value = '';
-            document.getElementById('longitudeInput').value = '';
-            document.getElementById('numberInput').value = '';
-            document.getElementById('addressInput').value = '';
-            document.getElementById('rotationInput').value = '';
-            document.getElementById('fixedInput').value = '';
-            document.getElementById('descriptionInput').value = '';
-            document.getElementById('categoryInput').value = '갈현동'; // 기본값으로 초기화
-        } catch (error) {
-            console.error("마커 추가 중 오류 발생:", error);
-            alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-    });
+        // 폼 숨기기 및 초기화
+        document.getElementById('addMarkerForm').style.display = 'none';
+        document.getElementById('latitudeInput').value = '';
+        document.getElementById('longitudeInput').value = '';
+        document.getElementById('numberInput').value = '';
+        document.getElementById('addressInput').value = '';
+        document.getElementById('rotationInput').value = '';
+        document.getElementById('fixedInput').value = '';
+        document.getElementById('descriptionInput').value = '';
+        document.getElementById('categoryInput').value = '갈현동'; // 기본값으로 초기화
+    } catch (error) {
+        console.error("마커 추가 중 오류 발생:", error);
+        alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
+});
 });
 
 // Firebase 데이터와 로컬 데이터의 카테고리 필터링을 통합
