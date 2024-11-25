@@ -500,62 +500,76 @@ function listenForMarkerUpdates() {
 
     // Firestore에서 데이터 수신
     window.onSnapshot(markersCollection, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-                const data = change.doc.data();
-                const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+        firebaseMarkers.forEach(marker => marker.setMap(null)); // 기존 Firebase 마커 제거
+        firebaseMarkers = []; // 배열 초기화
 
-                const markerImage = new kakao.maps.MarkerImage(
-                    "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
-                    new kakao.maps.Size(30, 40)
-                );
+        snapshot.forEach(doc => {
+            const data = doc.data();
 
-                const marker = new kakao.maps.Marker({
-                    position: markerPosition,
-                    image: markerImage,
-                    map: map
-                });
-
-                const overlayContent = document.createElement('div');
-                overlayContent.className = 'customOverlay';
-                overlayContent.innerHTML = `
-                    <span class="closeBtn">×</span>
-                    <div class="title">${data.category}</div>
-                    <div class="desc">
-                        <div class="desc-content">
-                            <div>
-                                <p><strong>관리번호:</strong> ${data.number}</p>
-                                <p><strong>주소:</strong> ${data.address}</p>
-                                <p><strong>회전형:</strong> ${data.rotation}</p>
-                                <p><strong>고정형:</strong> ${data.fixed}</p>
-                                <p><strong>상세설명:</strong> ${data.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                const overlay = new kakao.maps.CustomOverlay({
-                    position: markerPosition,
-                    content: overlayContent,
-                    yAnchor: 1.1
-                });
-
-                // 닫기 버튼 이벤트 추가
-                overlayContent.querySelector('.closeBtn').addEventListener('click', function () {
-                    if (currentOverlay && typeof currentOverlay.setMap === "function") {
-                        currentOverlay.setMap(null);
-                        currentOverlay = null;
-                    }
-                });
-
-                // 마커 클릭 이벤트
-                kakao.maps.event.addListener(marker, 'click', () => {
-                    closeCustomOverlay(); // 기존 오버레이 닫기
-                    overlay.setMap(map);
-                    currentOverlay = overlay; // 새 오버레이 갱신
-                });
+            // 선택된 카테고리와 비교하여 필터링
+            if (selectedCategory !== '전부' && data.category !== selectedCategory) {
+                return; // 선택된 카테고리에 맞지 않는 경우 건너뛰기
             }
+
+            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+            const markerImage = new kakao.maps.MarkerImage(
+                "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+                new kakao.maps.Size(30, 40)
+            );
+
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage,
+                map: map
+            });
+
+            // 마커 클릭 이벤트 추가
+            kakao.maps.event.addListener(marker, 'click', () => {
+                closeCustomOverlay(); // 기존 오버레이 닫기
+                showCustomOverlay({
+                    lat: data.latitude,
+                    lng: data.longitude,
+                    category: data.category
+                }, {
+                    number: data.number,
+                    address: data.address,
+                    rotation: data.rotation,
+                    fixed: data.fixed,
+                    description: data.description
+                });
+            });
+
+            firebaseMarkers.push(marker); // Firebase 마커 저장
         });
+    });
+}
+
+function showCustomOverlay(position, info) {
+    closeCustomOverlay(); // 기존 오버레이 닫기
+
+    const overlayContent = `
+        <div class="customOverlay">
+            <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+            <div class="title">${position.category}</div>
+            <div class="desc">
+                <div class="desc-content">
+                    <div>
+                        <p><strong>관리번호:</strong> ${info.number}</p>
+                        <p><strong>주소:</strong> ${info.address}</p>
+                        <p><strong>회전형:</strong> ${info.rotation}</p>
+                        <p><strong>고정형:</strong> ${info.fixed}</p>
+                        <p><strong>상세설명:</strong> ${info.description}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    currentOverlay = new kakao.maps.CustomOverlay({
+        content: overlayContent,
+        map: map,
+        position: new kakao.maps.LatLng(position.lat, position.lng),
+        yAnchor: 1.1
     });
 }
 
