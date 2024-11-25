@@ -487,19 +487,17 @@ window.addEventListener('load', updateButtonText);
 window.addEventListener('resize', updateButtonText);
 
 
-
 // Firestore에 새 마커 추가하는 함수
 async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description) {
     try {
-    await window.addDoc(window.collection(window.db, "markers"), {
-        latitude: lat,
-        longitude: lng,
-        number: number,
-        address: address,
-        rotation: rotation,
-        fixed: fixed,
-        description: description,
-        
+        await window.addDoc(window.collection(window.db, "markers"), {
+            latitude: lat,
+            longitude: lng,
+            number: number,
+            address: address,
+            rotation: rotation,
+            fixed: fixed,
+            description: description,
         });
         alert("마커가 성공적으로 추가되었습니다.");
     } catch (error) {
@@ -507,67 +505,70 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
     }
 }
 
-// Firebase Storage에 이미지 파일 업로드
-async function uploadImageToStorage(file) {
-    try {
-        const storageRef = window.ref(window.storage, 'images/' + file.name);
-        await window.uploadBytes(storageRef, file);
-        const downloadURL = await window.getDownloadURL(storageRef);
-        return downloadURL;
-    } catch (error) {
-        console.error("이미지 업로드 중 오류 발생:", error);
-    }
-}
-
 // Firestore에서 실시간으로 마커 데이터를 수신하는 함수
-function listenForMarkerUpdates(callback) {
+function listenForMarkerUpdates() {
     const markersCollection = window.collection(window.db, "markers");
-// Firestore에서 데이터 수신
-window.onSnapshot(markersCollection, (snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-            const data = change.doc.data();
-            
-            // 마커 위치
-            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+    // Firestore에서 데이터 수신
+    window.onSnapshot(markersCollection, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const data = change.doc.data();
+                
+                // 마커 위치
+                const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
 
-            // 마커 이미지
-            const markerImage = new kakao.maps.MarkerImage(
-                "URL_TO_MARKER_IMAGE",
-                new kakao.maps.Size(30, 40)
-            );
+                // 마커 이미지
+                const markerImage = new kakao.maps.MarkerImage(
+                    "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+                    new kakao.maps.Size(30, 40)
+                );
 
-            // 마커 생성
-            const marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage,
-            });
+                // 마커 생성
+                const marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                    image: markerImage,
+                    map: map
+                });
 
-            // 지도에 마커 추가
-            marker.setMap(map);
+                // 커스텀 오버레이 추가
+                const overlayContent = `
+                    <div class="custom-overlay">
+                        <p><strong>Number:</strong> ${data.number}</p>
+                        <p><strong>Address:</strong> ${data.address}</p>
+                        <p><strong>Rotation:</strong> ${data.rotation}</p>
+                        <p><strong>Fixed:</strong> ${data.fixed}</p>
+                        <p><strong>Description:</strong> ${data.description}</p>
+                    </div>
+                `;
+                const overlay = new kakao.maps.CustomOverlay({
+                    position: markerPosition,
+                    content: overlayContent,
+                });
 
-            // 커스텀 오버레이 추가
-            const overlayContent = `
-                <div>
-                    <p>${data.description}</p>
-                </div>
-            `;
-            const overlay = new kakao.maps.CustomOverlay({
-                position: markerPosition,
-                content: overlayContent,
-            });
-
-            // 클릭 시 오버레이 표시
-            kakao.maps.event.addListener(marker, "click", () => {
-                overlay.setMap(map);
-            });
-        }
+                // 클릭 시 오버레이 표시
+                kakao.maps.event.addListener(marker, "click", () => {
+                    overlay.setMap(map);
+                });
+            }
+        });
     });
-});
 }
 
-
+// DOM 로드 후 이벤트 리스너 설정
 document.addEventListener('DOMContentLoaded', function() {
+    // Kakao 지도 초기화
+    const mapOption = {
+        center: new kakao.maps.LatLng(37.566535, 126.9779692),
+        level: 5
+    };
+    const map = new kakao.maps.Map(document.getElementById('map'), mapOption);
+
+    // 기존 데이터 표시 (이전 시스템의 데이터 로드 로직 유지)
+    createMarkersAndOverlays('전부');
+
+    // Firestore 실시간 업데이트 수신
+    listenForMarkerUpdates();
+
     // 마커 추가 버튼 클릭 시 폼 표시
     document.getElementById('addMarkerButton').addEventListener('click', function() {
         document.getElementById('addMarkerForm').style.display = 'block';
@@ -587,12 +588,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const rotation = parseInt(document.getElementById('rotationInput').value);
         const fixed = parseInt(document.getElementById('fixedInput').value);
         const description = document.getElementById('descriptionInput').value;
-        const category = document.getElementById('categoryInput').value;
-        
 
         // Firestore에 마커 데이터 추가
         try {
-            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
+            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description);
             alert("마커가 성공적으로 추가되었습니다.");
 
             // 폼 숨기기 및 초기화
@@ -604,7 +603,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('rotationInput').value = '';
             document.getElementById('fixedInput').value = '';
             document.getElementById('descriptionInput').value = '';
-            document.getElementById('fileInput').value = '';
         } catch (error) {
             console.error("마커 추가 중 오류 발생:", error);
             alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
