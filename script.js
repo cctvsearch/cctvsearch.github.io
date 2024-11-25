@@ -513,7 +513,7 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
     }
 }
 
-// Firebase 데이터를 기반으로 커스텀 오버레이를 생성하는 함수
+// Firestore 데이터를 기반으로 커스텀 오버레이를 생성하는 함수
 function showCustomOverlayForFirestore(position, data) {
     closeCustomOverlay();
 
@@ -573,7 +573,7 @@ function listenForMarkerUpdates() {
 
             // Firebase 데이터용 커스텀 오버레이 생성
             kakao.maps.event.addListener(marker, 'click', () => {
-                closeCustomOverlay(); // 기존 오버레이 닫기
+                closeCustomOverlay();
                 showCustomOverlayForFirestore({
                     lat: data.latitude,
                     lng: data.longitude
@@ -585,42 +585,11 @@ function listenForMarkerUpdates() {
     });
 }
 
-// 기존 로컬 데이터의 커스텀 오버레이를 생성하는 함수
-function showCustomOverlay(position, index) {
-    closeCustomOverlay();
-
-    const overlayContent = `
-        <div class="customOverlay">
-            <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
-            <div class="title">${position.category}</div>
-            <div class="desc">
-                <div class="desc-content">
-                    <div>
-                        <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
-                        <p><strong>주소:</strong> ${allInfo[index].address}</p>
-                        <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
-                        <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
-                        <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    currentOverlay = new kakao.maps.CustomOverlay({
-        content: overlayContent,
-        map: map,
-        position: new kakao.maps.LatLng(position.lat, position.lng),
-        yAnchor: 1.1
-    });
-}
-
-// 기존 로컬 데이터와 Firestore 데이터를 카테고리에 따라 필터링
+// 카테고리 선택 시 Firestore 데이터를 필터링
 document.getElementById('categoryDropdown').addEventListener('change', function() {
     selectedCategory = this.value;
 
-    // 로컬 데이터와 Firestore 데이터 모두 필터링
-    createMarkersAndOverlays(selectedCategory);
+    // Firestore 데이터 필터링
     listenForMarkerUpdates();
 });
 
@@ -632,9 +601,8 @@ function closeCustomOverlay() {
     }
 }
 
-// Firestore 및 로컬 데이터를 초기화하는 함수
+// Firestore 데이터를 초기화하는 함수
 document.addEventListener('DOMContentLoaded', function() {
     selectedCategory = '전부'; // 기본 카테고리 설정
-    createMarkersAndOverlays(selectedCategory);
     listenForMarkerUpdates();
 });
