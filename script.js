@@ -523,15 +523,49 @@ async function uploadImageToStorage(file) {
 // Firestore에서 실시간으로 마커 데이터를 수신하는 함수
 function listenForMarkerUpdates(callback) {
     const markersCollection = window.collection(window.db, "markers");
-    window.onSnapshot(markersCollection, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-                const data = change.doc.data();
-                callback(data); // 데이터가 추가될 때 콜백 함수를 통해 처리
-            }
-        });
+// Firestore에서 데이터 수신
+window.onSnapshot(markersCollection, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+            const data = change.doc.data();
+            
+            // 마커 위치
+            const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+
+            // 마커 이미지
+            const markerImage = new kakao.maps.MarkerImage(
+                "URL_TO_MARKER_IMAGE",
+                new kakao.maps.Size(30, 40)
+            );
+
+            // 마커 생성
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage,
+            });
+
+            // 지도에 마커 추가
+            marker.setMap(map);
+
+            // 커스텀 오버레이 추가
+            const overlayContent = `
+                <div>
+                    <p>${data.description}</p>
+                </div>
+            `;
+            const overlay = new kakao.maps.CustomOverlay({
+                position: markerPosition,
+                content: overlayContent,
+            });
+
+            // 클릭 시 오버레이 표시
+            kakao.maps.event.addListener(marker, "click", () => {
+                overlay.setMap(map);
+            });
+        }
     });
-}
+});
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
