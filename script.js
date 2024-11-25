@@ -534,11 +534,11 @@ function listenForMarkerUpdates() {
                 // 커스텀 오버레이 추가
                 const overlayContent = `
                     <div class="custom-overlay">
-                        <p><strong>Number:</strong> ${data.number}</p>
-                        <p><strong>Address:</strong> ${data.address}</p>
-                        <p><strong>Rotation:</strong> ${data.rotation}</p>
-                        <p><strong>Fixed:</strong> ${data.fixed}</p>
-                        <p><strong>Description:</strong> ${data.description}</p>
+                        <p><strong>관리번호:</strong> ${data.number}</p>
+                        <p><strong>주소:</strong> ${data.address}</p>
+                        <p><strong>회전형:</strong> ${data.rotation}</p>
+                        <p><strong>고정형:</strong> ${data.fixed}</p>
+                        <p><strong>상세설명:</strong> ${data.description}</p>
                     </div>
                 `;
                 const overlay = new kakao.maps.CustomOverlay({
