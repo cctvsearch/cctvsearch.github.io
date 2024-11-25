@@ -56,7 +56,7 @@ var BInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-GC-25*,15,16",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
         number: "A-GC-15 || A-86",
@@ -64,7 +64,7 @@ var BInfo = [
         rotation: 1,
         fixed: 0,
         description: "A-GC-25*,14,16",
-        image: "https://via.placeholder.com/150"
+        
     },
     {
                 number: "A-GC-16 || A-199",
@@ -72,7 +72,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "A-GC-25*,14,15",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-17 || A-87",
@@ -80,7 +80,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "A-GC-25*,6",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-18 || A-131",
@@ -88,7 +88,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "A-GC-25*,19",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-19 || A-189",
@@ -96,7 +96,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 2,
                 description: "A-GC-25*,18",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-20 || A-159",
@@ -104,7 +104,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 6,
                 description: "A-GC-25*,22",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-21 || A-159",
@@ -112,7 +112,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 6,
                 description: "A-GC-25*,5,7",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-22 || A-184",
@@ -120,7 +120,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "A-GC-25*,20",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-23 || A-119",
@@ -128,7 +128,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 6,
                 description: "A-GC-25*,13,24,P33",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-24 || A-2",
@@ -136,7 +136,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "A-GC-25*,13,23,P33",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-25 || A-82",
@@ -148,7 +148,7 @@ var BInfo = [
                              "A-GC-5,7,21 (FX #11) / A-GC-14,15,16 (FX #12)<br>" +
                              "A-GC-29,41 P38 (E #5)<br>" +
                              "A-GC-13,23,24 P33 (E #6)/ J90 (E #8)",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-26 || A-183",
@@ -156,7 +156,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 4,
                 description: "A-GC-27*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-27 || A-182",
@@ -165,7 +165,7 @@ var BInfo = [
                 fixed: 1,
                 description: "A-GC-26 (FX #1) / A-GC-2,28,1 (FX #2)<br>" +
                              "P34 (FX #8) / A-GC-45, A-JA-42 (E #6)",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-28 || A-221",
@@ -173,7 +173,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "A-GC-27*,2,1 / A-GC-84 (FX #10)",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-29 || A-199",
@@ -181,7 +181,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "A-GC-25*,41,P38",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-30 || A-186",
@@ -189,7 +189,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 2,
                 description: "A-GC-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-31 || A-139",
@@ -197,7 +197,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 2,
                 description: "A-GC-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-32 || A-84",
@@ -205,7 +205,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "A-GC-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-33 || A-3",
@@ -213,7 +213,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "A-GC-38*,35,36",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-34 || A-220",
@@ -221,7 +221,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "A-GC-38*,3,39",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-35 || A-117",
@@ -229,7 +229,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 5,
                 description: "A-GC-38*,33,36",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-36 || A-208",
@@ -237,7 +237,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 2,
                 description: "A-GC-38*,33,35",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-37 || A-59",
@@ -245,7 +245,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 2,
                 description: "A-GC-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-38 || A-83",
@@ -256,7 +256,7 @@ var BInfo = [
                              "A-GC-3,34,39 (FX #5) / A-GC-42 (FX #6)<br>" + 
                             "A-GC-33,35,36 (FX #9) / A-GC-31 (FX #10)<br>" +
                             "A-GC-40, P3 (FX #14) / J100 (E #5)/ A-GC-32 (E #6)",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-39 || A-85",
@@ -264,7 +264,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "A-GC-38*,3,34",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-40 || A-198",
@@ -272,7 +272,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 4,
                 description: "A-GC-38*,P3 / A-GC-86 (FX #10)",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-41 || A-25",
@@ -280,7 +280,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "A-GC-25*,29,P38",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-42 || A-185",
@@ -288,7 +288,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 2,
                 description: "A-GC-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-43 || A-187",
@@ -296,7 +296,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 2,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-44 || A-23",
@@ -304,7 +304,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 2,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-45 || A-181",
@@ -312,7 +312,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "A-GC-27*,A-JA-42",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-46 || A-202",
@@ -320,7 +320,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 5,
                 description: "단말 UTP만 연결",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-47 || A-24",
@@ -328,7 +328,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 5,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-48 || A-201",
@@ -336,7 +336,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "A-JA-39*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-49 || A-200",
@@ -344,7 +344,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-50 || A-180",
@@ -352,7 +352,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 4,
                 description: "단말 UTP만 연결",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-51 || A-213",
@@ -360,7 +360,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 1,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-52 || A-205",
@@ -368,7 +368,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 1,
                 description: "A-GC-53 (E #5) / A-GC-54 (E #6)",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-53 || A-206",
@@ -376,7 +376,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "A-GC-52* / A-JA-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-54 || A-207",
@@ -384,7 +384,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "A-GC-52* / A-JA-38*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-55 || A-203",
@@ -392,7 +392,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-56 || A-204",
@@ -400,7 +400,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "A-JA-39*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-57 || A-158",
@@ -408,7 +408,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 5,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-58 || A-143",
@@ -416,7 +416,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 3,
                 description: "",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-59 || A-191",
@@ -424,7 +424,7 @@ var BInfo = [
                 rotation: 0,
                 fixed: 2,
                 description: "A-JA-39*",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-60 || A-116",
@@ -432,7 +432,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 2,
                 description: "A-JA-39*,4",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-61 || A-157",
@@ -440,7 +440,7 @@ var BInfo = [
                 rotation: 1,
                 fixed: 2,
                 description: "A-JA-39*,62 / A-JA-39*,82",
-                image: "https://via.placeholder.com/150"
+                
             },
                         {
                 number: "A-GC-62 || A-60",
@@ -448,6 +448,6 @@ var BInfo = [
                 rotation: 1,
                 fixed: 0,
                 description: "A-JA-39*,61",
-                image: "https://via.placeholder.com/150"
+                
             }
 ];
