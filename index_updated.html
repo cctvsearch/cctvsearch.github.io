@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaka00</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Kakao Maps SDK 로드 스크립트 -->
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c853f1d10da9175222476044cffe3531&libraries=services"></script>
+
+    <!-- Firebase SDK 로드 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+            authDomain: "cctvseach.firebaseapp.com",
+            projectId: "cctvseach",
+            storageBucket: "cctvseach.appspot.com",
+            messagingSenderId: "189414707523",
+            appId: "1:189414707523:web:7db058e78563df9060dff6",
+            measurementId: "G-6YP5P09JHX"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Firestore와 Storage 관련 함수들을 전역으로 설정
+        window.db = db;
+        window.storage = storage;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.onSnapshot = onSnapshot;
+        window.ref = ref;
+        window.uploadBytes = uploadBytes;
+        window.getDownloadURL = getDownloadURL;
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+        // Firebase project configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+            authDomain: "cctvseach.firebaseapp.com",
+            projectId: "cctvseach",
+            storageBucket: "cctvseach.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Monitor authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User authenticated:", user);
+            } else {
+                console.log("User not authenticated. Redirecting...");
+                window.location.href = "/login.html"; // Redirect to login if not authenticated
+            }
+        });
+    </script>
+    </head>
+    
+<body>
+    <div id="mapWrapper">
+        <div id="map"></div>
+        <div id="roadview" class="hidden"></div>
+        <div id="minimap"></div>
+        <div id="categoryDropdownContainer" class="roadview">
+            <select id="categoryDropdown"></select>
+        </div>
+        <div id="newSearchForm" class="roadview">
+            <input type="text" id="newSearchInput" placeholder="위도/경도 또는 관리번호 입력" required>
+            <button type="submit" id="newSearchBtn">검색</button>
+        </div>
+        <button id="latLngButton">좌표</button>
+        <button id="roadviewToggle">로드뷰</button>
+        <button id="addMarkerButton">추가</button>
+        <div id="currentPosButton"></div>
+    </div>
+
+
+    <!-- 파일 선택 입력 추가 -->
+    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+<div id="addMarkerForm">
+    <button id="closeMarkerFormButton" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+    <h2>마커 추가</h2>
+    <label>위도: <input type="text" id="latitudeInput"></label>
+    <label>경도: <input type="text" id="longitudeInput"></label>
+    <label>관리번호: <input type="text" id="numberInput"></label>
+    <label>주소: <input type="text" id="addressInput"></label>
+    <label>회전형: <input type="number" id="rotationInput"></label>
+    <label>고정형: <input type="number" id="fixedInput"></label>
+    <label>상세설명: <input type="text" id="descriptionInput"></label>
+    <label>카테고리:
+        <select id="categoryInput">
+            <option value="갈현동">갈현동</option>
+            <option value="과천동">과천동</option>
+            <option value="문원동">문원동</option>
+            <option value="별양동">별양동</option>
+            <option value="부림동">부림동</option>
+            <option value="주암동">주암동</option>
+            <option value="중앙동">중앙동</option>
+            <option value="기타">기타</option>
+            <option value="회전형">회전형</option>
+            <option value="고정형">고정형</option>
+            <option value="전부">전부</option>
+        </select>
+    </label>
+    <button id="submitMarkerButton">마커 추가</button>
+</div>
+
+
+
+    <!-- 카테고리별 JavaScript 파일 로드 -->
+    <script src="data/categoryA.js"></script>
+    <script src="data/categoryB.js"></script>
+    <script src="data/categoryC.js"></script>
+    <script src="data/categoryD.js"></script>
+    <script src="data/categoryE.js"></script>
+    <script src="data/categoryF.js"></script>
+    <script src="data/categoryG.js"></script>
+    <script src="data/categoryH.js"></script>
+    <!-- 메인 JavaScript 파일 로드 -->
+    <script src="script.js"></script>
+</body>
+</html>
