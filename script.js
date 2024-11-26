@@ -137,7 +137,7 @@ function handleMarkerClick(clickedMarker) {
     if (lastClickedMarker) {
         lastClickedMarker.setImage(
             new kakao.maps.MarkerImage(
-                defaultMarkerImageUrl,
+                defaultMarkerImageUrl, // 기본 이미지 URL
                 new kakao.maps.Size(30, 40) // 기본 크기
             )
         );
@@ -146,7 +146,7 @@ function handleMarkerClick(clickedMarker) {
     // 클릭된 마커의 크기를 확대
     clickedMarker.setImage(
         new kakao.maps.MarkerImage(
-            defaultMarkerImageUrl,
+            defaultMarkerImageUrl, // 기본 이미지 URL
             new kakao.maps.Size(45, 60) // 확대 크기
         )
     );
@@ -166,13 +166,14 @@ function closeCustomOverlay() {
     if (lastClickedMarker) {
         lastClickedMarker.setImage(
             new kakao.maps.MarkerImage(
-                defaultMarkerImageUrl,
+                defaultMarkerImageUrl, // 기본 이미지 URL
                 new kakao.maps.Size(30, 40) // 기본 크기
             )
         );
-        lastClickedMarker = null;
+        lastClickedMarker = null; // 초기화
     }
 }
+
 
 
 function showCustomOverlay(position, index) {
