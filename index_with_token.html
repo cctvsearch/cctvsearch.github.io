@@ -9,76 +9,53 @@
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c853f1d10da9175222476044cffe3531&libraries=services"></script>
 
     <!-- Firebase SDK 로드 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+ <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+    import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
-            authDomain: "cctvseach.firebaseapp.com",
-            projectId: "cctvseach",
-            storageBucket: "cctvseach.appspot.com",
-            messagingSenderId: "189414707523",
-            appId: "1:189414707523:web:7db058e78563df9060dff6",
-            measurementId: "G-6YP5P09JHX"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+        authDomain: "cctvseach.firebaseapp.com",
+        projectId: "cctvseach",
+        storageBucket: "cctvseach.appspot.com",
+        messagingSenderId: "189414707523",
+        appId: "1:189414707523:web:7db058e78563df9060dff6",
+        measurementId: "G-6YP5P09JHX"
+    };
 
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
+    // Firebase 초기화
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const auth = getAuth(app);
 
-        // Firestore와 Storage 관련 함수들을 전역으로 설정
-        window.db = db;
-        window.storage = storage;
-        window.collection = collection;
-        window.addDoc = addDoc;
-        window.onSnapshot = onSnapshot;
-        window.ref = ref;
-        window.uploadBytes = uploadBytes;
-        window.getDownloadURL = getDownloadURL;
-    </script>
+    // 전역 객체로 등록
+    window.db = db;
+    window.storage = storage;
+    window.auth = auth;
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    // URL에서 토큰 추출 및 인증 처리
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+        signInWithCustomToken(auth, token)
+            .then((userCredential) => {
+                console.log("Authenticated in WebView:", userCredential.user);
+            })
+            .catch((error) => {
+                console.error("Authentication error:", error);
+                alert("Authentication failed. Redirecting to login...");
+                window.location.href = "/login.html";
+            });
+    } else {
+        console.error("No token provided. Access denied.");
+        alert("No token provided. Redirecting to login...");
+        window.location.href = "/login.html";
+    }
+</script>
 
-        // Firebase project configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
-            authDomain: "cctvseach.firebaseapp.com",
-            projectId: "cctvseach",
-            storageBucket: "cctvseach.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Extract token from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token'); // Token passed from FlutterFlow WebView
-
-        if (token) {
-            // Attempt to sign in with the provided token
-            signInWithCustomToken(auth, token)
-                .then((userCredential) => {
-                    console.log("Authenticated in WebView:", userCredential.user);
-                })
-                .catch((error) => {
-                    console.error("Authentication error:", error);
-                    alert("Authentication failed. Redirecting to login...");
-                    window.location.href = "/login.html"; // Redirect on failure
-                });
-        } else {
-            console.error("No token provided. Access denied.");
-            alert("No token provided. Redirecting to login...");
-            window.location.href = "/login.html"; // Redirect if no token
-        }
-    </script>
     </head>
     
 <body>
