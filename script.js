@@ -55,6 +55,7 @@ var tempOverlay = null;
 createMarkersAndOverlays('전부');
 
 // Define the new marker image URL
+const defaultMarkerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
 var lastClickedMarker = null; // Store the last clicked marker
 
 function createMarkersAndOverlays(category) {
