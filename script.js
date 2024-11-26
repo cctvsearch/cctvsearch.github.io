@@ -49,135 +49,82 @@ var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동
 
 var markers = [];
 var currentOverlay = null;
-var isLatLngClickMode = false;
-var tempOverlay = null;
+var lastClickedMarker = null;
 
-createMarkersAndOverlays('전부');
+// 스프라이트 이미지 관련 설정
+const SPRITE_MARKER_URL = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markers_sprites2.png';
+const MARKER_WIDTH = 33, MARKER_HEIGHT = 36, OFFSET_X = 12, OFFSET_Y = MARKER_HEIGHT;
+const SPRITE_WIDTH = 126, SPRITE_HEIGHT = 146, SPRITE_GAP = 10;
 
-// Define the new marker image URL
-const defaultMarkerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-var lastClickedMarker = null; // Store the last clicked marker
+const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
+const markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y);
+const spriteImageSize = new kakao.maps.Size(SPRITE_WIDTH, SPRITE_HEIGHT);
 
+// 스프라이트 이미지를 생성하는 함수
+function createMarkerImage(markerSize, offset, spriteOrigin) {
+    return new kakao.maps.MarkerImage(
+        SPRITE_MARKER_URL,
+        markerSize,
+        {
+            offset: offset,
+            spriteOrigin: spriteOrigin,
+            spriteSize: spriteImageSize
+        }
+    );
+}
+
+// 마커와 오버레이를 생성하는 함수
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
 
     // 기존 마커 제거
-    markers.forEach(function(marker) {
-        marker.setMap(null);
-    });
+    markers.forEach(marker => marker.setMap(null));
     markers = [];
 
-    // 미니맵 마커 제거
-    minimapMarkers.forEach(function(marker) {
-        marker.setMap(null);
-    });
-    minimapMarkers = [];
+    allPositions.forEach((position, index) => {
+        const normalOrigin = new kakao.maps.Point(0, (MARKER_HEIGHT + SPRITE_GAP) * index);
+        const clickOrigin = new kakao.maps.Point((MARKER_WIDTH + SPRITE_GAP), (MARKER_HEIGHT + SPRITE_GAP) * index);
 
-    // 카테고리별 마커 이미지 URL 및 사이즈 정의
-    var markerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
-    var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
+        // 기본 및 클릭 상태 이미지 생성
+        const normalImage = createMarkerImage(markerSize, markerOffset, normalOrigin);
+        const clickImage = createMarkerImage(markerSize, markerOffset, clickOrigin);
 
-    if (category === '회전형') {
-        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
-        markerSize = new kakao.maps.Size(27, 27); // 회전형 사이즈
-    } else if (category === '고정형') {
-        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
-        markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
-    }
+        // 마커 생성
+        const marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(position.lat, position.lng),
+            image: normalImage,
+            map: map
+        });
 
-    allPositions.forEach(function(position, index) {
-        var showMarker = true;
+        // 기본 이미지를 마커 객체에 저장
+        marker.normalImage = normalImage;
 
-        if (category === '회전형') {
-            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
-        } else if (category === '고정형') {
-            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
-        } else if (category !== '전부') {
-            showMarker = (position.category === category);
-        }
+        // 클릭 이벤트 등록
+        kakao.maps.event.addListener(marker, 'click', function () {
+            if (lastClickedMarker && lastClickedMarker !== marker) {
+                lastClickedMarker.setImage(lastClickedMarker.normalImage); // 이전 마커 복원
+            }
 
-        if (showMarker) {
-            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+            marker.setImage(clickImage); // 클릭된 마커는 클릭 이미지로 변경
+            lastClickedMarker = marker; // 현재 마커 저장
+        });
 
-            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
-
-            var marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage
-            });
-            markers.push(marker);
-
-            // 메인 지도에 마커 추가
-            marker.setMap(map);
-
-            // 미니맵에 마커 추가
-            var minimapMarker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage
-            });
-            minimapMarkers.push(minimapMarker);
-            minimapMarker.setMap(minimap);
-
-            // 마커 클릭 이벤트 추가
-            kakao.maps.event.addListener(marker, 'click', function() {
-                handleMarkerClick(marker, markerImageUrl);
-                showCustomOverlay(position, index);
-            });
-
-            kakao.maps.event.addListener(marker, 'touchstart', function() {
-                handleMarkerClick(marker, markerImageUrl);
-                showCustomOverlay(position, index);
-            });
-        }
+        markers.push(marker); // 마커를 배열에 추가
     });
 }
 
-function handleMarkerClick(clickedMarker) {
-    // 이전 클릭된 마커가 있다면 크기를 원래대로 복원
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(
-            new kakao.maps.MarkerImage(
-                defaultMarkerImageUrl, // 기본 이미지 URL
-                new kakao.maps.Size(30, 40) // 기본 크기
-            )
-        );
-    }
-
-    // 클릭된 마커의 크기를 확대
-    clickedMarker.setImage(
-        new kakao.maps.MarkerImage(
-            defaultMarkerImageUrl, // 기본 이미지 URL
-            new kakao.maps.Size(45, 60) // 확대 크기
-        )
-    );
-
-    lastClickedMarker = clickedMarker; // 현재 클릭된 마커 저장
-}
-
-
-// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
+// 커스텀 오버레이를 닫는 함수
 function closeCustomOverlay() {
     if (currentOverlay && typeof currentOverlay.setMap === "function") {
         currentOverlay.setMap(null);
         currentOverlay = null;
     }
 
-    // 클릭된 마커 크기를 원래대로 복원
     if (lastClickedMarker) {
-        lastClickedMarker.setImage(
-            new kakao.maps.MarkerImage(
-                defaultMarkerImageUrl, // 기본 이미지 URL
-                new kakao.maps.Size(30, 40) // 기본 크기
-            )
-        );
+        lastClickedMarker.setImage(lastClickedMarker.normalImage); // 기본 이미지로 복원
         lastClickedMarker = null; // 초기화
     }
 }
-
-
-
-function showCustomOverlay(position, index) {
-    closeCustomOverlay(); // 기존 오버레이 닫기
 
     const overlayContent = `
         <div class="customOverlay">
