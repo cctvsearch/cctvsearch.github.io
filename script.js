@@ -49,101 +49,144 @@ var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동
 
 var markers = [];
 var currentOverlay = null;
-var lastClickedMarker = null;
+var isLatLngClickMode = false;
+var tempOverlay = null;
 
-// 스프라이트 이미지 관련 설정
-const SPRITE_MARKER_URL = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markers_sprites2.png';
-const MARKER_WIDTH = 33, MARKER_HEIGHT = 36, OFFSET_X = 12, OFFSET_Y = MARKER_HEIGHT;
-const SPRITE_WIDTH = 126, SPRITE_HEIGHT = 146, SPRITE_GAP = 10;
+createMarkersAndOverlays('전부');
 
-const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
-const markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y);
-const spriteImageSize = new kakao.maps.Size(SPRITE_WIDTH, SPRITE_HEIGHT);
+// Define the new marker image URL
+const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
+var lastClickedMarker = null; // Store the last clicked marker
 
-// 스프라이트 이미지를 생성하는 함수
-function createMarkerImage(markerSize, offset, spriteOrigin) {
-    return new kakao.maps.MarkerImage(
-        SPRITE_MARKER_URL,
-        markerSize,
-        {
-            offset: offset,
-            spriteOrigin: spriteOrigin,
-            spriteSize: spriteImageSize
-        }
-    );
-}
-
-// 마커와 오버레이를 생성하는 함수
 function createMarkersAndOverlays(category) {
     closeCustomOverlay();
 
     // 기존 마커 제거
-    markers.forEach(marker => marker.setMap(null));
+    markers.forEach(function(marker) {
+        marker.setMap(null);
+    });
     markers = [];
 
-    // 카테고리별 마커 생성
-    allPositions.forEach((position, index) => {
-        const normalOrigin = new kakao.maps.Point(0, (MARKER_HEIGHT + SPRITE_GAP) * index);
-        const clickOrigin = new kakao.maps.Point((MARKER_WIDTH + SPRITE_GAP), (MARKER_HEIGHT + SPRITE_GAP) * index);
+    // 미니맵 마커 제거
+    minimapMarkers.forEach(function(marker) {
+        marker.setMap(null);
+    });
+    minimapMarkers = [];
 
-        // 기본 및 클릭 상태 이미지 생성
-        const normalImage = createMarkerImage(markerSize, markerOffset, normalOrigin);
-        const clickImage = createMarkerImage(markerSize, markerOffset, clickOrigin);
+    // 카테고리별 마커 이미지 URL 및 사이즈 정의
+    var markerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
+    var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
 
-        // 마커 생성
-        const marker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(position.lat, position.lng),
-            image: normalImage,
-            map: map
-        });
+    if (category === '회전형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
+        markerSize = new kakao.maps.Size(27, 27); // 회전형 사이즈
+    } else if (category === '고정형') {
+        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
+        markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
+    }
 
-        // 기본 이미지를 마커 객체에 저장
-        marker.normalImage = normalImage;
+    allPositions.forEach(function(position, index) {
+        var showMarker = true;
 
-        // 클릭 이벤트 등록
-        kakao.maps.event.addListener(marker, 'click', function () {
-            if (lastClickedMarker && lastClickedMarker !== marker) {
-                lastClickedMarker.setImage(lastClickedMarker.normalImage); // 이전 마커 복원
-            }
+        if (category === '회전형') {
+            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
+        } else if (category === '고정형') {
+            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
+        } else if (category !== '전부') {
+            showMarker = (position.category === category);
+        }
 
-            marker.setImage(clickImage); // 클릭된 마커는 클릭 이미지로 변경
-            lastClickedMarker = marker; // 현재 마커 저장
+        if (showMarker) {
+            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
 
-            // 클릭된 마커에 대한 커스텀 오버레이 생성
-            const overlayContent = `
-                <div class="customOverlay">
-                    <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
-                    <div class="title">${position.category}</div>
-                    <div class="desc">
-                        <div class="desc-content">
-                            <div>
-                                <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
-                                <p><strong>주소:</strong> ${allInfo[index].address}</p>
-                                <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
-                                <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
-                                <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
 
-            // 기존 오버레이 닫기
-            closeCustomOverlay();
-
-            // 새 오버레이 생성
-            currentOverlay = new kakao.maps.CustomOverlay({
-                content: overlayContent,
-                map: map,
-                position: new kakao.maps.LatLng(position.lat, position.lng),
-                yAnchor: 1.1
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
             });
-        });
+            markers.push(marker);
 
-        markers.push(marker); // 마커를 배열에 추가
+            // 메인 지도에 마커 추가
+            marker.setMap(map);
+
+            // 미니맵에 마커 추가
+            var minimapMarker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            minimapMarkers.push(minimapMarker);
+            minimapMarker.setMap(minimap);
+
+            // 마커 클릭 이벤트 추가
+            kakao.maps.event.addListener(marker, 'click', function() {
+                handleMarkerClick(marker, markerImageUrl);
+                showCustomOverlay(position, index);
+            });
+
+            kakao.maps.event.addListener(marker, 'touchstart', function() {
+                handleMarkerClick(marker, markerImageUrl);
+                showCustomOverlay(position, index);
+            });
+        }
     });
 }
 
+function handleMarkerClick(clickedMarker, defaultImageUrl) {
+    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+    }
+
+    // 현재 클릭한 마커의 이미지를 변경
+    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+
+    // 마지막으로 클릭된 마커를 현재 마커로 설정
+    lastClickedMarker = clickedMarker;
+}
+
+// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
+function closeCustomOverlay() {
+    if (currentOverlay && typeof currentOverlay.setMap === "function") {
+        currentOverlay.setMap(null);
+        currentOverlay = null;
+    }
+
+    if (lastClickedMarker && typeof lastClickedMarker.setImage === "function") {
+        const defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+        lastClickedMarker = null; // 초기화
+    }
+}
+
+function showCustomOverlay(position, index) {
+    closeCustomOverlay(); // 기존 오버레이 닫기
+
+    const overlayContent = `
+        <div class="customOverlay">
+            <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+            <div class="title">${position.category}</div>
+            <div class="desc">
+                <div class="desc-content">
+                    <div>
+                        <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
+                        <p><strong>주소:</strong> ${allInfo[index].address}</p>
+                        <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
+                        <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
+                        <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    currentOverlay = new kakao.maps.CustomOverlay({
+        content: overlayContent,
+        map: map,
+        position: new kakao.maps.LatLng(position.lat, position.lng),
+        yAnchor: 1.1
+    });
+}
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
