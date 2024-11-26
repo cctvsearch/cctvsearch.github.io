@@ -141,8 +141,6 @@ function createMarkerImage(markerSize, offset, spriteOrigin) {
 
         markers.push(marker); // 마커를 배열에 추가
     });
-}
-
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
