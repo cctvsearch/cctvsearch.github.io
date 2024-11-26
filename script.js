@@ -13,139 +13,19 @@ var geocoder = new kakao.maps.services.Geocoder();
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
 
-// 미니맵을 생성합니다.
+// 미니맵 초기화
 var minimapContainer = document.getElementById('minimap');
 var minimap = new kakao.maps.Map(minimapContainer, {
     center: new kakao.maps.LatLng(37.4295040000, 126.9883220000),
     level: 3
 });
 
-kakao.maps.event.addListener(roadview, 'init', function() {
-kakao.maps.event.addListener(roadview, 'viewpoint_changed', function() {
-        var viewpoint = roadview.getViewpoint();
-    });
-
-    kakao.maps.event.addListener(roadview, 'position_changed', function() {
-        var position = roadview.getPosition();
-        map.setCenter(position);
-        minimap.setCenter(position); // 미니맵의 중심 업데이트
-    });
-});
-var isRoadviewEnabled = false;
-
-kakao.maps.event.addListener(map, 'idle', function() {
-    if (isRoadviewEnabled) {
-        var position = map.getCenter();
-        roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-            if (panoId) {
-                roadview.setPanoId(panoId, position);
-            }
-        });
-    }
-});
-
-
 var categories = ['갈현동', '과천동', '문원동', '별양동', '부림동', '주암동', '중앙동', '기타', '회전형', '고정형', '전부'];
 
 var markers = [];
 var currentOverlay = null;
-var isLatLngClickMode = false;
-var tempOverlay = null;
+var lastClickedMarker = null;
 
-createMarkersAndOverlays('전부');
-
-// Define the new marker image URL
-const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
-var lastClickedMarker = null; // Store the last clicked marker
-
-function createMarkersAndOverlays(category) {
-    closeCustomOverlay();
-
-    // 기존 마커 제거
-    markers.forEach(function(marker) {
-        marker.setMap(null);
-    });
-    markers = [];
-
-    // 미니맵 마커 제거
-    minimapMarkers.forEach(function(marker) {
-        marker.setMap(null);
-    });
-    minimapMarkers = [];
-
-    // 카테고리별 마커 이미지 URL 및 사이즈 정의
-    var markerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png'; // 기본 이미지
-    var markerSize = new kakao.maps.Size(30, 40); // 기본 사이즈
-
-    if (category === '회전형') {
-        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
-        markerSize = new kakao.maps.Size(27, 27); // 회전형 사이즈
-    } else if (category === '고정형') {
-        markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
-        markerSize = new kakao.maps.Size(27, 27); // 고정형 사이즈
-    }
-
-    allPositions.forEach(function(position, index) {
-        var showMarker = true;
-
-        if (category === '회전형') {
-            showMarker = (allInfo[index] && allInfo[index].rotation >= 1);
-        } else if (category === '고정형') {
-            showMarker = (allInfo[index] && allInfo[index].fixed >= 1);
-        } else if (category !== '전부') {
-            showMarker = (position.category === category);
-        }
-
-        if (showMarker) {
-            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-
-            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
-
-            var marker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage
-            });
-            markers.push(marker);
-
-            // 메인 지도에 마커 추가
-            marker.setMap(map);
-
-            // 미니맵에 마커 추가
-            var minimapMarker = new kakao.maps.Marker({
-                position: markerPosition,
-                image: markerImage
-            });
-            minimapMarkers.push(minimapMarker);
-            minimapMarker.setMap(minimap);
-
-            // 마커 클릭 이벤트 추가
-            kakao.maps.event.addListener(marker, 'click', function() {
-                handleMarkerClick(marker, markerImageUrl);
-                showCustomOverlay(position, index);
-            });
-
-            kakao.maps.event.addListener(marker, 'touchstart', function() {
-                handleMarkerClick(marker, markerImageUrl);
-                showCustomOverlay(position, index);
-            });
-        }
-    });
-}
-
-function handleMarkerClick(clickedMarker, defaultImageUrl) {
-    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
-    }
-
-    // 현재 클릭한 마커의 이미지를 변경
-    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
-
-    // 마지막으로 클릭된 마커를 현재 마커로 설정
-    lastClickedMarker = clickedMarker;
-}
-
-// 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
     if (currentOverlay && typeof currentOverlay.setMap === "function") {
         currentOverlay.setMap(null);
@@ -153,29 +33,94 @@ function closeCustomOverlay() {
     }
 
     if (lastClickedMarker && typeof lastClickedMarker.setImage === "function") {
-        const defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
-        lastClickedMarker = null; // 초기화
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(
+            'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png',
+            new kakao.maps.Size(30, 40)
+        ));
+        lastClickedMarker = null;
     }
 }
 
+function handleMarkerClick(clickedMarker, defaultImageUrl) {
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+    }
+
+    clickedMarker.setImage(new kakao.maps.MarkerImage(
+        'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true',
+        new kakao.maps.Size(30, 40)
+    ));
+
+    lastClickedMarker = clickedMarker;
+}
+
+function createMarkersAndOverlays(category) {
+    closeCustomOverlay();
+
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+
+    minimapMarkers.forEach(marker => marker.setMap(null));
+    minimapMarkers = [];
+
+    allPositions.forEach((position, index) => {
+        var markerImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
+        var markerSize = new kakao.maps.Size(30, 40);
+        var showMarker = true;
+
+        if (category === '회전형') {
+            markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category1.png?raw=true';
+            markerSize = new kakao.maps.Size(27, 27);
+            showMarker = allInfo[index]?.rotation >= 1;
+        } else if (category === '고정형') {
+            markerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/category2.png?raw=true';
+            markerSize = new kakao.maps.Size(27, 27);
+            showMarker = allInfo[index]?.fixed >= 1;
+        } else if (category !== '전부') {
+            showMarker = position.category === category;
+        }
+
+        if (showMarker) {
+            var markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+            var markerImage = new kakao.maps.MarkerImage(markerImageUrl, markerSize);
+
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+
+            markers.push(marker);
+            marker.setMap(map);
+
+            var minimapMarker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+
+            minimapMarkers.push(minimapMarker);
+            minimapMarker.setMap(minimap);
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                handleMarkerClick(marker, markerImageUrl);
+                showCustomOverlay(position, index);
+            });
+        }
+    });
+}
+
 function showCustomOverlay(position, index) {
-    closeCustomOverlay(); // 기존 오버레이 닫기
+    closeCustomOverlay();
 
     const overlayContent = `
         <div class="customOverlay">
             <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
             <div class="title">${position.category}</div>
             <div class="desc">
-                <div class="desc-content">
-                    <div>
-                        <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
-                        <p><strong>주소:</strong> ${allInfo[index].address}</p>
-                        <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
-                        <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
-                        <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
-                    </div>
-                </div>
+                <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
+                <p><strong>주소:</strong> ${allInfo[index].address}</p>
+                <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
+                <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
+                <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
             </div>
         </div>
     `;
@@ -187,6 +132,11 @@ function showCustomOverlay(position, index) {
         yAnchor: 1.1
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    createMarkersAndOverlays('전부');
+});
+
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
