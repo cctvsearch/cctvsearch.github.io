@@ -1,3 +1,23 @@
+// Firebase 앱 재사용
+const auth = window.auth;
+const db = window.db;
+
+// WebView에서 FlutterFlow로 UID 전달받기
+window.setUserUID = function(uid) {
+    console.log("Received UID:", uid);
+
+    const userDocRef = db.collection("users").doc(uid);
+    userDocRef.get()
+        .then((doc) => {
+            if (doc.exists) {
+                console.log("User data:", doc.data());
+            } else {
+                console.error("No user document found!");
+            }
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
+};
+
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
