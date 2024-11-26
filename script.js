@@ -73,8 +73,7 @@ function createMarkerImage(markerSize, offset, spriteOrigin) {
     );
 }
 
-// 마커와 오버레이를 생성하는 함수
-function createMarkersAndOverlays(category) {
+// 마커와 오버레이를 생성하는 함수function createMarkersAndOverlays(category) {
     closeCustomOverlay();
 
     // 기존 마커 제거
@@ -144,13 +143,6 @@ function createMarkersAndOverlays(category) {
     });
 }
 
-
-    currentOverlay = new kakao.maps.CustomOverlay({
-        content: overlayContent,
-        map: map,
-        position: new kakao.maps.LatLng(position.lat, position.lng),
-        yAnchor: 1.1
-    });
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
