@@ -144,6 +144,7 @@ function createMarkersAndOverlays(category) {
     });
 }
 
+
 var categoryDropdown = document.getElementById('categoryDropdown');
 
 categories.forEach(function(category) {
