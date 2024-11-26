@@ -150,7 +150,6 @@ function closeCustomOverlay() {
         position: new kakao.maps.LatLng(position.lat, position.lng),
         yAnchor: 1.1
     });
-}
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
