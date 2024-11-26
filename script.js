@@ -81,6 +81,7 @@ function createMarkersAndOverlays(category) {
     markers.forEach(marker => marker.setMap(null));
     markers = [];
 
+    // 카테고리별 마커 생성
     allPositions.forEach((position, index) => {
         const normalOrigin = new kakao.maps.Point(0, (MARKER_HEIGHT + SPRITE_GAP) * index);
         const clickOrigin = new kakao.maps.Point((MARKER_WIDTH + SPRITE_GAP), (MARKER_HEIGHT + SPRITE_GAP) * index);
@@ -107,42 +108,42 @@ function createMarkersAndOverlays(category) {
 
             marker.setImage(clickImage); // 클릭된 마커는 클릭 이미지로 변경
             lastClickedMarker = marker; // 현재 마커 저장
+
+            // 클릭된 마커에 대한 커스텀 오버레이 생성
+            const overlayContent = `
+                <div class="customOverlay">
+                    <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
+                    <div class="title">${position.category}</div>
+                    <div class="desc">
+                        <div class="desc-content">
+                            <div>
+                                <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
+                                <p><strong>주소:</strong> ${allInfo[index].address}</p>
+                                <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
+                                <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
+                                <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // 기존 오버레이 닫기
+            closeCustomOverlay();
+
+            // 새 오버레이 생성
+            currentOverlay = new kakao.maps.CustomOverlay({
+                content: overlayContent,
+                map: map,
+                position: new kakao.maps.LatLng(position.lat, position.lng),
+                yAnchor: 1.1
+            });
         });
 
         markers.push(marker); // 마커를 배열에 추가
     });
 }
 
-// 커스텀 오버레이를 닫는 함수
-function closeCustomOverlay() {
-    if (currentOverlay && typeof currentOverlay.setMap === "function") {
-        currentOverlay.setMap(null);
-        currentOverlay = null;
-    }
-
-    if (lastClickedMarker) {
-        lastClickedMarker.setImage(lastClickedMarker.normalImage); // 기본 이미지로 복원
-        lastClickedMarker = null; // 초기화
-    }
-}
-
-    const overlayContent = `
-        <div class="customOverlay">
-            <span class="closeBtn" onclick="closeCustomOverlay()">×</span>
-            <div class="title">${position.category}</div>
-            <div class="desc">
-                <div class="desc-content">
-                    <div>
-                        <p><strong>관리번호:</strong> ${allInfo[index].number}</p>
-                        <p><strong>주소:</strong> ${allInfo[index].address}</p>
-                        <p><strong>회전형:</strong> ${allInfo[index].rotation}</p>
-                        <p><strong>고정형:</strong> ${allInfo[index].fixed}</p>
-                        <p><strong>상세설명:</strong> ${allInfo[index].description}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
 
     currentOverlay = new kakao.maps.CustomOverlay({
         content: overlayContent,
