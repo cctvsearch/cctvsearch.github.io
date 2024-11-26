@@ -1,25 +1,11 @@
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-// Firebase 초기화
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Firebase 앱 재사용
+const auth = window.auth;
+const db = window.db;
 
 // WebView에서 FlutterFlow로 UID 전달받기
 window.setUserUID = function(uid) {
     console.log("Received UID:", uid);
-    
-    // Firebase Firestore에서 사용자 데이터 가져오기
+
     const userDocRef = db.collection("users").doc(uid);
     userDocRef.get()
         .then((doc) => {
