@@ -73,7 +73,8 @@ function createMarkerImage(markerSize, offset, spriteOrigin) {
     );
 }
 
-// 마커와 오버레이를 생성하는 함수function createMarkersAndOverlays(category) {
+// 마커와 오버레이를 생성하는 함수
+function createMarkersAndOverlays(category) {
     closeCustomOverlay();
 
     // 기존 마커 제거
@@ -141,6 +142,7 @@ function createMarkerImage(markerSize, offset, spriteOrigin) {
 
         markers.push(marker); // 마커를 배열에 추가
     });
+}
 
 var categoryDropdown = document.getElementById('categoryDropdown');
 
