@@ -55,7 +55,6 @@ var tempOverlay = null;
 createMarkersAndOverlays('전부');
 
 // Define the new marker image URL
-const clickedMarkerImageUrl = 'https://github.com/cctvsearch/cctvsearch.github.io/blob/main/image/marker_spot2.png?raw=true';
 var lastClickedMarker = null; // Store the last clicked marker
 
 function createMarkersAndOverlays(category) {
@@ -132,18 +131,28 @@ function createMarkersAndOverlays(category) {
     });
 }
 
-function handleMarkerClick(clickedMarker, defaultImageUrl) {
-    // 이전에 클릭한 마커가 있으면 원래 이미지로 되돌림
+function handleMarkerClick(clickedMarker) {
+    // 이전 클릭된 마커가 있다면 크기를 원래대로 복원
     if (lastClickedMarker) {
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
+        lastClickedMarker.setImage(
+            new kakao.maps.MarkerImage(
+                defaultMarkerImageUrl,
+                new kakao.maps.Size(30, 40) // 기본 크기
+            )
+        );
     }
 
-    // 현재 클릭한 마커의 이미지를 변경
-    clickedMarker.setImage(new kakao.maps.MarkerImage(clickedMarkerImageUrl, new kakao.maps.Size(30, 40)));
+    // 클릭된 마커의 크기를 확대
+    clickedMarker.setImage(
+        new kakao.maps.MarkerImage(
+            defaultMarkerImageUrl,
+            new kakao.maps.Size(45, 60) // 확대 크기
+        )
+    );
 
-    // 마지막으로 클릭된 마커를 현재 마커로 설정
-    lastClickedMarker = clickedMarker;
+    lastClickedMarker = clickedMarker; // 현재 클릭된 마커 저장
 }
+
 
 // 커스텀 오버레이를 닫을 때 마커 이미지를 원래대로 복원
 function closeCustomOverlay() {
@@ -152,12 +161,18 @@ function closeCustomOverlay() {
         currentOverlay = null;
     }
 
-    if (lastClickedMarker && typeof lastClickedMarker.setImage === "function") {
-        const defaultImageUrl = 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png';
-        lastClickedMarker.setImage(new kakao.maps.MarkerImage(defaultImageUrl, new kakao.maps.Size(30, 40)));
-        lastClickedMarker = null; // 초기화
+    // 클릭된 마커 크기를 원래대로 복원
+    if (lastClickedMarker) {
+        lastClickedMarker.setImage(
+            new kakao.maps.MarkerImage(
+                defaultMarkerImageUrl,
+                new kakao.maps.Size(30, 40) // 기본 크기
+            )
+        );
+        lastClickedMarker = null;
     }
 }
+
 
 function showCustomOverlay(position, index) {
     closeCustomOverlay(); // 기존 오버레이 닫기
