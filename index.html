@@ -39,21 +39,33 @@
     // URL에서 토큰 추출 및 인증 처리
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
-    if (token) {
-        signInWithCustomToken(auth, token)
-            .then((userCredential) => {
-                console.log("Authenticated in WebView:", userCredential.user);
-            })
-            .catch((error) => {
-                console.error("Authentication error:", error);
-                alert("Authentication failed. Redirecting to login...");
+if (token) {
+    signInWithCustomToken(auth, token)
+        .then(async (userCredential) => {
+            console.log("Authenticated in WebView:", userCredential.user);
+
+            // Firestore에서 사용자 role 확인
+            const userDocRef = db.collection("users").doc(userCredential.user.uid);
+            const userDoc = await userDocRef.get();
+            if (userDoc.exists && userDoc.data().role === "admin") {
+                console.log("Admin access granted");
+            } else {
+                console.error("Access denied: not an admin");
+                alert("관리자 권한이 없습니다. 로그인 페이지로 이동합니다.");
                 window.location.href = "/login.html";
-            });
-    } else {
-        console.error("No token provided. Access denied.");
-        alert("No token provided. Redirecting to login...");
-        window.location.href = "/login.html";
-    }
+            }
+        })
+        .catch((error) => {
+            console.error("Authentication error:", error);
+            alert("Authentication failed. Redirecting to login...");
+            window.location.href = "/login.html";
+        });
+} else {
+    console.error("No token provided. Access denied.");
+    alert("No token provided. Redirecting to login...");
+    window.location.href = "/login.html";
+}
+
 </script>
 
     </head>
