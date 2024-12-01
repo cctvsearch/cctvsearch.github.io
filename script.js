@@ -640,38 +640,38 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Firebase 인증 상태 확인 및 역할 기반 권한 관리
-auth.onAuthStateChanged((user) => {
+// Firebase 인증 상태 확인 및 역할 확인
+auth.onAuthStateChanged(async (user) => {
     if (user) {
-        console.log("User logged in:", user);
+        console.log("User logged in:", user.uid);
 
-        // Firestore에서 사용자 역할 확인
-        db.collection("users").doc(user.uid).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    if (userData.role === 'admin') {
-                        console.log("Admin access granted");
-                        // Admin 전용 페이지나 기능 활성화
-                    } else {
-                        console.error("Access denied: Not an admin");
-                        alert("관리자 권한이 필요합니다. 다시 로그인 해주세요.");
-                        auth.signOut(); // 로그아웃 처리
-                    }
+        try {
+            const userDoc = await db.collection("users").doc(user.uid).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                if (userData.role === "admin") {
+                    console.log("Admin access granted");
+                    renderMap(); // 지도 렌더링
                 } else {
-                    console.error("No user document found!");
-                    alert("사용자 정보를 찾을 수 없습니다.");
-                    auth.signOut(); // 로그아웃 처리
+                    console.error("Access denied: not an admin");
+                    alert("관리자 권한이 없습니다. 로그인 페이지로 이동합니다.");
+                    auth.signOut();
+                    window.location.href = "/login.html";
                 }
-            })
-            .catch((error) => {
-                console.error("Error fetching user data:", error);
-                alert("오류가 발생했습니다. 다시 시도해주세요.");
-                auth.signOut(); // 로그아웃 처리
-            });
+            } else {
+                console.error("User document not found");
+                alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
+                auth.signOut();
+                window.location.href = "/login.html";
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            alert("오류가 발생했습니다. 다시 시도해주세요.");
+            auth.signOut();
+            window.location.href = "/login.html";
+        }
     } else {
-        console.log("User is not logged in");
-        // 로그인 페이지로 리디렉션
-        window.location.href = "login.html";
+        console.log("User not logged in. Redirecting to login...");
+        window.location.href = "/login.html";
     }
 });
