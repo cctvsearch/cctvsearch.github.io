@@ -42,7 +42,7 @@
     </head>
     
 <body>
-    <div id="mapWrapper">
+    <div id="mapWrapper" style="display: none;">
         <div id="map"></div>
         <div id="roadview" class="hidden"></div>
         <div id="minimap"></div>
@@ -91,8 +91,13 @@
     <button id="submitMarkerButton">마커 추가</button>
 </div>
 
-
-
+    <script>
+        // role 확인 후 지도 표시
+        function renderMapWrapper() {
+            document.getElementById('mapWrapper').style.display = 'block';
+        }
+    </script>
+    
     <!-- 카테고리별 JavaScript 파일 로드 -->
     <script src="data/categoryA.js"></script>
     <script src="data/categoryB.js"></script>
