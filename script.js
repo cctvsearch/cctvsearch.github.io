@@ -676,33 +676,3 @@ auth.onAuthStateChanged(async (user) => {
     }
 });
 
-
-
-// 로그아웃 타이머를 관리하는 변수
-let logoutTimer;
-
-// 타이머 시작 함수
-function startSessionTimer(duration) {
-    // 기존 타이머가 있다면 초기화
-    if (logoutTimer) clearTimeout(logoutTimer);
-
-    // 새 타이머 설정
-    logoutTimer = setTimeout(() => {
-        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-        auth.signOut().then(() => {
-            window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
-        }).catch((error) => {
-            console.error("자동 로그아웃 중 오류 발생:", error);
-        });
-    }, duration);
-}
-
-// Web 환경에서만 타이머를 시작
-document.addEventListener('DOMContentLoaded', () => {
-    const isWeb = !navigator.userAgent.includes("Mobile"); // Web 환경 판별
-    if (isWeb) {
-        const sessionDuration = 1 * 60 * 1000; // 1분 (테스트용, 실제는 30분 등으로 조정 가능)
-        startSessionTimer(sessionDuration);
-        console.log("Web 환경에서 세션 타이머가 시작되었습니다.");
-    }
-});
