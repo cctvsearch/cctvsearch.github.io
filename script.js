@@ -650,7 +650,7 @@ auth.onAuthStateChanged(async (user) => {
                 const userData = userDoc.data();
                 if (userData.role === "admin") {
                     console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
-                    renderMap(); // 지도를 표시하는 함수 호출
+                    renderMap(); // 관리자에게만 지도 표시
                 } else {
                     console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
                     alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
@@ -678,7 +678,6 @@ auth.onAuthStateChanged(async (user) => {
 // 지도를 렌더링하는 함수
 function renderMap() {
     console.log("지도 렌더링 시작");
-    // 기존 지도 초기화 로직 유지
     const mapOption = {
         center: new kakao.maps.LatLng(37.566535, 126.9779692),
         level: 5
@@ -686,5 +685,4 @@ function renderMap() {
     const map = new kakao.maps.Map(document.getElementById('map'), mapOption);
     createMarkersAndOverlays('전부'); // 기존 마커 생성 함수 호출
 }
-
 
