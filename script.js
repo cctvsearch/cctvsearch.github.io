@@ -640,39 +640,39 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Firebase 인증 상태 확인 및 역할 확인
 auth.onAuthStateChanged(async (user) => {
     if (user) {
-        console.log("User logged in:", user.uid);
+        console.log("로그인된 사용자 UID:", user.uid);
 
         try {
             const userDoc = await db.collection("users").doc(user.uid).get();
             if (userDoc.exists) {
                 const userData = userDoc.data();
                 if (userData.role === "admin") {
-                    console.log("Admin access granted");
-                    renderMap(); // 지도 렌더링
+                    console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
+                    renderMap(); // 지도를 표시하는 함수 호출
                 } else {
-                    console.error("Access denied: not an admin");
-                    alert("관리자 권한이 없습니다. 로그인 페이지로 이동합니다.");
-                    auth.signOut();
-                    window.location.href = "/login.html";
+                    console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
+                    alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
+                    auth.signOut(); // 로그아웃
+                    window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
                 }
             } else {
-                console.error("User document not found");
-                alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
+                console.error("사용자 문서를 찾을 수 없습니다.");
+                alert("사용자 정보를 확인할 수 없습니다. 다시 로그인하세요.");
                 auth.signOut();
                 window.location.href = "/login.html";
             }
         } catch (error) {
-            console.error("Error fetching user data:", error);
-            alert("오류가 발생했습니다. 다시 시도해주세요.");
+            console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
+            alert("오류가 발생했습니다. 다시 로그인하세요.");
             auth.signOut();
             window.location.href = "/login.html";
         }
     } else {
-        console.log("User not logged in. Redirecting to login...");
+        console.log("로그인되지 않은 사용자. 로그인 페이지로 리디렉션됩니다.");
         window.location.href = "/login.html";
     }
 });
+
 
