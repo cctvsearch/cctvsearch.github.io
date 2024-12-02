@@ -675,4 +675,16 @@ auth.onAuthStateChanged(async (user) => {
     }
 });
 
+// 지도를 렌더링하는 함수
+function renderMap() {
+    console.log("지도 렌더링 시작");
+    // 기존 지도 초기화 로직 유지
+    const mapOption = {
+        center: new kakao.maps.LatLng(37.566535, 126.9779692),
+        level: 5
+    };
+    const map = new kakao.maps.Map(document.getElementById('map'), mapOption);
+    createMarkersAndOverlays('전부'); // 기존 마커 생성 함수 호출
+}
+
 
