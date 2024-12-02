@@ -697,13 +697,12 @@ function startSessionTimer(duration) {
     }, duration);
 }
 
-// Web 버전에서만 타이머를 시작
+// Web 환경에서만 타이머를 시작
 document.addEventListener('DOMContentLoaded', () => {
-    const isWeb = !navigator.userAgent.includes("Mobile"); // 간단한 Web/App 판별
+    const isWeb = !navigator.userAgent.includes("Mobile"); // Web 환경 판별
     if (isWeb) {
-        const sessionDuration = 1 * 60 * 1000; // 30분 (밀리초 기준)
+        const sessionDuration = 1 * 60 * 1000; // 1분 (테스트용, 실제는 30분 등으로 조정 가능)
         startSessionTimer(sessionDuration);
-        console.log("Web 버전에서 세션 타이머가 시작되었습니다.");
+        console.log("Web 환경에서 세션 타이머가 시작되었습니다.");
     }
 });
-
