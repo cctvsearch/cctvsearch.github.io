@@ -236,8 +236,13 @@ function normalizeString(str) {
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = normalizeString(newSearchInput.value.trim());
-    var position = null;
-    var markerIndex = -1;
+
+    if (!userInput) {
+        alert('검색어를 입력하세요.');
+        return;
+    }
+
+    var combinedResults = [];
 
     // 데이터값 검색
     var filtered = allInfo.filter(function(item) {
@@ -246,28 +251,14 @@ newSearchForm.addEventListener('submit', function(event) {
     });
 
     if (filtered.length > 0) {
-        var foundItem = filtered[0];
-        var index = allInfo.indexOf(foundItem);
-        position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
-        markerIndex = index;
-
-        map.setCenter(position);
-        map.setLevel(4);
-
-        var marker = new kakao.maps.Marker({
-            position: position,
-            map: map
+        filtered.forEach(function(item) {
+            combinedResults.push({
+                place_name: item.address,
+                address_name: '(데이터 기반)',
+                y: allPositions[allInfo.indexOf(item)].lat,
+                x: allPositions[allInfo.indexOf(item)].lng
+            });
         });
-
-        setTimeout(function () {
-            marker.setMap(null);
-        }, 10000);
-
-        // 검색된 데이터 마커 활성화
-        if (markerIndex !== -1) {
-            kakao.maps.event.trigger(markers[markerIndex], 'click');
-        }
-        return;
     }
 
     // Kakao Maps Places API 초기화
@@ -276,17 +267,26 @@ newSearchForm.addEventListener('submit', function(event) {
     // 키워드 검색
     ps.keywordSearch(userInput, function(data, status) {
         if (status === kakao.maps.services.Status.OK) {
-            if (data.length === 1) {
-                // 단일 결과 처리
-                moveToLocation(data[0]);
+            combinedResults = combinedResults.concat(data.map(function(place) {
+                return {
+                    place_name: place.place_name,
+                    address_name: place.address_name,
+                    y: place.y,
+                    x: place.x
+                };
+            }));
+
+            // 결과 표시
+            if (combinedResults.length === 1) {
+                moveToLocation(combinedResults[0]);
             } else {
-                // 다수 결과 처리
-                showResultsModal(data);
+                showResultsModal(combinedResults);
             }
-        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-            alert('검색 결과가 없습니다.');
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT && combinedResults.length > 0) {
+            // API 결과는 없으나 데이터값 결과만 있는 경우
+            showResultsModal(combinedResults);
         } else {
-            alert('검색 중 오류가 발생했습니다.');
+            alert('검색 결과가 없습니다.');
         }
     });
 });
