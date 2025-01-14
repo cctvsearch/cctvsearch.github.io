@@ -260,7 +260,7 @@ newSearchForm.addEventListener('submit', function(event) {
         filtered.forEach(function(item) {
             combinedResults.push({
                 place_name: item.address,
-                address_name: '(데이터 기반)',
+                address_name: '데이터 기반',
                 y: allPositions[allInfo.indexOf(item)].lat,
                 x: allPositions[allInfo.indexOf(item)].lng
             });
