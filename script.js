@@ -251,23 +251,13 @@ newSearchForm.addEventListener('submit', function(event) {
         markerIndex = index;
     } else {
         // 카카오맵 API 검색
-        geocoder.addressSearch(userInput, function(result, status) {
+        ps.keywordSearch(userInput, function(data, status) {
             if (status === kakao.maps.services.Status.OK) {
-                position = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                // 지도 이동 및 임시 마커 생성
-                map.setCenter(position);
-                map.setLevel(4);
-
-                var tempMarker = new kakao.maps.Marker({
-                    position: position,
-                    map: map
-                });
-
-                // 일정 시간 후 임시 마커 제거
-                setTimeout(function() {
-                    tempMarker.setMap(null);
-                }, 10000);
+                if (data.length === 1) {
+                    moveToLocation(data[0]);
+                } else {
+                    showResultsModal(data);
+                }
             } else {
                 alert('입력한 주소를 찾을 수 없습니다.');
             }
@@ -293,6 +283,61 @@ newSearchForm.addEventListener('submit', function(event) {
 newSearchBtn.addEventListener('click', function() {
     newSearchForm.dispatchEvent(new Event('submit'));
 });
+
+function moveToLocation(place) {
+    var position = new kakao.maps.LatLng(place.y, place.x);
+    map.setCenter(position);
+    map.setLevel(4);
+
+    var tempMarker = new kakao.maps.Marker({
+        position: position,
+        map: map
+    });
+
+    setTimeout(function () {
+        tempMarker.setMap(null);
+    }, 10000);
+}
+
+function showResultsModal(results) {
+    var modal = document.createElement('div');
+    modal.className = 'resultsModal';
+    modal.style.position = 'absolute';
+    modal.style.top = '20%';
+    modal.style.left = '20%';
+    modal.style.width = '60%';
+    modal.style.background = '#fff';
+    modal.style.padding = '20px';
+    modal.style.zIndex = 1000;
+    modal.style.overflowY = 'auto';
+    modal.style.maxHeight = '400px';
+
+    results.forEach(function (place) {
+        var placeDiv = document.createElement('div');
+        placeDiv.className = 'resultItem';
+        placeDiv.style.cursor = 'pointer';
+        placeDiv.style.padding = '10px';
+        placeDiv.style.borderBottom = '1px solid #ddd';
+        placeDiv.innerText = place.place_name + ' (' + place.address_name + ')';
+
+        placeDiv.addEventListener('click', function () {
+            document.body.removeChild(modal);
+            moveToLocation(place);
+        });
+
+        modal.appendChild(placeDiv);
+    });
+
+    var closeButton = document.createElement('button');
+    closeButton.innerText = '닫기';
+    closeButton.style.marginTop = '10px';
+    closeButton.addEventListener('click', function () {
+        document.body.removeChild(modal);
+    });
+    modal.appendChild(closeButton);
+
+    document.body.appendChild(modal);
+}
 
 function closeTempOverlay() {
     if (tempOverlay) {
