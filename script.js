@@ -222,7 +222,7 @@ categoryDropdown.addEventListener('change', function() {
     createMarkersAndOverlays(selectedCategory);
 });
 
-// 검색창 부분 코드 (수정된 부분)
+
 // 검색창 부분 코드 (수정된 부분)
 var newSearchForm = document.getElementById('newSearchForm');
 var newSearchInput = document.getElementById('newSearchInput');
@@ -236,9 +236,37 @@ function normalizeString(str) {
 newSearchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     var userInput = normalizeString(newSearchInput.value.trim());
+    var position = null;
+    var markerIndex = -1;
 
-    if (!userInput) {
-        alert('검색어를 입력하세요.');
+    // 데이터값 검색
+    var filtered = allInfo.filter(function(item) {
+        return normalizeString(item.address).includes(userInput) ||
+               normalizeString(item.number).includes(userInput);
+    });
+
+    if (filtered.length > 0) {
+        var foundItem = filtered[0];
+        var index = allInfo.indexOf(foundItem);
+        position = new kakao.maps.LatLng(allPositions[index].lat, allPositions[index].lng);
+        markerIndex = index;
+
+        map.setCenter(position);
+        map.setLevel(4);
+
+        var marker = new kakao.maps.Marker({
+            position: position,
+            map: map
+        });
+
+        setTimeout(function () {
+            marker.setMap(null);
+        }, 10000);
+
+        // 검색된 데이터 마커 활성화
+        if (markerIndex !== -1) {
+            kakao.maps.event.trigger(markers[markerIndex], 'click');
+        }
         return;
     }
 
