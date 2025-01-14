@@ -242,6 +242,12 @@ newSearchForm.addEventListener('submit', function(event) {
         return;
     }
 
+    // 기존 모달 창 제거 (중복 방지)
+    var existingModal = document.querySelector('.resultsModal');
+    if (existingModal) {
+        document.body.removeChild(existingModal);
+    }
+
     var combinedResults = [];
 
     // 데이터값 검색
@@ -311,6 +317,12 @@ function moveToLocation(place) {
 }
 
 function showResultsModal(results) {
+    // 기존 모달 창 제거 (중복 방지)
+    var existingModal = document.querySelector('.resultsModal');
+    if (existingModal) {
+        document.body.removeChild(existingModal);
+    }
+
     var modal = document.createElement('div');
     modal.className = 'resultsModal';
     modal.style.position = 'absolute';
@@ -322,6 +334,24 @@ function showResultsModal(results) {
     modal.style.zIndex = 1000;
     modal.style.overflowY = 'auto';
     modal.style.maxHeight = '400px';
+    modal.style.border = '1px solid #ccc';
+    modal.style.borderRadius = '8px';
+    modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+
+    // 닫기 버튼 (X 표시) 추가
+    var closeButton = document.createElement('span');
+    closeButton.innerText = '×';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '10px';
+    closeButton.style.right = '10px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.fontSize = '18px';
+    closeButton.style.fontWeight = 'bold';
+    closeButton.style.color = '#555';
+    closeButton.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+    modal.appendChild(closeButton);
 
     results.forEach(function(place) {
         var placeDiv = document.createElement('div');
@@ -339,16 +369,9 @@ function showResultsModal(results) {
         modal.appendChild(placeDiv);
     });
 
-    var closeButton = document.createElement('button');
-    closeButton.innerText = '닫기';
-    closeButton.style.marginTop = '10px';
-    closeButton.addEventListener('click', function() {
-        document.body.removeChild(modal);
-    });
-    modal.appendChild(closeButton);
-
     document.body.appendChild(modal);
 }
+
 
 
 
