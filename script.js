@@ -747,5 +747,3 @@ auth.onAuthStateChanged(async (user) => {
         window.location.href = "/login.html";
     }
 });
-}
-                          
