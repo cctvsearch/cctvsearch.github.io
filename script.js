@@ -563,6 +563,7 @@ window.addEventListener('resize', updateButtonText);
 
 
 // Firestore에 새 마커 추가하는 함수
+// Firestore에 새 마커 추가하는 함수
 async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category) {
     try {
         const docRef = await db.collection("markers").add({
@@ -583,12 +584,12 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
 }
 
 
+
 // Firestore에서 실시간으로 마커 데이터를 수신하는 함수
 function listenForMarkerUpdates() {
-    const markersCollection = window.collection(window.db, "markers");
+    const markersCollection = db.collection("markers");
 
-    // Firestore에서 데이터 수신
-    window.onSnapshot(markersCollection, (snapshot) => {
+    markersCollection.onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
                 const data = change.doc.data();
@@ -631,22 +632,18 @@ function listenForMarkerUpdates() {
 
                 // 닫기 버튼 이벤트 추가
                 overlayContent.querySelector('.closeBtn').addEventListener('click', function () {
-                    if (currentOverlay && typeof currentOverlay.setMap === "function") {
-                        currentOverlay.setMap(null);
-                        currentOverlay = null;
-                    }
+                    overlay.setMap(null);
                 });
 
                 // 마커 클릭 이벤트
                 kakao.maps.event.addListener(marker, 'click', () => {
-                    closeCustomOverlay(); // 기존 오버레이 닫기
                     overlay.setMap(map);
-                    currentOverlay = overlay; // 새 오버레이 갱신
                 });
             }
         });
     });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -676,36 +673,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // submitMarkerButton 클릭 시 Firestore에 데이터 저장
-    document.getElementById('submitMarkerButton').addEventListener('click', async function() {
-        const lat = parseFloat(document.getElementById('latitudeInput').value);
-        const lng = parseFloat(document.getElementById('longitudeInput').value);
-        const number = document.getElementById('numberInput').value;
-        const address = document.getElementById('addressInput').value;
-        const rotation = parseInt(document.getElementById('rotationInput').value);
-        const fixed = parseInt(document.getElementById('fixedInput').value);
-        const description = document.getElementById('descriptionInput').value;
-        const category = document.getElementById('categoryInput').value;
+   // submitMarkerButton 클릭 이벤트 핸들러
+document.getElementById('submitMarkerButton').addEventListener('click', async function () {
+    const lat = parseFloat(document.getElementById('latitudeInput').value);
+    const lng = parseFloat(document.getElementById('longitudeInput').value);
+    const number = document.getElementById('numberInput').value;
+    const address = document.getElementById('addressInput').value;
+    const rotation = parseInt(document.getElementById('rotationInput').value, 10);
+    const fixed = parseInt(document.getElementById('fixedInput').value, 10);
+    const description = document.getElementById('descriptionInput').value;
+    const category = document.getElementById('categoryInput').value;
 
-        // Firestore에 마커 데이터 추가
-        try {
-            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
-            alert("마커가 성공적으로 추가되었습니다.");
+    // 입력값 검증
+    if (isNaN(lat) || isNaN(lng)) {
+        alert("유효한 위도와 경도를 입력하세요.");
+        return;
+    }
+    if (!number || !address || !category) {
+        alert("필수 입력값이 누락되었습니다.");
+        return;
+    }
 
-            // 폼 숨기기 및 초기화
-            document.getElementById('addMarkerForm').style.display = 'none';
-            document.getElementById('latitudeInput').value = '';
-            document.getElementById('longitudeInput').value = '';
-            document.getElementById('numberInput').value = '';
-            document.getElementById('addressInput').value = '';
-            document.getElementById('rotationInput').value = '';
-            document.getElementById('fixedInput').value = '';
-            document.getElementById('descriptionInput').value = '';
-            document.getElementById('categoryInput').value = '갈현동'; // 기본값으로 초기화
-        } catch (error) {
-            console.error("마커 추가 중 오류 발생:", error);
-            alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-    });
+    // Firestore에 마커 데이터 추가
+    try {
+        await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
+
+        // 폼 숨기기 및 초기화
+        document.getElementById('addMarkerForm').style.display = 'none';
+        document.getElementById('latitudeInput').value = '';
+        document.getElementById('longitudeInput').value = '';
+        document.getElementById('numberInput').value = '';
+        document.getElementById('addressInput').value = '';
+        document.getElementById('rotationInput').value = '';
+        document.getElementById('fixedInput').value = '';
+        document.getElementById('descriptionInput').value = '';
+        document.getElementById('categoryInput').value = '갈현동'; // 기본값으로 초기화
+    } catch (error) {
+        console.error("마커 추가 중 오류 발생:", error);
+    }
 });
 
 auth.onAuthStateChanged(async (user) => {
