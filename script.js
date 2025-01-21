@@ -386,17 +386,18 @@ latLngButton.addEventListener('click', function() {
     }
 });
 
+// 좌표 클릭 이벤트 개선
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isLatLngClickMode) {
-        var latlng = mouseEvent.latLng;
+        const latlng = mouseEvent.latLng;
 
-        closeTempOverlay();
+        closeTempOverlay(); // 기존 오버레이 닫기
 
-        var tempOverlayContent =
-            '<div class="customOverlay">' +
-            '    <span class="closeBtn" onclick="closeTempOverlay()">×</span>' +
-            '    클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, 경도는 ' + latlng.getLng() + ' 입니다' +
-            '</div>';
+        const tempOverlayContent = `
+            <div class="customOverlay">
+                <span class="closeBtn" onclick="closeTempOverlay()">×</span>
+                클릭한 위치의 위도는 ${latlng.getLat()} 이고, 경도는 ${latlng.getLng()} 입니다.
+            </div>`;
         tempOverlay = new kakao.maps.CustomOverlay({
             content: tempOverlayContent,
             map: map,
@@ -404,16 +405,26 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
             yAnchor: 2.0
         });
 
-        var tempMarker = new kakao.maps.Marker({
+        // 임시 마커 추가
+        const tempMarker = new kakao.maps.Marker({
             position: latlng,
             map: map
         });
 
-        setTimeout(function() {
+        // 3초 후 임시 마커 제거
+        setTimeout(() => {
             tempMarker.setMap(null);
         }, 3000);
     }
 });
+
+// Temp Overlay 닫기 함수 추가
+function closeTempOverlay() {
+    if (tempOverlay && typeof tempOverlay.setMap === "function") {
+        tempOverlay.setMap(null);
+        tempOverlay = null;
+    }
+}
 
 
 // Add this function
@@ -554,7 +565,7 @@ window.addEventListener('resize', updateButtonText);
 // Firestore에 새 마커 추가하는 함수
 async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category) {
     try {
-        await window.addDoc(window.collection(window.db, "markers"), {
+        const docRef = await db.collection("markers").add({
             latitude: lat,
             longitude: lng,
             number: number,
@@ -564,11 +575,13 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
             description: description,
             category: category
         });
-        alert("마커가 성공적으로 추가되었습니다.");
+        alert(`마커가 성공적으로 추가되었습니다. 문서 ID: ${docRef.id}`);
     } catch (error) {
         console.error("마커 추가 중 오류 발생:", error);
+        alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
 }
+
 
 // Firestore에서 실시간으로 마커 데이터를 수신하는 함수
 function listenForMarkerUpdates() {
