@@ -562,22 +562,6 @@ window.addEventListener('load', updateButtonText);
 window.addEventListener('resize', updateButtonText);
 
 
-// Firebase 초기화
-if (!window.firebase || !window.firebase.apps.length) {
-    const firebaseConfig = {
-        apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
-        authDomain: "cctvseach.firebaseapp.com",
-        projectId: "cctvseach",
-        storageBucket: "cctvseach.appspot.com",
-        messagingSenderId: "189414707523",
-        appId: "1:189414707523:web:7db058e78563df9060dff6",
-        measurementId: "G-6YP5P09JHX"
-    };
-    firebase.initializeApp(firebaseConfig);
-    window.auth = firebase.auth();
-    window.db = firebase.firestore();
-}
-
 // Firestore에 새 마커 추가하는 함수
 async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category) {
     try {
