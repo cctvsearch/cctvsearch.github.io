@@ -562,10 +562,32 @@ window.addEventListener('load', updateButtonText);
 window.addEventListener('resize', updateButtonText);
 
 
+// Firebase 초기화
+if (!window.firebase || !window.firebase.apps.length) {
+    const firebaseConfig = {
+        apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+        authDomain: "cctvseach.firebaseapp.com",
+        projectId: "cctvseach",
+        storageBucket: "cctvseach.appspot.com",
+        messagingSenderId: "189414707523",
+        appId: "1:189414707523:web:7db058e78563df9060dff6",
+        measurementId: "G-6YP5P09JHX"
+    };
+    firebase.initializeApp(firebaseConfig);
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+}
+
 // Firestore에 새 마커 추가하는 함수
 async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category) {
     try {
-        const docRef = await db.collection("markers").add({
+        // 필수 입력값 확인
+        if (!lat || !lng || !number || !address) {
+            throw new Error("필수 입력값이 누락되었습니다.");
+        }
+
+        // Firestore에 데이터 추가
+        const docRef = await window.db.collection("markers").add({
             latitude: lat,
             longitude: lng,
             number: number,
@@ -575,6 +597,8 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
             description: description,
             category: category
         });
+
+        console.log("마커 추가 성공:", docRef.id);
         alert(`마커가 성공적으로 추가되었습니다. 문서 ID: ${docRef.id}`);
     } catch (error) {
         console.error("마커 추가 중 오류 발생:", error);
@@ -582,13 +606,12 @@ async function addMarkerToFirestore(lat, lng, number, address, rotation, fixed, 
     }
 }
 
-
 // Firestore에서 실시간으로 마커 데이터를 수신하는 함수
 function listenForMarkerUpdates() {
-    const markersCollection = window.collection(window.db, "markers");
+    const markersCollection = window.db.collection("markers");
 
     // Firestore에서 데이터 수신
-    window.onSnapshot(markersCollection, (snapshot) => {
+    markersCollection.onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
                 const data = change.doc.data();
@@ -648,35 +671,13 @@ function listenForMarkerUpdates() {
     });
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    // 지도 초기화, 중복 실행 방지
-    if (!map) {
-        const mapOption = {
-            center: new kakao.maps.LatLng(37.566535, 126.9779692),
-            level: 5
-        };
-        map = new kakao.maps.Map(document.getElementById('map'), mapOption);
-    }
-
-    // 기존 데이터 표시
-    createMarkersAndOverlays('전부');
-
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function () {
     // Firestore 실시간 업데이트 수신
     listenForMarkerUpdates();
 
-    // 마커 추가 버튼 클릭 시 폼 표시
-    document.getElementById('addMarkerButton').addEventListener('click', function() {
-        document.getElementById('addMarkerForm').style.display = 'block';
-    });
-
-    // 닫기 버튼 클릭 시 폼 숨기기
-    document.getElementById('closeMarkerFormButton').addEventListener('click', function() {
-        document.getElementById('addMarkerForm').style.display = 'none';
-    });
-
-    // submitMarkerButton 클릭 시 Firestore에 데이터 저장
-    document.getElementById('submitMarkerButton').addEventListener('click', async function() {
+    // 마커 추가 버튼 클릭 이벤트
+    document.getElementById('submitMarkerButton').addEventListener('click', async function () {
         const lat = parseFloat(document.getElementById('latitudeInput').value);
         const lng = parseFloat(document.getElementById('longitudeInput').value);
         const number = document.getElementById('numberInput').value;
@@ -686,55 +687,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const description = document.getElementById('descriptionInput').value;
         const category = document.getElementById('categoryInput').value;
 
-        // Firestore에 마커 데이터 추가
-        try {
-            await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
-            alert("마커가 성공적으로 추가되었습니다.");
-
-            // 폼 숨기기 및 초기화
-            document.getElementById('addMarkerForm').style.display = 'none';
-            document.getElementById('latitudeInput').value = '';
-            document.getElementById('longitudeInput').value = '';
-            document.getElementById('numberInput').value = '';
-            document.getElementById('addressInput').value = '';
-            document.getElementById('rotationInput').value = '';
-            document.getElementById('fixedInput').value = '';
-            document.getElementById('descriptionInput').value = '';
-            document.getElementById('categoryInput').value = '갈현동'; // 기본값으로 초기화
-        } catch (error) {
-            console.error("마커 추가 중 오류 발생:", error);
-            alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
+        // Firestore에 마커 추가
+        await addMarkerToFirestore(lat, lng, number, address, rotation, fixed, description, category);
     });
 });
 
-auth.onAuthStateChanged(async (user) => {
+// 사용자 인증 상태 확인
+window.auth.onAuthStateChanged(async (user) => {
     if (user) {
         console.log("로그인된 사용자 UID:", user.uid);
 
-        try {
-            const userDoc = await db.collection("users").doc(user.uid).get();
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                if (userData.role === "admin") {
-                    console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
-                    renderMap(); // 지도를 표시하는 함수 호출
-                } else {
-                    console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
-                    alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
-                    auth.signOut(); // 로그아웃
-                    window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
-                }
-            } else {
-                console.error("사용자 문서를 찾을 수 없습니다.");
-                alert("사용자 정보를 확인할 수 없습니다. 다시 로그인하세요.");
-                auth.signOut();
-                window.location.href = "/login.html";
-            }
-        } catch (error) {
-            console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
-            alert("오류가 발생했습니다. 다시 로그인하세요.");
-            auth.signOut();
+        // 관리자 권한 확인
+        const userDoc = await window.db.collection("users").doc(user.uid).get();
+        if (userDoc.exists && userDoc.data().role === "admin") {
+            console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
+        } else {
+            console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
+            alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
+            window.auth.signOut();
             window.location.href = "/login.html";
         }
     } else {
