@@ -2,23 +2,96 @@
 const auth = window.auth;
 const db = window.db;
 
-// WebView에서 FlutterFlow로 UID 전달받기
-window.setUserUID = function(uid) {
-    console.log("Received UID:", uid);
-
-    const userDocRef = db.collection("users").doc(uid);
-    userDocRef.get()
-        .then((doc) => {
-            if (doc.exists) {
-                console.log("User data:", doc.data());
+// 🔹 Firebase 초기화 확인 및 실행 (수정됨)
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.auth || !window.db) {
+        console.error("Firebase가 아직 초기화되지 않았습니다. 1초 후 재시도...");
+        setTimeout(() => {
+            if (window.auth && window.db) {
+                console.log("✅ Firebase 초기화 완료");
+                initializeAuthStateListener();
+                listenForMarkerUpdates();
             } else {
-                console.error("No user document found!");
+                console.error("❌ Firebase 초기화 실패. 페이지를 새로고침하세요.");
             }
-        })
-        .catch((error) => console.error("Error fetching user data:", error));
-};
+        }, 1000);
+    } else {
+        console.log("✅ Firebase 초기화됨");
+        initializeAuthStateListener();
+        listenForMarkerUpdates();
+    }
+});
 
-// 사용자 인증 상태 확인
+// 🔹 사용자 인증 상태 확인 (기존 코드 수정됨)
+function initializeAuthStateListener() {
+    if (!window.auth) {
+        console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
+        return;
+    }
+
+    window.auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            console.log("✅ 로그인된 사용자 UID:", user.uid);
+            try {
+                const userDoc = await window.db.collection("users").doc(user.uid).get();
+                if (userDoc.exists && userDoc.data().role === "admin") {
+                    console.log("✅ 관리자 확인됨. 지도 표시 시작");
+                    renderMap(); // 지도 표시 함수 호출
+                } else {
+                    alert("❌ 관리자 권한이 필요합니다.");
+                    window.auth.signOut();
+                    window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
+                }
+            } catch (error) {
+                console.error("❌ 사용자 데이터 가져오기 실패:", error);
+                alert("오류 발생. 다시 로그인하세요.");
+                window.auth.signOut();
+                window.location.href = "/login.html";
+            }
+        } else {
+            console.log("🚫 로그인되지 않음. 로그인 페이지로 이동");
+            window.location.href = "/login.html";
+        }
+    });
+}
+
+// 🔹 Firestore에서 마커 업데이트를 수신하는 함수 (기존 코드 수정됨)
+function listenForMarkerUpdates() {
+    if (!window.db) {
+        console.error("❌ Firestore가 아직 초기화되지 않았습니다.");
+        return;
+    }
+
+    const markersCollection = window.db.collection("markers");
+
+    markersCollection.onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const data = change.doc.data();
+                console.log("🆕 새로운 마커 추가됨:", data);
+
+                const markerPosition = new kakao.maps.LatLng(data.latitude, data.longitude);
+                const markerImage = new kakao.maps.MarkerImage(
+                    "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+                    new kakao.maps.Size(30, 40)
+                );
+
+                const marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                    image: markerImage,
+                    map: map
+                });
+
+                // 마커 클릭 이벤트 추가
+                kakao.maps.event.addListener(marker, 'click', function () {
+                    console.log("📍 마커 클릭됨:", data);
+                });
+            }
+        });
+    });
+}
+
+// 기존의 Firestore 인증 확인 로직 (유지됨)
 if (auth) {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
@@ -30,7 +103,7 @@ if (auth) {
                     const userData = userDoc.data();
                     if (userData.role === "admin") {
                         console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
-                        renderMap(); // 지도를 표시하는 함수 호출
+                        renderMap();
                     } else {
                         console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
                         alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
@@ -55,12 +128,14 @@ if (auth) {
         }
     });
 } else {
-    console.error("Firebase Auth가 초기화되지 않았습니다.");
+    console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
 }
 
+// 지도 관련 기존 코드 유지 (변경 없음)
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
+// 지도 생성 및 마커 표시 관련 기존 코드 유지
 var mapContainer = document.getElementById('map');
 var roadviewContainer = document.getElementById('roadview');
 var minimapMarkers = [];
@@ -72,6 +147,7 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 var geocoder = new kakao.maps.services.Geocoder();
 var roadview = new kakao.maps.Roadview(roadviewContainer);
 var roadviewClient = new kakao.maps.RoadviewClient();
+
 
 // 미니맵을 생성합니다.
 var minimapContainer = document.getElementById('minimap');
