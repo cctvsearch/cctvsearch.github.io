@@ -1,8 +1,12 @@
 // Firebase 앱 재사용
 const auth = window.auth;
 const db = window.db;
+// 🔹 Firebase SDK가 로드되었는지 확인
+if (typeof firebase === "undefined") {
+    console.error("❌ Firebase SDK가 로드되지 않았습니다. HTML 파일에서 Firebase SDK를 추가하세요.");
+}
 
-// 🔹 Firebase 설정 가져오기
+// 🔹 Firebase 설정
 const firebaseConfig = {
     apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
     authDomain: "cctvseach.firebaseapp.com",
@@ -23,23 +27,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         listenForMarkerUpdates(); // ✅ Firestore 마커 업데이트 수신 시작
     } catch (error) {
         console.error("❌ Firebase 초기화 중 오류 발생:", error);
-        alert("Firebase 초기화에 실패했습니다. 5초 후 페이지가 새로고침됩니다.");
-        setTimeout(() => location.reload(), 5000); // 🔄 5초 후 페이지 새로고침
+        alert("Firebase 초기화에 실패했습니다. 개발자에게 문의하세요.");
     }
 });
 
-// 🔹 Firebase 초기화 함수 (Firestore 포함)
+// 🔹 Firebase 초기화 함수
 async function initializeFirebase() {
     return new Promise((resolve, reject) => {
         let checkCount = 0;
 
-        // Firebase 앱 초기화 (이미 초기화되지 않았다면)
-        if (!window.firebaseApp) {
-            window.firebaseApp = firebase.initializeApp(firebaseConfig);
+        // Firebase가 이미 초기화되지 않았다면 초기화
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
             console.log("🔥 Firebase 앱 초기화됨");
         }
 
-        // Firestore 인스턴스 가져오기
+        // Firestore 및 Auth 설정
         window.db = firebase.firestore();
         window.auth = firebase.auth();
 
@@ -85,7 +88,7 @@ window.setUserUID = async function (uid) {
     }
 };
 
-// 🔹 Firebase 인증 상태 확인 (초기화 후 실행)
+// 🔹 Firebase 인증 상태 확인
 function initializeAuthStateListener() {
     if (!window.auth) {
         console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
@@ -103,7 +106,7 @@ function initializeAuthStateListener() {
     });
 }
 
-// 🔹 Firestore에서 마커 업데이트를 수신하는 함수 (Firestore 초기화 후 실행)
+// 🔹 Firestore에서 마커 업데이트를 수신하는 함수
 function listenForMarkerUpdates() {
     if (!window.db || typeof window.db.collection !== "function") {
         console.error("❌ Firestore가 아직 초기화되지 않았습니다. 1초 후 재시도...");
