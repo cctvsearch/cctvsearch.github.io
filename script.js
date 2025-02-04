@@ -1,34 +1,47 @@
 // Firebase 앱 재사용
 const auth = window.auth;
 const db = window.db;
+// Firebase 앱 재사용 (초기화 체크)
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        await initializeFirebase(); // ✅ Firebase 초기화
+        console.log("✅ Firebase 완전 초기화 완료");
 
-// 🔹 Firebase 초기화 확인 및 실행
-document.addEventListener("DOMContentLoaded", function () {
-    if (!window.auth || !window.db) {
-        console.error("Firebase가 아직 초기화되지 않았습니다. 1초 후 재시도...");
-        setTimeout(() => {
-            if (window.auth && window.db) {
-                console.log("✅ Firebase 초기화 완료");
-                initializeAuthStateListener();
-                listenForMarkerUpdates();
-            } else {
-                console.error("❌ Firebase 초기화 실패. 페이지를 새로고침하세요.");
-            }
-        }, 1000);
-    } else {
-        console.log("✅ Firebase 초기화됨");
-        initializeAuthStateListener();
-        listenForMarkerUpdates();
+        initializeAuthStateListener(); // ✅ 사용자 인증 상태 확인
+        listenForMarkerUpdates(); // ✅ Firestore 마커 업데이트 수신 시작
+    } catch (error) {
+        console.error("❌ Firebase 초기화 중 오류 발생:", error);
     }
 });
 
-// ✅ WebView에서 FlutterFlow로 UID 전달받기 (수정됨)
-window.setUserUID = async function(uid) {
+// 🔹 Firebase 초기화 함수 (Firestore 인스턴스 올바르게 설정)
+async function initializeFirebase() {
+    return new Promise((resolve, reject) => {
+        let checkCount = 0;
+        const checkFirebase = setInterval(() => {
+            if (window.auth && window.db && typeof window.db.collection === "function") {
+                clearInterval(checkFirebase);
+                console.log("✅ Firebase 완전히 초기화됨");
+                resolve();
+            } else {
+                checkCount++;
+                console.warn(`⏳ Firebase 초기화 대기 중... (${checkCount})`);
+
+                if (checkCount >= 5) {
+                    clearInterval(checkFirebase);
+                    reject(new Error("Firebase 초기화 실패: Firestore가 올바르게 로드되지 않음."));
+                }
+            }
+        }, 1000); // 🔄 1초마다 체크 (최대 5번)
+    });
+}
+
+// ✅ WebView에서 FlutterFlow로 UID 전달받기 (Firestore 초기화 확인 후 실행)
+window.setUserUID = async function (uid) {
     console.log("📩 WebView에서 전달된 UID:", uid);
 
-    // Firebase가 초기화되었는지 확인 후 실행
-    if (!window.db || !window.auth) {
-        console.error("❌ Firebase가 아직 초기화되지 않았습니다. 1초 후 재시도...");
+    if (!window.db || typeof window.db.collection !== "function") {
+        console.error("❌ Firestore가 아직 초기화되지 않았습니다. 1초 후 재시도...");
         setTimeout(() => setUserUID(uid), 1000);
         return;
     }
@@ -47,7 +60,7 @@ window.setUserUID = async function(uid) {
     }
 };
 
-// 🔹 Firebase 인증 상태 확인
+// 🔹 Firebase 인증 상태 확인 (초기화 후 실행)
 function initializeAuthStateListener() {
     if (!window.auth) {
         console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
@@ -57,7 +70,7 @@ function initializeAuthStateListener() {
     window.auth.onAuthStateChanged(async (user) => {
         if (user) {
             console.log("✅ 로그인된 사용자 UID:", user.uid);
-            window.setUserUID(user.uid); // 🔹 WebView에서 받은 UID로 로그인 처리
+            window.setUserUID(user.uid); // ✅ WebView에서 받은 UID로 로그인 처리
         } else {
             console.log("🚫 로그인되지 않음. 로그인 페이지로 이동");
             window.location.href = "/login.html";
@@ -65,10 +78,11 @@ function initializeAuthStateListener() {
     });
 }
 
-// 🔹 Firestore에서 마커 업데이트를 수신하는 함수
+// 🔹 Firestore에서 마커 업데이트를 수신하는 함수 (Firestore 초기화 후 실행)
 function listenForMarkerUpdates() {
-    if (!window.db) {
-        console.error("❌ Firestore가 아직 초기화되지 않았습니다.");
+    if (!window.db || typeof window.db.collection !== "function") {
+        console.error("❌ Firestore가 아직 초기화되지 않았습니다. 1초 후 재시도...");
+        setTimeout(listenForMarkerUpdates, 1000);
         return;
     }
 
@@ -93,53 +107,12 @@ function listenForMarkerUpdates() {
                 });
 
                 // 마커 클릭 이벤트 추가
-                kakao.maps.event.addListener(marker, 'click', function () {
+                kakao.maps.event.addListener(marker, "click", function () {
                     console.log("📍 마커 클릭됨:", data);
                 });
             }
         });
     });
-}
-
-// 🔹 기존 Firestore 인증 확인 로직 (WebView에서 UID 자동 로그인 적용)
-if (auth) {
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            console.log("로그인된 사용자 UID:", user.uid);
-            window.setUserUID(user.uid); // 🔹 WebView에서 UID로 로그인 처리
-
-            try {
-                const userDoc = await db.collection("users").doc(user.uid).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    if (userData.role === "admin") {
-                        console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
-                        renderMap();
-                    } else {
-                        console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
-                        alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
-                        auth.signOut(); // 로그아웃
-                        window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
-                    }
-                } else {
-                    console.error("사용자 문서를 찾을 수 없습니다.");
-                    alert("사용자 정보를 확인할 수 없습니다. 다시 로그인하세요.");
-                    auth.signOut();
-                    window.location.href = "/login.html";
-                }
-            } catch (error) {
-                console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
-                alert("오류가 발생했습니다. 다시 로그인하세요.");
-                auth.signOut();
-                window.location.href = "/login.html";
-            }
-        } else {
-            console.log("로그인되지 않은 사용자. 로그인 페이지로 리디렉션됩니다.");
-            window.location.href = "/login.html";
-        }
-    });
-} else {
-    console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
 }
 
 // 🔹 지도 관련 기존 코드 유지
