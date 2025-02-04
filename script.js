@@ -2,7 +2,7 @@
 const auth = window.auth;
 const db = window.db;
 
-// 🔹 Firebase 초기화 확인 및 실행 (수정됨)
+// 🔹 Firebase 초기화 확인 및 실행
 document.addEventListener("DOMContentLoaded", function () {
     if (!window.auth || !window.db) {
         console.error("Firebase가 아직 초기화되지 않았습니다. 1초 후 재시도...");
@@ -22,7 +22,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// 🔹 사용자 인증 상태 확인 (기존 코드 수정됨)
+// ✅ WebView에서 FlutterFlow로 UID 전달받기 (수정됨)
+window.setUserUID = async function(uid) {
+    console.log("📩 WebView에서 전달된 UID:", uid);
+
+    // Firebase가 초기화되었는지 확인 후 실행
+    if (!window.db || !window.auth) {
+        console.error("❌ Firebase가 아직 초기화되지 않았습니다. 1초 후 재시도...");
+        setTimeout(() => setUserUID(uid), 1000);
+        return;
+    }
+
+    try {
+        const userDocRef = window.db.collection("users").doc(uid);
+        const userDoc = await userDocRef.get();
+
+        if (userDoc.exists) {
+            console.log("✅ 사용자 데이터 확인됨:", userDoc.data());
+        } else {
+            console.error("❌ 사용자 문서를 찾을 수 없습니다.");
+        }
+    } catch (error) {
+        console.error("❌ UID 가져오기 실패:", error);
+    }
+};
+
+// 🔹 Firebase 인증 상태 확인
 function initializeAuthStateListener() {
     if (!window.auth) {
         console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
@@ -32,22 +57,7 @@ function initializeAuthStateListener() {
     window.auth.onAuthStateChanged(async (user) => {
         if (user) {
             console.log("✅ 로그인된 사용자 UID:", user.uid);
-            try {
-                const userDoc = await window.db.collection("users").doc(user.uid).get();
-                if (userDoc.exists && userDoc.data().role === "admin") {
-                    console.log("✅ 관리자 확인됨. 지도 표시 시작");
-                    renderMap(); // 지도 표시 함수 호출
-                } else {
-                    alert("❌ 관리자 권한이 필요합니다.");
-                    window.auth.signOut();
-                    window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
-                }
-            } catch (error) {
-                console.error("❌ 사용자 데이터 가져오기 실패:", error);
-                alert("오류 발생. 다시 로그인하세요.");
-                window.auth.signOut();
-                window.location.href = "/login.html";
-            }
+            window.setUserUID(user.uid); // 🔹 WebView에서 받은 UID로 로그인 처리
         } else {
             console.log("🚫 로그인되지 않음. 로그인 페이지로 이동");
             window.location.href = "/login.html";
@@ -55,7 +65,7 @@ function initializeAuthStateListener() {
     });
 }
 
-// 🔹 Firestore에서 마커 업데이트를 수신하는 함수 (기존 코드 수정됨)
+// 🔹 Firestore에서 마커 업데이트를 수신하는 함수
 function listenForMarkerUpdates() {
     if (!window.db) {
         console.error("❌ Firestore가 아직 초기화되지 않았습니다.");
@@ -91,11 +101,12 @@ function listenForMarkerUpdates() {
     });
 }
 
-// 기존의 Firestore 인증 확인 로직 (유지됨)
+// 🔹 기존 Firestore 인증 확인 로직 (WebView에서 UID 자동 로그인 적용)
 if (auth) {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             console.log("로그인된 사용자 UID:", user.uid);
+            window.setUserUID(user.uid); // 🔹 WebView에서 UID로 로그인 처리
 
             try {
                 const userDoc = await db.collection("users").doc(user.uid).get();
@@ -131,11 +142,11 @@ if (auth) {
     console.error("❌ Firebase Auth가 초기화되지 않았습니다.");
 }
 
-// 지도 관련 기존 코드 유지 (변경 없음)
+// 🔹 지도 관련 기존 코드 유지
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
-// 지도 생성 및 마커 표시 관련 기존 코드 유지
+// 🔹 지도 생성 및 마커 표시 관련 기존 코드 유지
 var mapContainer = document.getElementById('map');
 var roadviewContainer = document.getElementById('roadview');
 var minimapMarkers = [];
