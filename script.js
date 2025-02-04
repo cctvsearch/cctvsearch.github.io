@@ -18,6 +18,46 @@ window.setUserUID = function(uid) {
         .catch((error) => console.error("Error fetching user data:", error));
 };
 
+// 사용자 인증 상태 확인
+if (auth) {
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            console.log("로그인된 사용자 UID:", user.uid);
+
+            try {
+                const userDoc = await db.collection("users").doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.role === "admin") {
+                        console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
+                        renderMap(); // 지도를 표시하는 함수 호출
+                    } else {
+                        console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
+                        alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
+                        auth.signOut(); // 로그아웃
+                        window.location.href = "/login.html"; // 로그인 페이지로 리디렉션
+                    }
+                } else {
+                    console.error("사용자 문서를 찾을 수 없습니다.");
+                    alert("사용자 정보를 확인할 수 없습니다. 다시 로그인하세요.");
+                    auth.signOut();
+                    window.location.href = "/login.html";
+                }
+            } catch (error) {
+                console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
+                alert("오류가 발생했습니다. 다시 로그인하세요.");
+                auth.signOut();
+                window.location.href = "/login.html";
+            }
+        } else {
+            console.log("로그인되지 않은 사용자. 로그인 페이지로 리디렉션됩니다.");
+            window.location.href = "/login.html";
+        }
+    });
+} else {
+    console.error("Firebase Auth가 초기화되지 않았습니다.");
+}
+
 const allPositions = Apositions.concat(Bpositions, Cpositions, Dpositions, Epositions, Fpositions, Gpositions, Hpositions);
 const allInfo = AInfo.concat(BInfo, CInfo, DInfo, EInfo, FInfo, GInfo, HInfo);
 
@@ -713,25 +753,4 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("마커 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
     });
-});
-
-// 사용자 인증 상태 확인
-window.auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        console.log("로그인된 사용자 UID:", user.uid);
-
-        // 관리자 권한 확인
-        const userDoc = await window.db.collection("users").doc(user.uid).get();
-        if (userDoc.exists && userDoc.data().role === "admin") {
-            console.log("관리자 권한 확인됨. 지도 표시를 시작합니다.");
-        } else {
-            console.error("관리자 권한이 아닙니다. 접근이 차단됩니다.");
-            alert("관리자 권한이 필요합니다. 다시 로그인하세요.");
-            window.auth.signOut();
-            window.location.href = "/login.html";
-        }
-    } else {
-        console.log("로그인되지 않은 사용자. 로그인 페이지로 리디렉션됩니다.");
-        window.location.href = "/login.html";
-    }
 });
