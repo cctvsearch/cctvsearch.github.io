@@ -1,7 +1,19 @@
 // Firebase 앱 재사용
 const auth = window.auth;
 const db = window.db;
-// Firebase 앱 재사용 (초기화 체크)
+
+// 🔹 Firebase 설정 가져오기
+const firebaseConfig = {
+    apiKey: "AIzaSyCLpfxiNghpMk-xaVBj9Ak98TpJml-vGQo",
+    authDomain: "cctvseach.firebaseapp.com",
+    projectId: "cctvseach",
+    storageBucket: "cctvseach.appspot.com",
+    messagingSenderId: "189414707523",
+    appId: "1:189414707523:web:7db058e78563df9060dff6",
+    measurementId: "G-6YP5P09JHX"
+};
+
+// 🔹 Firebase 앱 초기화
 document.addEventListener("DOMContentLoaded", async function () {
     try {
         await initializeFirebase(); // ✅ Firebase 초기화
@@ -11,13 +23,26 @@ document.addEventListener("DOMContentLoaded", async function () {
         listenForMarkerUpdates(); // ✅ Firestore 마커 업데이트 수신 시작
     } catch (error) {
         console.error("❌ Firebase 초기화 중 오류 발생:", error);
+        alert("Firebase 초기화에 실패했습니다. 5초 후 페이지가 새로고침됩니다.");
+        setTimeout(() => location.reload(), 5000); // 🔄 5초 후 페이지 새로고침
     }
 });
 
-// 🔹 Firebase 초기화 함수 (Firestore 인스턴스 올바르게 설정)
+// 🔹 Firebase 초기화 함수 (Firestore 포함)
 async function initializeFirebase() {
     return new Promise((resolve, reject) => {
         let checkCount = 0;
+
+        // Firebase 앱 초기화 (이미 초기화되지 않았다면)
+        if (!window.firebaseApp) {
+            window.firebaseApp = firebase.initializeApp(firebaseConfig);
+            console.log("🔥 Firebase 앱 초기화됨");
+        }
+
+        // Firestore 인스턴스 가져오기
+        window.db = firebase.firestore();
+        window.auth = firebase.auth();
+
         const checkFirebase = setInterval(() => {
             if (window.auth && window.db && typeof window.db.collection === "function") {
                 clearInterval(checkFirebase);
