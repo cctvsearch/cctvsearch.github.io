@@ -672,9 +672,16 @@ function getCurrentPos() {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
             var locPosition = new kakao.maps.LatLng(lat, lon);
-            var message = '<div style="height: 25px; padding:2px 10px; margin: 3px;">현재 위치입니다.</div>';
-            displayMarker(locPosition, message);
-            map.setCenter(locPosition); // 현재 위치로 지도를 이동
+
+            // ✅ 현재 위치의 좌표를 메시지에 포함
+            var message = `<div style="height: 25px; padding:2px 10px; margin: 3px;">
+                            현재 위치의 좌표는 <br> 
+                            위도: ${lat.toFixed(6)}, <br>
+                            경도: ${lon.toFixed(6)} 입니다.
+                           </div>`;
+
+            displayMarker(locPosition, message); // ✅ 마커 표시
+            map.setCenter(locPosition); // ✅ 지도 중심 이동
         },
         function (error) {
             console.error('위치 정보를 가져오는 데 실패했습니다:', error.message);
