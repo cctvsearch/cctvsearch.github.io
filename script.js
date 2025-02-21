@@ -539,10 +539,6 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
             map: map
         });
 
-        // 3초 후 임시 마커 제거
-        setTimeout(() => {
-            tempMarker.setMap(null);
-        }, 3000);
     }
 });
 
