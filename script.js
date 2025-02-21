@@ -670,7 +670,7 @@ function getCurrentPos() {
             var locPosition = new kakao.maps.LatLng(lat, lon);
 
             // ✅ 현재 위치의 좌표를 메시지에 포함
-            var message = `<div style="height: 80px; padding:3px 15px; margin: 4px;">
+            var message = `<div style="height: 84px; padding:3px 12px; margin: 4px;">
                             현재 위치의 좌표는 <br> 
                             위도: ${lat.toFixed(6)}, <br>
                             경도: ${lon.toFixed(6)} <br> 
