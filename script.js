@@ -658,7 +658,12 @@ function displayMarker(locPosition, message) {
         removable: true
     });
     infowindow.open(map, marker);
-
+    
+    // 3초 후에 마커와 인포윈도우를 제거합니다
+    setTimeout(function() {
+        marker.setMap(null);
+        infowindow.close();
+    }, 3000);
 }
 
 function getCurrentPos() {
@@ -669,7 +674,7 @@ function getCurrentPos() {
             var locPosition = new kakao.maps.LatLng(lat, lon);
 
             // ✅ 현재 위치의 좌표를 메시지에 포함
-            var message = `<div style="height: 25px; padding:2px 10px; margin: 3px;">
+            var message = `<div style="padding:2px 10px; margin: 3px;">
                             현재 위치의 좌표는 <br> 
                             위도: ${lat.toFixed(6)}, <br>
                             경도: ${lon.toFixed(6)} 입니다.
