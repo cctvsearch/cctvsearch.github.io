@@ -539,6 +539,10 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
             map: map
         });
 
+        // 3초 후 임시 마커 제거
+        setTimeout(() => {
+            tempMarker.setMap(null);
+        }, 3000);
     }
 });
 
@@ -655,11 +659,6 @@ function displayMarker(locPosition, message) {
     });
     infowindow.open(map, marker);
 
-    // 3초 후에 마커와 인포윈도우를 제거합니다
-    setTimeout(function() {
-        marker.setMap(null);
-        infowindow.close();
-    }, 3000);
 }
 
 function getCurrentPos() {
