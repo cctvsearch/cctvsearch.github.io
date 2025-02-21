@@ -659,11 +659,7 @@ function displayMarker(locPosition, message) {
     });
     infowindow.open(map, marker);
     
-    // 3초 후에 마커와 인포윈도우를 제거합니다
-    setTimeout(function() {
-        marker.setMap(null);
-        infowindow.close();
-    }, 3000);
+
 }
 
 function getCurrentPos() {
