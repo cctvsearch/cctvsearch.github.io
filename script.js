@@ -661,46 +661,27 @@ function displayMarker(locPosition, message) {
     
 }
 
-function displayMarker(locPosition, message) {
-    var marker = new kakao.maps.Marker({
-        map: map,
-        position: locPosition
-    });
+function getCurrentPos() {
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var locPosition = new kakao.maps.LatLng(lat, lon);
 
-    // ✅ 닫기 버튼이 포함된 메시지
-    var iwContent = `<div style="padding:2px 10px; margin: 3px;">
-                        <p>현재 위치의 좌표는 <br> 
-                        <strong>위도:</strong> ${locPosition.getLat().toFixed(6)}, <br>
-                        <strong>경도:</strong> ${locPosition.getLng().toFixed(6)}</p>
-                        <button onclick="closeCurrentMarker()" 
-                                style="background:#ff4d4d; color:white; border:none; padding:5px 10px; cursor:pointer;">
-                            닫기
-                        </button>
-                     </div>`;
+            // ✅ 현재 위치의 좌표를 메시지에 포함
+            var message = `<div style="padding:2px 10px; margin: 3px;">
+                            현재 위치의 좌표는 <br> 
+                            위도: ${lat.toFixed(6)}, <br>
+                            경도: ${lon.toFixed(6)} 입니다.
+                           </div>`;
 
-    var infowindow = new kakao.maps.InfoWindow({
-        content: iwContent,
-        removable: false // ✅ 수동으로만 닫을 수 있도록 설정
-    });
-
-    infowindow.open(map, marker);
-
-    // ✅ 현재 위치 마커 저장 (닫기 버튼 기능 추가)
-    window.currentMarker = marker;
-    window.currentInfoWindow = infowindow;
-}
-
-// ✅ 사용자가 직접 닫을 수 있도록 추가
-function closeCurrentMarker() {
-    if (window.currentMarker) {
-        window.currentMarker.setMap(null);
-        window.currentMarker = null;
-    }
-    if (window.currentInfoWindow) {
-        window.currentInfoWindow.close();
-        window.currentInfoWindow = null;
-    }
-}
+            displayMarker(locPosition, message); // ✅ 마커 표시
+            map.setCenter(locPosition); // ✅ 지도 중심 이동
+        },
+        function (error) {
+            console.error('위치 정보를 가져오는 데 실패했습니다:', error.message);
+        }
+    );
 
 currentPosButton.addEventListener('click', getCurrentPos); // 버튼 클릭 시 getCurrentPos 함수 호출
 
