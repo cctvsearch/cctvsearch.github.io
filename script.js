@@ -1,7 +1,7 @@
 // Firebase 앱 재사용
 const auth = window.auth;
 const db = window.db;
-// 🔹 Firebase SDK가 로드되었는지 확인
+// 🔹 Firebase SDK가 로드되었는지 확인 
 if (typeof firebase === "undefined") {
     console.error("❌ Firebase SDK가 로드되지 않았습니다. HTML 파일에서 Firebase SDK를 추가하세요.");
 }
